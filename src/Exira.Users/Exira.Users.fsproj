@@ -98,18 +98,18 @@
   -->
   <Import Project="..\..\.paket\paket.targets" />
   <ItemGroup>
+    <Content Include="html/js.cookie-2.0.4.min.js" />
+    <Content Include="html/login.html" />
+    <Content Include="html/register.html" />
+    <Content Include="html/changepassword.html" />
+    <Content Include="html/verify.html" />
+    <Content Include="html/requestpasswordreset.html" />
+    <Content Include="html/verifypasswordreset.html" />
     <None Include="paket.references" />
     <None Include="Exira.Users.paket.template" />
     <None Include="Web.Production.yaml" />
     <None Include="Web.yaml" />
     <Content Include="Web.config" />
-    <Content Include="js.cookie-2.0.4.min.js" />
-    <Content Include="login.html" />
-    <Content Include="register.html" />
-    <Content Include="changepassword.html" />
-    <Content Include="verify.html" />
-    <Content Include="requestpasswordreset.html" />
-    <Content Include="verifypasswordreset.html" />
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Configuration.fs" />
     <Compile Include="OptionConverter.fs" />

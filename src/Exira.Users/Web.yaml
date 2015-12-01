@@ -11,12 +11,12 @@ Debug:
 
 Web:
     Pages:
-        RegisterPage: ~/register.html
-        LoginPage: ~/login.html
-        ChangePasswordPage: ~/changepassword.html
-        VerifyPage: ~/verify.html
-        RequestPasswordResetPage: ~/requestpasswordreset.html
-        VerifyPasswordResetPage: ~/verifypasswordreset.html
+        RegisterPage: ~/html/register.html
+        LoginPage: ~/html/login.html
+        ChangePasswordPage: ~/html/changepassword.html
+        VerifyPage: ~/html/verify.html
+        RequestPasswordResetPage: ~/html/requestpasswordreset.html
+        VerifyPasswordResetPage: ~/html/verifypasswordreset.html
 
     Authentication:
         AuthenticationName: exira
