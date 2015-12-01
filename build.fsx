@@ -373,10 +373,10 @@ Target "All" DoNothing
   ==> "AssemblyInfo"
   ==> "Build"
   ==> "CopyBinaries"
-  =?> ("GenerateReferenceDocs",isLocalBuild)
-  =?> ("GenerateDocs",isLocalBuild)
+  ==> "GenerateReferenceDocs"
+  ==> "GenerateDocs"
   ==> "All"
-  =?> ("ReleaseDocs",isLocalBuild)
+  ==> "ReleaseDocs"
 
 "All"
 #if MONO
