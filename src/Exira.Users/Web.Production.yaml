@@ -1,0 +1,36 @@
+﻿EventStore:
+    ConnectionString: #{GesConnectionString}
+
+Debug:
+    Authentication:
+        UseCookieDomain: true
+    Web:
+        Enabled: true
+        ReleaseVersionHeaderName: Release
+        ReleaseVersionHeaderFormat: "%s, %O"
+
+Web:
+    Pages:
+        RegisterPage: ~/register.html
+        LoginPage: ~/login.html
+        ChangePasswordPage: ~/changepassword.html
+        VerifyPage: ~/verify.html
+        RequestPasswordResetPage: ~/requestpasswordreset.html
+        VerifyPasswordResetPage: ~/verifypasswordreset.html
+
+    Authentication:
+        AuthenticationName: #{AuthenticationName}
+        CookieName: #{CookieName}
+        CookiePath: #{CookiePath}
+        CookieDomain: #{CookieDomain}
+
+    JWT:
+        Issuer: #{JwtIssuer}
+        TokenSigningKey: #{JwtTokenSigningKey}
+        TokenLifetimeInMinutes: 120
+        Audiences:
+            - #{JwtAudience1}
+
+    CORS:
+        AllowedOrigins:
+            - #{JwtAllowedOrigin1}

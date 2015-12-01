@@ -1,0 +1,36 @@
+﻿Login:
+<div id="loginError" style="display: none;">Login failed</div>
+<form id="loginForm">
+    <input id="email" type="text" name="Email" placeholder="Email"/>
+    <input id="password" type="password" name="Password"/>
+    <input id="login" type="submit" value="Login"/>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var form = $('#loginForm'),
+            error = $('#loginError');
+
+        form.submit(function (e) {
+            e.preventDefault();
+            error.hide();
+
+            var email = $('#email').val();
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '/api/users/' + email + '/login',
+                data: form.serialize() ,
+                success: function () {
+                    // Login successful, cookie has been set, redirect
+                    window.location = '/';
+                },
+                error: function () {
+                    // Something wrong with login, display error
+                    error.fadeIn();
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,28 @@
+type file
+id
+    Exira.Users
+owners
+    exira
+authors
+    exira
+projectUrl
+    http://git.exira.com/user-ops/
+iconUrl
+    https://raw.githubusercontent.com/exira/user-ops/master/docs/files/img/logo.png
+licenseUrl
+    http://github.com/exira/user-ops/blob/master/LICENSE.txt
+requireLicenseAcceptance
+    false
+copyright
+    Copyright 2015
+tags
+    rest eventstore ges f#
+summary
+    Exira.Users is an event sourced microservice to manage users.
+description
+    Exira.Users is an event sourced microservice to manage users.
+files
+    bin/*.dll ==> bin
+    Web.yaml ==>
+    Web.Production.yaml ==>
+    Web.config ==>

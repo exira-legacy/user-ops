@@ -1,0 +1,30 @@
+redirects: on
+source https://nuget.org/api/v2
+
+nuget FSharp.Core
+nuget FSharp.Formatting
+nuget FAKE
+nuget SourceLink.Fake
+
+nuget FSharp.Configuration
+nuget tickspec
+nuget ExtCore
+
+nuget FsPickler
+nuget FsPickler.Json
+
+nuget System.IdentityModel.Tokens.Jwt
+nuget Microsoft.Owin.Host.SystemWeb
+nuget Microsoft.Owin.Security.Jwt
+nuget Microsoft.Owin.Security.Cookies
+nuget Microsoft.AspNet.WebApi.Cors
+nuget Microsoft.AspNet.WebApi.Owin
+nuget Microsoft.Net.Http
+nuget GNaP.WebApi.Versioning
+
+nuget Exira.EventStore.Owin
+nuget Exira.ErrorHandling
+nuget Exira.VersionHeader.Owin
+nuget Exira.CsrfValidation.Owin
+
+github fsharp/FAKE modules/Octokit/Octokit.fsx

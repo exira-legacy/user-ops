@@ -1,0 +1,6 @@
+﻿Runner:
+    ServiceName: ges-user-ops
+    Description: Run user-ops Event Store
+    Executable: C:\Temp\EventStore-OSS-Win-v3.3.0\EventStore.ClusterNode.exe
+    EventStoreConfigPath: C:\Temp\user-ops\ges\ges.esconfig
+    RestartIntervalInMinutes: 1

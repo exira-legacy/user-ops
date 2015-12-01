@@ -1,0 +1,10 @@
+---
+Db: "C:\\Temp\\user-ops\\ges\\Db"
+Log: "C:\\Temp\\user-ops\\ges\\Logs"
+IntHttpPort: 8000
+ExtHttpPort: 8001
+IntTcpPort: 8002
+ExtTcpPort: 8003
+RunProjections: System
+StartStandardProjections: True
+---

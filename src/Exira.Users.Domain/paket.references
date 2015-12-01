@@ -1,0 +1,5 @@
+FSharp.Core
+ExtCore
+Exira.ErrorHandling
+Exira.EventStore
+Newtonsoft.Json

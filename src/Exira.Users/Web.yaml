@@ -1,0 +1,37 @@
+﻿EventStore:
+    ConnectionString: ConnectTo=tcp://admin:changeit@127.0.0.1:8003
+
+Debug:
+    Authentication:
+        UseCookieDomain: false
+    Web:
+        Enabled: true
+        ReleaseVersionHeaderName: Release
+        ReleaseVersionHeaderFormat: "%s, %O"
+
+Web:
+    Pages:
+        RegisterPage: ~/register.html
+        LoginPage: ~/login.html
+        ChangePasswordPage: ~/changepassword.html
+        VerifyPage: ~/verify.html
+        RequestPasswordResetPage: ~/requestpasswordreset.html
+        VerifyPasswordResetPage: ~/verifypasswordreset.html
+
+    Authentication:
+        AuthenticationName: exira
+        CookieName: auth
+        CookiePath: /
+        CookieDomain: localhost
+
+    JWT:
+        Issuer: urn:example
+        TokenSigningKey: U0lHTklOR19LRVlfR09FU19IRVJF
+        TokenLifetimeInMinutes: 120
+        Audiences:
+            - urn:example
+
+    CORS:
+        AllowedOrigins:
+            - http://localhost:9090
+            - http://localhost:8080
