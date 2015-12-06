@@ -4,6 +4,7 @@
 Debug:
     Authentication:
         UseCookieDomain: true
+
     Web:
         Enabled: true
         ReleaseVersionHeaderName: Release
