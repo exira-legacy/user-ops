@@ -12,4 +12,4 @@ Each controller method takes a command and hands it off to [the domain](#Exira.U
 
 ## Cloning
 
-```git clone git@gitlab.com:exira/user-ops.git -c core.autocrlf=input```
+```git clone git@github.com:exira/user-ops.git -c core.autocrlf=input```
