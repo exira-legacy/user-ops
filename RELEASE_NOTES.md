@@ -1,3 +1,6 @@
+#### 0.3 - December 6 2015
+* Add HTML to deploy
+
 #### 0.2 - December 1 2015
 * Publish on GitHub
 
