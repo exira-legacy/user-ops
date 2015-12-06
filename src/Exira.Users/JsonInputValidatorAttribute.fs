@@ -14,12 +14,13 @@ module ActionFilters =
 
         let getMessage (e: ModelError) =
             match e.ErrorMessage, e.Exception with
-            | m, _ when not (String.isNullOrEmpty m) -> buildError m |> Some
-            | _, ex when not (String.isNullOrEmpty ex.Message) -> buildError ex.Message |> Some
+            | m, _ when not (String.isNullOrEmpty m) -> buildError (None, m) |> Some
+            | _, ex when not (String.isNullOrEmpty ex.Message) -> buildError (None, ex.Message) |> Some
             | _ -> None
 
         let mapErrors (kv: KeyValuePair<string, ModelState>) =
             {
+                Field = Some kv.Key
                 Message = sprintf "Validation errors detected for %s" kv.Key
                 Inner = kv.Value.Errors |> Seq.choose getMessage |> Seq.toList |> Some
             }

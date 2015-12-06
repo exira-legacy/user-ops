@@ -8,6 +8,8 @@ module Model =
     open System
 
     type ValidationError = {
+        [<JsonProperty(PropertyName = "field")>]
+        Field: string option;
         [<JsonProperty(PropertyName = "error")>]
         Message: string;
         Inner: ValidationError list option
@@ -68,36 +70,36 @@ module Model =
     | VerifiedUser of UserInfo * PasswordResetInfo option
     | Deleted
 
-    let buildError errorMessage =
-        { Message = errorMessage; Inner = None }
+    let buildError (errorField, errorMessage) =
+        { Field = errorField; Message = errorMessage; Inner = None }
 
     let formatErrors errors =
         let rec formatError error =
             match error with
-            | EmailIsRequired -> sprintf "Email is required."
-            | EmailMustBeValid email -> sprintf "Invalid email '%s'." email
+            | EmailIsRequired -> (Some "email", "Email is required.")
+            | EmailMustBeValid email -> (Some "email", sprintf "Invalid email '%s'." email)
 
-            | PasswordIsRequired -> sprintf "Password is required."
-            | PasswordIsTooShort minimumLength -> sprintf "Password must be at least %i characters long." minimumLength
-            | PasswordMustBeValid -> sprintf "Invalid password"
+            | PasswordIsRequired -> (Some "password", "Password is required.")
+            | PasswordIsTooShort minimumLength -> (Some "password", sprintf "Password must be at least %i characters long." minimumLength)
+            | PasswordMustBeValid -> (Some "password", "Invalid password")
 
-            | TokenIsRequired -> sprintf "Token is required."
-            | TokenMustBeValid token -> sprintf "Invalid token '%s'." token
+            | TokenIsRequired -> (Some "token", "Token is required.")
+            | TokenMustBeValid token -> (Some "token", sprintf "Invalid token '%s'." token)
 
-            | UserAlreadyExists -> sprintf "User already exists."
-            | UserNotVerified -> sprintf "User is not verified."
-            | UserDoesNotExist -> sprintf "User does not exist."
-            | AuthenticationFailed -> sprintf "Authentication failed."
-            | VerificationFailed -> sprintf "Verification failed."
+            | UserAlreadyExists -> (Some "email", "User already exists.")
+            | UserNotVerified -> (None, "User is not verified.")
+            | UserDoesNotExist -> (None, "User does not exist.")
+            | AuthenticationFailed -> (None, "Authentication failed.")
+            | VerificationFailed -> (None, "Verification failed.")
 
             | InvalidState user
-                -> sprintf "Trying to do an invalid operation for %s" user // TODO: Log ex
+                -> (None, sprintf "Trying to do an invalid operation for %s" user) // TODO: Log ex
 
             | InvalidStateTransition _
             | SaveVersionException _
             | SaveException _
             | InternalException _
-                -> sprintf "Something went wrong internally." // TODO: Log ex
+                -> (None, "Something went wrong internally.") // TODO: Log ex
 
             |> buildError
 
