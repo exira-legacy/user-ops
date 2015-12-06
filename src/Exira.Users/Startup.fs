@@ -139,10 +139,8 @@ type Startup() =
             appBuilder.Run (fun c -> renderPage c page)
 
         app
-            .Map("/register", fun inner -> servePage inner webConfig.Web.Pages.RegisterPage)
             .Map("/changepassword", fun inner -> servePage inner webConfig.Web.Pages.ChangePasswordPage)
             .Map("/verify", fun inner -> servePage inner webConfig.Web.Pages.VerifyPage)
-            .Map("/requestpasswordreset", fun inner -> servePage inner webConfig.Web.Pages.RequestPasswordResetPage)
             .Map("/verifypasswordreset", fun inner -> servePage inner webConfig.Web.Pages.VerifyPasswordResetPage)
             |> ignore
 

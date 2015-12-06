@@ -11,11 +11,9 @@ Debug:
 
 Web:
     Pages:
-        RegisterPage: ~/html/register.html
         LoginPage: ~/html/login.html
         ChangePasswordPage: ~/html/changepassword.html
         VerifyPage: ~/html/verify.html
-        RequestPasswordResetPage: ~/html/requestpasswordreset.html
         VerifyPasswordResetPage: ~/html/verifypasswordreset.html
 
     Authentication:

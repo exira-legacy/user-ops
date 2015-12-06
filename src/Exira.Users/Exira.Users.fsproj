@@ -100,10 +100,8 @@
   <ItemGroup>
     <Content Include="html/js.cookie-2.0.4.min.js" />
     <Content Include="html/login.html" />
-    <Content Include="html/register.html" />
     <Content Include="html/changepassword.html" />
     <Content Include="html/verify.html" />
-    <Content Include="html/requestpasswordreset.html" />
     <Content Include="html/verifypasswordreset.html" />
     <None Include="paket.references" />
     <None Include="Exira.Users.paket.template" />
