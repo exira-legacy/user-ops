@@ -4,10 +4,10 @@ open System.Reflection
 [<assembly: AssemblyTitleAttribute("Exira.Users")>]
 [<assembly: AssemblyProductAttribute("Exira.Users")>]
 [<assembly: AssemblyDescriptionAttribute("Exira.Users is an event sourced microservice to manage users.")>]
-[<assembly: AssemblyVersionAttribute("0.3.10")>]
-[<assembly: AssemblyFileVersionAttribute("0.3.10")>]
-[<assembly: AssemblyMetadataAttribute("githash","c6d299fc0673fd0d6e0fb67a10dce37f0deeaed7")>]
+[<assembly: AssemblyVersionAttribute("0.4.11")>]
+[<assembly: AssemblyFileVersionAttribute("0.4.11")>]
+[<assembly: AssemblyMetadataAttribute("githash","7a6e625863de5afbcc92ce4454bc24b59e9edcbb")>]
 do ()
 
 module internal AssemblyVersionInformation =
-    let [<Literal>] Version = "0.3.10"
+    let [<Literal>] Version = "0.4.11"
