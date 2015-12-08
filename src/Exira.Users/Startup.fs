@@ -24,7 +24,7 @@ open Converters
 
 [<Sealed>]
 type Startup() =
-    let webConfig = WebConfig()
+    let webConfig = Configuration.webConfig
 
     let registerVersionHeader (app: IAppBuilder) =
         let config =
@@ -147,9 +147,6 @@ type Startup() =
         servePage app webConfig.Web.Pages.LoginPage
 
     member __.Configuration(app: IAppBuilder) =
-        let configPath = HostingEnvironment.MapPath "~/Web.yaml"
-        webConfig.LoadAndWatch configPath |> ignore
-
         registerVersionHeader app
         registerEventStore app
         registerWebApi app "/api"

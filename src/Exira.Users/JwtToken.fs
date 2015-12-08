@@ -5,7 +5,7 @@ module JwtToken =
     open System.IdentityModel.Tokens
     open System.Security.Claims
 
-    let private webConfig = WebConfig()
+    let private webConfig = Configuration.webConfig
 
     let private secret = Convert.FromBase64String webConfig.Web.JWT.TokenSigningKey
     let private tokenLifeTime = TimeSpan.FromMinutes (float webConfig.Web.JWT.TokenLifetimeInMinutes)

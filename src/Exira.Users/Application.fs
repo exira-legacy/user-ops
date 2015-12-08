@@ -16,7 +16,7 @@ module Application =
     open Model
     open CommandHandler
 
-    let webConfig = WebConfig()
+    let webConfig = Configuration.webConfig
 
     type private ResponseMessage =
     | OK
