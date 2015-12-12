@@ -2,8 +2,12 @@
 
 [<AutoOpen>]
 module Role =
-    let [<Literal>] RoleUser = "User"
-    let [<Literal>] RoleAdministrator = "Administrator"
+    let [<Literal>] private RoleUser = "User"
+    let [<Literal>] private RoleAdministrator = "Administrator"
+    let private roles = [
+        RoleUser
+        RoleAdministrator
+    ]
 
     type RoleType =
     | User
@@ -21,7 +25,7 @@ module Role =
         | String.empty -> failure StringError.Missing
         | RoleUser -> User |> Role |> success
         | RoleAdministrator -> Administrator |> Role |> success
-        | _ -> failure (sprintf "%s|%s" RoleUser RoleAdministrator |> StringError.DoesntMatchPattern)
+        | _ -> failure (roles |> String.concat "|" |> StringError.DoesntMatchPattern)
 
     let internal create value =
         let success e = Some e

@@ -82,7 +82,7 @@ module internal UserCommandHandler =
             let unverifiedEmail = EmailInfo.create command.Email
             let randomToken = String.random VerificationTokenLength
             let token = Token.create randomToken |> Option.get |> VerificationToken
-            let role = Role.create Role.RoleUser |> Option.get
+            let role = RoleType.User |> Role
 
             let userCreated = UserRegistered {
                 UserRegisteredEvent.Email = unverifiedEmail

@@ -1,0 +1,5 @@
+﻿EventStore:
+    ConnectionString: #{GesConnectionString}
+
+Projection:
+    Name: generate-profile-page
