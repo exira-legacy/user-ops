@@ -7,6 +7,7 @@ module Program =
     open Exira.ErrorHandling
     open Exira.EventStore
     open Exira.EventStore.EventStore
+    open Exira.Users.Domain.Model
 
     type private ProjectionConfig = YamlConfig<"Projection.yaml">
 
@@ -21,6 +22,7 @@ module Program =
         | InvalidEvent -> "Saw an event we dont care about"
         | ValidateProblem e -> e.ToString() |> sprintf "Validate problem: '%s'"
         | DeserializeProblem e -> e.ToString() |> sprintf "Serializer problem: '%s'"
+        | StateProblem errors -> formatErrors errors  |> sprintf "State problem: '%A'"
 
     let private handleResult (resolvedEvent: ResolvedEvent) handledEvent =
         match handledEvent with
@@ -53,6 +55,7 @@ module Program =
     [<EntryPoint>]
     let main _ =
         initalizeCheckpoint es checkpointStream |> Async.RunSynchronously
+        storeCheckpoint es checkpointStream Position.Start |> Async.RunSynchronously
 
         subscribe subscriptionDropped |> ignore
 

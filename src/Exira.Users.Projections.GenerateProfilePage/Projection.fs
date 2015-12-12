@@ -2,10 +2,13 @@
 
 [<AutoOpen>]
 module internal Errors =
+    open Exira.Users.Domain
+
     type EventStoreError =
     | InvalidEvent
     | ValidateProblem of exn
     | DeserializeProblem of exn
+    | StateProblem of Error list
 
 [<AutoOpen>]
 module internal Projection =
@@ -37,10 +40,34 @@ module internal Projection =
         with
         | ex -> ex |> DeserializeProblem |> fail
 
-    let private handle es event =
-        async {
+    let private getEmail emailInfo =
+        match emailInfo with
+        | UnverifiedEmail e -> e
+        | VerifiedEmail (e, _) -> e
+
+    let private handleProjection (_, state: User) =
+        match state with
+        | Init
+        | Deleted -> succeed state
+
+        | UnverifiedUser (u, _)
+        | VerifiedUser (u, _) ->
             // TODO: Do something :)
-            return succeed event
+            printfn "Generate profile page for %s" (u.Email |> getEmail |> Email.value)
+            succeed state
+
+    let private handle es (event: Event) =
+        async {
+            let id =
+                match event with
+                | Event.UserRegistered e -> getEmail e.Email
+                | _ -> failwith "Shouldnt happen, it means our validate let something through..."
+
+            let! state = User.getUserState id es
+
+            match state with
+            | Failure e -> return e |> StateProblem  |> fail
+            | Success s -> return s |> handleProjection
         }
 
     let handleEvent es event =

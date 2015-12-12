@@ -4,8 +4,8 @@ open Exira.ErrorHandling
 open Exira.EventStore.EventStore
 
 [<AutoOpen>]
-module internal User =
-    let applyUserEvent state event =
+module User =
+    let internal applyUserEvent state event =
         match state with
         | Init ->
             match event with
@@ -54,7 +54,7 @@ module internal User =
             match event with
             | _ -> stateTransitionFail event state
 
-    let toUserStreamId id = id |> Email.value |> toStreamId "user"
+    let internal toUserStreamId id = id |> Email.value |> toStreamId "user"
     let getUserState id = getState (applyEvents applyUserEvent) Init (toUserStreamId id)
 
 [<AutoOpen>]
