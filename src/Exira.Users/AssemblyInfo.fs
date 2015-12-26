@@ -1,41 +1,13 @@
-﻿namespace Exira.Users.AssemblyInfo
-
+﻿namespace System
 open System.Reflection
-open System.Runtime.CompilerServices
-open System.Runtime.InteropServices
 
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-[<assembly: AssemblyTitle("Exira.Users")>]
-[<assembly: AssemblyDescription("")>]
-[<assembly: AssemblyConfiguration("")>]
-[<assembly: AssemblyCompany("")>]
-[<assembly: AssemblyProduct("Exira.Users")>]
-[<assembly: AssemblyCopyright("Copyright ©  2015")>]
-[<assembly: AssemblyTrademark("")>]
-[<assembly: AssemblyCulture("")>]
+[<assembly: AssemblyTitleAttribute("Exira.Users")>]
+[<assembly: AssemblyProductAttribute("Exira.Users")>]
+[<assembly: AssemblyDescriptionAttribute("Exira.Users is an event sourced microservice to manage users.")>]
+[<assembly: AssemblyVersionAttribute("0.4.0")>]
+[<assembly: AssemblyFileVersionAttribute("0.4.0")>]
+[<assembly: AssemblyMetadataAttribute("githash","7f7b09c710bf6a2598ca952cc45ba65124d7b87d")>]
+do ()
 
-// Setting ComVisible to false makes the types in this assembly not visible 
-// to COM components.  If you need to access a type in this assembly from 
-// COM, set the ComVisible attribute to true on that type.
-[<assembly: ComVisible(false)>]
-
-// The following GUID is for the ID of the typelib if this project is exposed to COM
-[<assembly: Guid("b3a5d299-97a8-4e05-b6eb-de4923ce5a0f")>]
-
-// Version information for an assembly consists of the following four values:
-// 
-//       Major Version
-//       Minor Version 
-//       Build Number
-//       Revision
-// 
-// You can specify all the values or you can default the Build and Revision Numbers 
-// by using the '*' as shown below:
-// [<assembly: AssemblyVersion("1.0.*")>]
-[<assembly: AssemblyVersion("1.0.0.0")>]
-[<assembly: AssemblyFileVersion("1.0.0.0")>]
-
-do
-    ()
+module internal AssemblyVersionInformation =
+    let [<Literal>] Version = "0.4.0"
