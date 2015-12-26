@@ -68,6 +68,8 @@
     <None Include="Configuration.yaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Compile Include="Settings.fs" />
+    <Compile Include="BootstrapActorSystem.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
