@@ -1,0 +1,29 @@
+type project
+id
+    Exira.Users
+owners
+    exira
+authors
+    exira
+projectUrl
+    http://git.exira.com/user-ops/
+iconUrl
+    https://raw.githubusercontent.com/exira/user-ops/master/docs/files/img/logo.png
+licenseUrl
+    http://github.com/exira/user-ops/blob/master/LICENSE.txt
+requireLicenseAcceptance
+    false
+copyright
+    Copyright 2015
+tags
+    topshelf akka.net f#
+summary
+    Exira.Users is an event sourced microservice to manage users.
+description
+    Exira.Users is an event sourced microservice to manage users.
+files
+    bin/Release/*.exe ==> tools
+    bin/Release/*.dll ==> tools
+    bin/Release/*.config ==> tools
+    bin/Release/*.ps1 ==> tools
+    bin/Release/Config.yaml ==> tools
