@@ -3,6 +3,9 @@ open System.IO
 open FSharp.Configuration
 open Topshelf
 open Time
+open Akka.FSharp
+open Akka.FSharp.Spawn
+open Akka.Actor
 
 let executablePath = Assembly.GetEntryAssembly().Location |> Path.GetDirectoryName
 let configPath = Path.Combine(executablePath, "Configuration.yaml")
@@ -11,10 +14,31 @@ type Configuration = YamlConfig<"Configuration.yaml">
 let configuration = Configuration()
 configuration.Load configPath
 
+let mutable (actorSystem: ActorSystem option) = None
+
+type Message = { Text: string }
+
+let dummyActor message =
+    printfn "Got message: %s" message.Text
+
 let stop _ =
-    true
+    match actorSystem with
+        | None -> true
+        | Some system ->
+            system.Shutdown()
+            system.AwaitTermination()
+            actorSystem <- None
+            true
 
 let start _ =
+    let system = System.create configuration.Service.ServiceName (Configuration.load())
+
+    let dummyActor = spawn system "dummy" (actorOf dummyActor)
+
+    let hiMessage = { Text = "Hello!" }
+    system.Scheduler.ScheduleTellRepeatedly(s 5, s 1, dummyActor, hiMessage)
+
+    actorSystem <- Some system
     true
 
 [<EntryPoint>]

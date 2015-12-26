@@ -4,6 +4,11 @@ NUGET
   specs:
     Akka (1.0.5)
       Newtonsoft.Json (>= 7.0.1)
+    Akka.FSharp (1.0.5)
+      Akka (>= 1.0.5)
+      FsPickler (>= 1.2.21)
+      FSPowerPack.Core.Community (>= 3.0.0.0)
+      FSPowerPack.Linq.Community (>= 3.0.0.0)
     FAKE (4.10.3)
     FSharp.Compiler.Service (1.4.0.6)
     FSharp.Configuration (0.5.7)
@@ -13,6 +18,10 @@ NUGET
       FSharpVSPowerTools.Core (2.1.0)
     FSharpVSPowerTools.Core (2.1.0)
       FSharp.Compiler.Service (>= 1.4.0.6)
+    FsPickler (1.7.0)
+    FSPowerPack.Core.Community (3.0.0)
+    FSPowerPack.Linq.Community (3.0.0)
+      FSPowerPack.Core.Community
     Microsoft.Bcl (1.1.10)
       Microsoft.Bcl.Build (>= 1.0.14)
     Microsoft.Bcl.Build (1.0.21) - import_targets: false
