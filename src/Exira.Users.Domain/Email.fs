@@ -17,7 +17,7 @@ module Email =
         | Match SimpleEmailRegex _ -> success (value |> canonicalizeEmail |> Email)
         | _ -> failure (DoesntMatchPattern SimpleEmailRegex)
 
-    let internal create value =
+    let create value =
         let success e = Some e
         let failure _  = None
         createWithCont success failure value

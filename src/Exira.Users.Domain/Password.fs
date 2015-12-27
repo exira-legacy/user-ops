@@ -12,7 +12,7 @@ module Password =
         | MinimumLength MinimumPasswordLength _ -> success (value |> Password)
         | _ -> failure (TooShort MinimumPasswordLength)
 
-    let internal create value =
+    let create value =
         let success e = Some e
         let failure _  = None
         createWithCont success failure value
