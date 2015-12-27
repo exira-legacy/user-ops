@@ -6,6 +6,7 @@ nuget FSharp.Formatting
 nuget FAKE
 nuget SourceLink.Fake
 
+nuget ExtCore
 nuget FSharp.Configuration
 nuget Topshelf.FSharp
 nuget Akka.FSharp

@@ -24,6 +24,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Exira.Users", "src\Exira.Us
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Exira.Users.Web", "src\Exira.Users.Web\Exira.Users.Web.fsproj", "{7207AF8E-5D26-4C1B-9388-4ECF16871D03}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Exira.Users.Domain", "src\Exira.Users.Domain\Exira.Users.Domain.fsproj", "{99C0D005-FCFB-4C9F-9098-AC8BB96D2EA9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,10 @@ Global
 		{7207AF8E-5D26-4C1B-9388-4ECF16871D03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7207AF8E-5D26-4C1B-9388-4ECF16871D03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7207AF8E-5D26-4C1B-9388-4ECF16871D03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99C0D005-FCFB-4C9F-9098-AC8BB96D2EA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99C0D005-FCFB-4C9F-9098-AC8BB96D2EA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99C0D005-FCFB-4C9F-9098-AC8BB96D2EA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99C0D005-FCFB-4C9F-9098-AC8BB96D2EA9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

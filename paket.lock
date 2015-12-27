@@ -14,6 +14,7 @@ NUGET
       Google.ProtocolBuffers (>= 2.4.1.521)
       Helios (>= 1.4.1)
     Dynamitey (1.0.2)
+    ExtCore (0.8.45)
     FAKE (4.10.3)
     FSharp.Compiler.Service (1.4.0.6)
     FSharp.Configuration (0.5.7)
