@@ -5,7 +5,6 @@ open Microsoft.Owin
 open Microsoft.Owin.Extensions
 open Microsoft.Owin.Security
 open Microsoft.Owin.Security.Cookies
-open Microsoft.Owin.Security.Jwt
 
 open System
 open System.IO
@@ -35,17 +34,6 @@ type Startup() =
 
         if webConfig.Debug.Web.Enabled
         then app.UseVersionHeader config |> ignore
-
-    let registerJwtAuthentication (app: IAppBuilder) =
-        let secret = Convert.FromBase64String webConfig.Web.JWT.TokenSigningKey
-        let jwtOptions =
-            JwtBearerAuthenticationOptions(
-                AuthenticationMode = AuthenticationMode.Active,
-                AllowedAudiences = webConfig.Web.JWT.Audiences,
-                IssuerSecurityTokenProviders =
-                    [SymmetricKeyIssuerSecurityTokenProvider(webConfig.Web.JWT.Issuer, secret)])
-
-        app.UseJwtBearerAuthentication jwtOptions |> ignore
 
     let registerCookieAuthentication (app: IAppBuilder) =
         let cookieOptions =
@@ -98,7 +86,6 @@ type Startup() =
         config
 
     let configureApi (inner: IAppBuilder) (config: HttpConfiguration) =
-        //registerJwtAuthentication inner
         registerCookieAuthentication inner
 
         inner.UseWebApi config |> ignore

@@ -13,9 +13,7 @@ nuget ExtCore
 nuget FsPickler
 nuget FsPickler.Json
 
-nuget System.IdentityModel.Tokens.Jwt
 nuget Microsoft.Owin.Host.SystemWeb
-nuget Microsoft.Owin.Security.Jwt
 nuget Microsoft.Owin.Security.Cookies
 nuget Microsoft.AspNet.WebApi.Cors
 nuget Microsoft.AspNet.WebApi.Owin

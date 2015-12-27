@@ -1,9 +1,7 @@
 FSharp.Core
 FSharp.Configuration
 
-System.IdentityModel.Tokens.Jwt
 Microsoft.Owin.Host.SystemWeb
-Microsoft.Owin.Security.Jwt
 Microsoft.Owin.Security.Cookies
 Microsoft.AspNet.WebApi.Cors
 Microsoft.AspNet.WebApi.Owin
