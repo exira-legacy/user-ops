@@ -12,6 +12,9 @@ open System.Web.Hosting
 type Startup() =
     let webConfig = Configuration.webConfig
 
+    let registerSignalR (app: IAppBuilder) =
+        app.MapSignalR() |> ignore
+
     let renderPage (context: IOwinContext) path =
         try
             let page =
@@ -39,6 +42,7 @@ type Startup() =
 
         servePage app webConfig.Pages.LoginPage
 
-    member __.Configuration(app: IAppBuilder) =
+    member __.Configuration (app: IAppBuilder) =
+        registerSignalR app
         registerPages app
 

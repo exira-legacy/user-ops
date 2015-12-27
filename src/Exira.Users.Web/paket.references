@@ -1,3 +1,6 @@
 FSharp.Core
 FSharp.Configuration
 Microsoft.Owin.Host.SystemWeb
+Microsoft.Owin.Cors
+Microsoft.AspNet.SignalR.SystemWeb
+FSharp.Interop.Dynamic

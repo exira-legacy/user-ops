@@ -11,5 +11,8 @@ nuget Topshelf.FSharp
 nuget Akka.FSharp
 
 nuget Microsoft.Owin.Host.SystemWeb
+nuget Microsoft.Owin.Cors
+nuget Microsoft.AspNet.SignalR.SystemWeb
+nuget FSharp.Interop.Dynamic
 
 github fsharp/FAKE modules/Octokit/Octokit.fsx
