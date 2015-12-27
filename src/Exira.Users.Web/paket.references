@@ -1,4 +1,3 @@
 FSharp.Core
 FSharp.Configuration
-Topshelf.FSharp
-Akka.FSharp
+Microsoft.Owin.Host.SystemWeb

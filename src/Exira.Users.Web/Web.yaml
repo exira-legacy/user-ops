@@ -1,0 +1,5 @@
+﻿Pages:
+    LoginPage: ~/html/login.html
+    ChangePasswordPage: ~/html/changepassword.html
+    VerifyPage: ~/html/verify.html
+    VerifyPasswordResetPage: ~/html/verifypasswordreset.html

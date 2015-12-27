@@ -1,4 +1,0 @@
-﻿Service:
-    ServiceName: user-ops-ui
-    Description: Exira.Users is an event sourced microservice to manage users.
-    RestartIntervalInMinutes: 1

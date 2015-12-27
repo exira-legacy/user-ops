@@ -22,7 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "project", "project", "{BF60
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Exira.Users", "src\Exira.Users\Exira.Users.fsproj", "{B3A5D299-97A8-4E05-B6EB-DE4923CE5A0F}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Exira.Users.Web", "src\Exira.Users.Web\Exira.Users.Web.fsproj", "{415B63D2-281E-403F-93F8-EFD9D9D6D8C5}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Exira.Users.Web", "src\Exira.Users.Web\Exira.Users.Web.fsproj", "{7207AF8E-5D26-4C1B-9388-4ECF16871D03}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,10 +34,10 @@ Global
 		{B3A5D299-97A8-4E05-B6EB-DE4923CE5A0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3A5D299-97A8-4E05-B6EB-DE4923CE5A0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3A5D299-97A8-4E05-B6EB-DE4923CE5A0F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{415B63D2-281E-403F-93F8-EFD9D9D6D8C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{415B63D2-281E-403F-93F8-EFD9D9D6D8C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{415B63D2-281E-403F-93F8-EFD9D9D6D8C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{415B63D2-281E-403F-93F8-EFD9D9D6D8C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7207AF8E-5D26-4C1B-9388-4ECF16871D03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7207AF8E-5D26-4C1B-9388-4ECF16871D03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7207AF8E-5D26-4C1B-9388-4ECF16871D03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7207AF8E-5D26-4C1B-9388-4ECF16871D03}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

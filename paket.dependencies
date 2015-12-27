@@ -10,4 +10,6 @@ nuget FSharp.Configuration
 nuget Topshelf.FSharp
 nuget Akka.FSharp
 
+nuget Microsoft.Owin.Host.SystemWeb
+
 github fsharp/FAKE modules/Octokit/Octokit.fsx

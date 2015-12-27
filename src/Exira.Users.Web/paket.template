@@ -1,6 +1,6 @@
 type project
 id
-    Exira.Users
+    Exira.Users.Web
 owners
     exira
 authors
@@ -16,14 +16,14 @@ requireLicenseAcceptance
 copyright
     Copyright 2015
 tags
-    topshelf akka.net f#
+    signalr akka.net f#
 summary
     Exira.Users is an event sourced microservice to manage users.
 description
     Exira.Users is an event sourced microservice to manage users.
 files
-    bin/Release/*.exe ==> tools
-    bin/Release/*.dll ==> tools
-    bin/Release/*.config ==> tools
-    bin/Release/*.ps1 ==> tools
-    bin/Release/Config.yaml ==> tools
+    bin/*.dll ==> bin
+    html/*.html ==> html
+    Web.yaml ==>
+    Web.Production.yaml ==>
+    Web.config ==>

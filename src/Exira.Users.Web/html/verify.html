@@ -1,0 +1,36 @@
+﻿Verify:
+<div id="verifyError" style="display: none;">Verify failed</div>
+<form id="verifyForm">
+    <input id="email" type="text" name="Email" placeholder="Email"/>
+    <input id="token" type="text" name="Token" placeholder="Token"/>
+    <input id="verify" type="submit" value="Verify"/>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var form = $('#verifyForm'),
+            error = $('#verifyError');
+
+        form.submit(function (e) {
+            e.preventDefault();
+            error.hide();
+
+            var email = $('#email').val();
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: '/api/users/' + email + '/verify',
+                data: form.serialize() ,
+                success: function () {
+                    // Verify successful, cookie has been set, redirect
+                    window.location = '/';
+                },
+                error: function () {
+                    // Something wrong with verify, display error
+                    error.fadeIn();
+                }
+            });
+        });
+    });
+</script>
