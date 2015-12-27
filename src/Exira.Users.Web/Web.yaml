@@ -3,3 +3,6 @@
     ChangePasswordPage: ~/html/changepassword.html
     VerifyPage: ~/html/verify.html
     VerifyPasswordResetPage: ~/html/verifypasswordreset.html
+
+Akka:
+    Name: user-ops-ui

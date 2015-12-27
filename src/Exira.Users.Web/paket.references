@@ -4,3 +4,5 @@ Microsoft.Owin.Host.SystemWeb
 Microsoft.Owin.Cors
 Microsoft.AspNet.SignalR.SystemWeb
 FSharp.Interop.Dynamic
+Akka.FSharp
+Akka.Remote

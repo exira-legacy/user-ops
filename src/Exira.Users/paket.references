@@ -2,3 +2,4 @@ FSharp.Core
 FSharp.Configuration
 Topshelf.FSharp
 Akka.FSharp
+Akka.Remote

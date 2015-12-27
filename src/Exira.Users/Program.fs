@@ -19,7 +19,7 @@ module Program =
                 true
 
     let start _ =
-        actorSystem <- bootstrap()
+        actorSystem <- bootstrapActorSystem()
         true
 
     [<EntryPoint>]

@@ -2,3 +2,6 @@
     ServiceName: user-ops
     Description: Exira.Users is an event sourced microservice to manage users.
     RestartIntervalInMinutes: 1
+
+Akka:
+    Name: user-ops

@@ -1,16 +1,38 @@
 ﻿namespace Exira.Users.Web
 
-open Owin
-open Microsoft.Owin
-
 open System
 open System.IO
 open System.Net
 open System.Web.Hosting
 
+open Owin
+open Microsoft.Owin
+open Microsoft.Owin.BuilderProperties
+
+open Akka.Actor
+
 [<Sealed>]
 type Startup() =
-    let webConfig = Configuration.webConfig
+    let configuration = Settings.configuration
+
+    let mutable (actorSystem: ActorSystem option) = None
+
+    let registerActorSystem (app: IAppBuilder) =
+        let startActorSystem () =
+            actorSystem <- bootstrapActorSystem()
+
+        let stopActorSystem () =
+            match actorSystem with
+                | None -> ()
+                | Some system ->
+                    system.Shutdown()
+                    system.AwaitTermination()
+                    actorSystem <- None
+
+        let properties = AppProperties app.Properties
+        let token = properties.OnAppDisposing
+        token.Register (fun _ -> stopActorSystem()) |> ignore
+        startActorSystem()
 
     let registerSignalR (app: IAppBuilder) =
         app.MapSignalR() |> ignore
@@ -35,14 +57,15 @@ type Startup() =
             appBuilder.Run (fun c -> renderPage c page)
 
         app
-            .Map("/changepassword", fun inner -> servePage inner webConfig.Pages.ChangePasswordPage)
-            .Map("/verify", fun inner -> servePage inner webConfig.Pages.VerifyPage)
-            .Map("/verifypasswordreset", fun inner -> servePage inner webConfig.Pages.VerifyPasswordResetPage)
+            .Map("/changepassword", fun inner -> servePage inner configuration.Pages.ChangePasswordPage)
+            .Map("/verify", fun inner -> servePage inner configuration.Pages.VerifyPage)
+            .Map("/verifypasswordreset", fun inner -> servePage inner configuration.Pages.VerifyPasswordResetPage)
             |> ignore
 
-        servePage app webConfig.Pages.LoginPage
+        servePage app configuration.Pages.LoginPage
 
     member __.Configuration (app: IAppBuilder) =
+        registerActorSystem app
         registerSignalR app
         registerPages app
 
