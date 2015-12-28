@@ -2,6 +2,10 @@ REDIRECTS: ON
 NUGET
   remote: https://www.nuget.org/api/v2
   specs:
+    Aether (8.0.2)
+    Chiron (6.0.1)
+      Aether (>= 8.0.2 < 9.0.0)
+      FParsec (>= 1.0.0 < 2.0.0)
     EventStore.Client (3.4.0)
     Exira.CsrfValidation.Owin (0.2.5)
       ExtCore
@@ -28,6 +32,7 @@ NUGET
       Microsoft.Owin
     ExtCore (0.8.45)
     FAKE (4.12.0)
+    FParsec (1.0.2)
     FSharp.Compiler.Service (1.4.2.3)
     FSharp.Configuration (0.5.7)
     FSharp.Core (4.0.0.1)

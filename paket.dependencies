@@ -9,6 +9,7 @@ nuget SourceLink.Fake
 nuget FSharp.Configuration
 nuget tickspec
 nuget ExtCore
+nuget Chiron
 
 nuget FsPickler
 nuget FsPickler.Json
