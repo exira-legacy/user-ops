@@ -11,14 +11,11 @@ nuget tickspec
 nuget ExtCore
 nuget Chiron
 
-nuget FsPickler
-nuget FsPickler.Json
 
 nuget Microsoft.Owin.Host.SystemWeb
 nuget Microsoft.Owin.Security.Cookies
 nuget Microsoft.AspNet.WebApi.Cors
 nuget Microsoft.AspNet.WebApi.Owin
-nuget Microsoft.Net.Http
 nuget GNaP.WebApi.Versioning
 
 nuget Exira.EventStore.Owin

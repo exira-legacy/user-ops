@@ -1,13 +1,10 @@
 FSharp.Core
 FSharp.Configuration
-
 Microsoft.Owin.Host.SystemWeb
 Microsoft.Owin.Security.Cookies
 Microsoft.AspNet.WebApi.Cors
 Microsoft.AspNet.WebApi.Owin
-Microsoft.Net.Http
 GNaP.WebApi.Versioning
-
 Exira.EventStore.Owin
 Exira.ErrorHandling
 Exira.VersionHeader.Owin
