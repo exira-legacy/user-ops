@@ -52,15 +52,79 @@ module Program =
         printfn "Subscription Dropped: %O - %O" reason ex
         subscribe subscriptionDropped |> ignore
 
+    open Chiron
+
     [<EntryPoint>]
     let main _ =
-        initalizeCheckpoint es checkpointStream |> Async.RunSynchronously
-        storeCheckpoint es checkpointStream Position.Start |> Async.RunSynchronously
+        let printEvent e =
+            e
+            |> Json.serialize
+            |> Json.formatWith JsonFormattingOptions.Pretty
+            |> printfn "%s"
 
-        subscribe subscriptionDropped |> ignore
+        let deserializedEvent json : Exira.Users.Domain.Events.Event =
+            json
+            |> Json.parse
+            |> Json.deserialize
 
-        Console.ReadLine() |> ignore
+        { Exira.Users.Domain.Events.UserRegisteredEvent.Email = EmailInfo.VerifiedEmail (Email.Email ("test@test.be"), DateTime.Now)
+          Exira.Users.Domain.Events.UserRegisteredEvent.VerificationToken = VerificationToken (Token.Token ("bla"))
+          Exira.Users.Domain.Events.UserRegisteredEvent.Hash = PasswordHash ("test")
+          Exira.Users.Domain.Events.UserRegisteredEvent.Roles = [] }
+        |> Exira.Users.Domain.Events.UserEvent.UserRegistered
+        |> Exira.Users.Domain.Events.Event.User
+        |> printEvent
 
-        es.Close()
+        """
+        {
+          "type": "user",
+          "user": {
+            "type": "userRegistered",
+            "userRegistered": {
+              "emailInfo": {
+                "email": "test@test.be",
+                "verified": true,
+                "verifiedAt": "2015-12-28T23:24:33.7496111+01:00"
+              }
+            }
+          }
+        }
+        """
+        |> deserializedEvent
+        |> printEvent
+
+        { Exira.Users.Domain.Events.UserRegisteredEvent.Email = EmailInfo.UnverifiedEmail (Email.Email ("test@test.be"))
+          Exira.Users.Domain.Events.UserRegisteredEvent.VerificationToken = VerificationToken (Token.Token ("bla"))
+          Exira.Users.Domain.Events.UserRegisteredEvent.Hash = PasswordHash ("test")
+          Exira.Users.Domain.Events.UserRegisteredEvent.Roles = [] }
+        |> Exira.Users.Domain.Events.UserEvent.UserRegistered
+        |> Exira.Users.Domain.Events.Event.User
+        |> printEvent
+
+        """
+        {
+          "type": "user",
+          "user": {
+            "type": "userRegistered",
+            "userRegistered": {
+              "emailInfo": {
+                "email": "test@test.be",
+                "verified": false
+              }
+            }
+          }
+        }
+        """
+        |> deserializedEvent
+        |> printEvent
+
+//        initalizeCheckpoint es checkpointStream |> Async.RunSynchronously
+//        storeCheckpoint es checkpointStream Position.Start |> Async.RunSynchronously
+//
+//        subscribe subscriptionDropped |> ignore
+//
+//        Console.ReadLine() |> ignore
+//
+//        es.Close()
 
         0
