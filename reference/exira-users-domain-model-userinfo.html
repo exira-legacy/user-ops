@@ -41,7 +41,7 @@
   <span>Parent Module: <a href="exira-users-domain-model.html">Model</a></span>
 </p>
 <div class="xmldoc">
-<p>A user has a unique email, a password, some roles and belongs to one or more accounts</p>
+<p>A user has a unique email, a password, some roles a personal account and belongs to zero or more accounts</p>
 
 
 </div>
@@ -58,11 +58,11 @@
             Accounts
           </code>
           <div class="tip" id="127">
-            <strong>Signature:</strong> Email list<br />
+            <strong>Signature:</strong> AccountName list<br />
                       </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/exira/user-ops/tree/master/src/Exira.Users.Domain/Model.fs#L19-19" class="github-link">
+            <a href="http://github.com/exira/user-ops/tree/master/src/Exira.Users.Domain/Model.fs#L20-20" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
@@ -109,9 +109,27 @@
         <td class="member-name">
 
           <code onmouseout="hideTip(event, '130', 130)" onmouseover="showTip(event, '130', 130)">
-            Roles
+            PersonalAccount
           </code>
           <div class="tip" id="130">
+            <strong>Signature:</strong> AccountName<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/exira/user-ops/tree/master/src/Exira.Users.Domain/Model.fs#L19-19" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '131', 131)" onmouseover="showTip(event, '131', 131)">
+            Roles
+          </code>
+          <div class="tip" id="131">
             <strong>Signature:</strong> Role list<br />
                       </div>
         </td>
