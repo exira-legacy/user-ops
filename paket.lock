@@ -7,26 +7,26 @@ NUGET
       Aether (>= 8.0.2 < 9.0.0)
       FParsec (>= 1.0.0 < 2.0.0)
     EventStore.Client (3.4.0)
-    Exira.CsrfValidation.Owin (0.2.5)
+    Exira.CsrfValidation.Owin (0.2.7)
       ExtCore
       FSharp.Core
       Microsoft.AspNet.WebApi.Client
       Microsoft.Net.Http
       Microsoft.Owin
-    Exira.ErrorHandling (0.1.33)
+    Exira.ErrorHandling (0.1.36)
       FSharp.Core
-    Exira.EventStore (0.7.15)
+    Exira.EventStore (0.7.18)
       EventStore.Client
       ExtCore
       FSharp.Core
       FsPickler.Json
-    Exira.EventStore.Owin (0.3.10)
+    Exira.EventStore.Owin (0.3.14)
       EventStore.Client
       Exira.EventStore
       ExtCore
       FSharp.Core
       Microsoft.Owin
-    Exira.VersionHeader.Owin (0.1.7)
+    Exira.VersionHeader.Owin (0.1.9)
       ExtCore
       FSharp.Core
       Microsoft.Owin
@@ -81,7 +81,7 @@ NUGET
     Newtonsoft.Json (7.0.1)
     Octokit (0.17.0)
       Microsoft.Net.Http
-    Owin (1.0.0)
+    Owin (1.0)
     SourceLink.Fake (1.1.0)
     TickSpec (1.0.1.1)
 GITHUB
