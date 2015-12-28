@@ -2,18 +2,51 @@
 
 [<AutoOpen>]
 module Model =
-    open System.Security.Claims
-    open Newtonsoft.Json
-    open Exira.EventStore
     open System
 
-    type ValidationError = {
-        [<JsonProperty(PropertyName = "field")>]
-        Field: string option;
-        [<JsonProperty(PropertyName = "error")>]
-        Message: string;
-        Inner: ValidationError list option
+    /// An account has a unique email, a name and a one or more users belonging to it
+    type AccountInfo = {
+        Email: EmailInfo.EmailInfo
+        Name: AccountName.AccountName
+        Users: Email list
     }
+
+    /// A user has a unique email, a password, some roles and belongs to one or more accounts
+    and UserInfo = {
+        Email: EmailInfo.EmailInfo
+        Hash: PasswordHash.PasswordHash
+        Roles: Role.Role list
+        Accounts: Email list
+    }
+
+    type VerificationToken = VerificationToken of Token.Token
+    type PasswordResetToken = PasswordResetToken of Token.Token
+
+    type PasswordResetInfo = {
+        RequestedAt: DateTime
+        ResetToken: PasswordResetToken
+    }
+
+    type PersonalAccount = { Account: AccountInfo }
+    type CompanyAccount = { Account: AccountInfo }
+    type Account =
+    | Init
+    | PersonalAccount of PersonalAccount
+    | CompanyAccount of CompanyAccount
+    | Deleted
+
+    type UnverifiedUser = { User: UserInfo; VerificationToken: VerificationToken }
+    type VerifiedUser = { User: UserInfo; PasswordResetInfo: PasswordResetInfo option }
+    type User =
+    | Init
+    | UnverifiedUser of UnverifiedUser
+    | VerifiedUser of VerifiedUser
+    | Deleted
+
+[<AutoOpen>]
+module RailwayResults =
+    open System.Security.Claims
+    open Exira.EventStore
 
     type Response =
     | Empty
@@ -49,62 +82,6 @@ module Model =
     | SaveVersionException of exn
     | SaveException of exn
     | InternalException of exn
-
-    type VerificationToken = VerificationToken of Token.Token
-    type PasswordResetToken = PasswordResetToken of Token.Token
-
-    type PasswordResetInfo = {
-        RequestedAt: DateTime
-        ResetToken: PasswordResetToken
-    }
-
-    type UserInfo = {
-        Email: EmailInfo.EmailInfo
-        Hash: PasswordHash.PasswordHash
-        Roles: Role.Role list
-    }
-
-    type User =
-    | Init
-    | UnverifiedUser of UserInfo * VerificationToken
-    | VerifiedUser of UserInfo * PasswordResetInfo option
-    | Deleted
-
-    let buildError (errorField, errorMessage) =
-        { Field = errorField; Message = errorMessage; Inner = None }
-
-    let formatErrors errors =
-        let rec formatError error =
-            match error with
-            | EmailIsRequired -> (Some "email", "Email is required.")
-            | EmailMustBeValid email -> (Some "email", sprintf "Invalid email '%s'." email)
-
-            | PasswordIsRequired -> (Some "password", "Password is required.")
-            | PasswordIsTooShort minimumLength -> (Some "password", sprintf "Password must be at least %i characters long." minimumLength)
-            | PasswordMustBeValid -> (Some "password", "Invalid password")
-
-            | TokenIsRequired -> (Some "token", "Token is required.")
-            | TokenMustBeValid token -> (Some "token", sprintf "Invalid token '%s'." token)
-
-            | UserAlreadyExists -> (Some "email", "User already exists.")
-            | UserNotVerified -> (None, "User is not verified.")
-            | UserDoesNotExist -> (None, "User does not exist.")
-            | AuthenticationFailed -> (None, "Authentication failed.")
-            | VerificationFailed -> (None, "Verification failed.")
-
-            | InvalidState user
-                -> (None, sprintf "Trying to do an invalid operation for %s" user) // TODO: Log ex
-
-            | InvalidStateTransition _
-            | SaveVersionException _
-            | SaveException _
-            | InternalException _
-                -> (None, "Something went wrong internally.") // TODO: Log ex
-
-            |> buildError
-
-        errors
-        |> List.map formatError
 
 [<AutoOpen>]
 module TypeCreators =
@@ -146,3 +123,51 @@ module TypeCreators =
 //        role
 //        |> construct Role.createWithCont
 //        |> mapMessages map
+
+[<AutoOpen>]
+module ErrorHelpers =
+    open Newtonsoft.Json
+
+    type ValidationError = {
+        [<JsonProperty(PropertyName = "field")>]
+        Field: string option;
+        [<JsonProperty(PropertyName = "error")>]
+        Message: string;
+        Inner: ValidationError list option
+    }
+
+    let buildError (errorField, errorMessage) =
+        { Field = errorField; Message = errorMessage; Inner = None }
+
+    let formatErrors errors =
+        let rec formatError error =
+            match error with
+            | EmailIsRequired -> (Some "email", "Email is required.")
+            | EmailMustBeValid email -> (Some "email", sprintf "Invalid email '%s'." email)
+
+            | PasswordIsRequired -> (Some "password", "Password is required.")
+            | PasswordIsTooShort minimumLength -> (Some "password", sprintf "Password must be at least %i characters long." minimumLength)
+            | PasswordMustBeValid -> (Some "password", "Invalid password")
+
+            | TokenIsRequired -> (Some "token", "Token is required.")
+            | TokenMustBeValid token -> (Some "token", sprintf "Invalid token '%s'." token)
+
+            | UserAlreadyExists -> (Some "email", "User already exists.")
+            | UserNotVerified -> (None, "User is not verified.")
+            | UserDoesNotExist -> (None, "User does not exist.")
+            | AuthenticationFailed -> (None, "Authentication failed.")
+            | VerificationFailed -> (None, "Verification failed.")
+
+            | InvalidState user
+                -> (None, sprintf "Trying to do an invalid operation for %s" user) // TODO: Log ex
+
+            | InvalidStateTransition _
+            | SaveVersionException _
+            | SaveException _
+            | InternalException _
+                -> (None, "Something went wrong internally.") // TODO: Log ex
+
+            |> buildError
+
+        errors
+        |> List.map formatError

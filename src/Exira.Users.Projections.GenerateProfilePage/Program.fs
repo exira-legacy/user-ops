@@ -7,7 +7,7 @@ module Program =
     open Exira.ErrorHandling
     open Exira.EventStore
     open Exira.EventStore.EventStore
-    open Exira.Users.Domain.Model
+    open Exira.Users.Domain
 
     type private ProjectionConfig = YamlConfig<"Projection.yaml">
 

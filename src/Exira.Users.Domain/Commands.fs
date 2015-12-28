@@ -1,6 +1,5 @@
 ﻿namespace Exira.Users.Domain
 
-[<AutoOpen>]
 module Commands =
 
     type Command =

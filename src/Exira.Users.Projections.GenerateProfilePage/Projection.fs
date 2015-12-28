@@ -17,10 +17,11 @@ module internal Projection =
     open Exira.ErrorHandling
     open Exira.EventStore.Serialization
     open Exira.Users.Domain
+    open Exira.Users.Domain.Events
 
     let private getUnionCaseName (e: 'a) = (FSharpValue.GetUnionFields(e, typeof<'a>) |> fst).Name
 
-    let private userRegistered = getUnionCaseName (Event.UserRegistered Unchecked.defaultof<Events.UserRegisteredEvent>)
+    let private userRegistered = getUnionCaseName (Event.UserRegistered Unchecked.defaultof<UserRegisteredEvent>)
 
     let private validateEvent (resolvedEvent: ResolvedEvent) =
         try
@@ -50,10 +51,10 @@ module internal Projection =
         | Init
         | Deleted -> succeed state
 
-        | UnverifiedUser (u, _)
-        | VerifiedUser (u, _) ->
+        | UnverifiedUser { User = user }
+        | VerifiedUser { User = user } ->
             // TODO: Do something :)
-            printfn "Generate profile page for %s" (u.Email |> getEmail |> Email.value)
+            printfn "Generate profile page for %s" (user.Email |> getEmail |> Email.value)
             succeed state
 
     let private handle es (event: Event) =

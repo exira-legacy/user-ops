@@ -1,6 +1,8 @@
 ﻿namespace Exira.Users.Domain
 
 module CommandHandler =
+    open Commands
+
     let handleCommand es command =
         match command with
         | Register userCommand -> handleRegister userCommand es

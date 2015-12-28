@@ -1,7 +1,7 @@
 ﻿namespace Exira.Users.Domain
 
 [<AutoOpen>]
-module String =
+module internal String =
     open System
 
     let [<Literal>] private Characters = "abcdefghijklmnopqrstuvwxyz0123456789"

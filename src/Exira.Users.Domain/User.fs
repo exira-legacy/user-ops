@@ -3,15 +3,21 @@
 open Exira.ErrorHandling
 open Exira.EventStore.EventStore
 
-[<AutoOpen>]
 module User =
+    open Events
+
     let internal applyUserEvent state event =
         match state with
         | Init ->
             match event with
             | UserRegistered e ->
-                let user = { UserInfo.Email = e.Email; Hash = e.Hash; Roles = e.Roles }, e.VerificationToken
-                UnverifiedUser user |> Success
+                UnverifiedUser {
+                    User =
+                        { Email = e.Email
+                          Hash = e.Hash
+                          Roles = e.Roles
+                          Accounts = [] }
+                    VerificationToken = e.VerificationToken } |> Success
 
             | UserLoggedIn _
             | UserVerified _
@@ -19,33 +25,35 @@ module User =
             | RequestedPasswordReset _
             | VerifiedPasswordReset _ -> stateTransitionFail event state
 
-        | UnverifiedUser (user, _) ->
+        | UnverifiedUser user ->
             match event with
             | UserLoggedIn _ -> state |> Success
             | UserVerified e ->
-                VerifiedUser ({ user with Email = e.Email }, None) |> Success
+                VerifiedUser {
+                    User = { user.User with Email = e.Email }
+                    PasswordResetInfo = None } |> Success
 
             | UserRegistered _
             | PasswordChanged _
             | RequestedPasswordReset _
             | VerifiedPasswordReset _ -> stateTransitionFail event state
 
-        | VerifiedUser (user, reset) ->
-            match event, reset with
+        | VerifiedUser user ->
+            match event, user.PasswordResetInfo with
             // Regular login, nothing special
             | UserLoggedIn _, None -> state |> Success
 
             // Logging in but has a password reset pending, user obviously remembered password, get rid of reset
-            | UserLoggedIn _, Some _ -> VerifiedUser (user, None) |> Success
+            | UserLoggedIn _, Some _ -> VerifiedUser { User = user.User; PasswordResetInfo = None } |> Success
 
             // User changed his password, reset or not, we get rid of it
-            | PasswordChanged e, _ -> VerifiedUser ({ user with Hash = e.Hash }, None) |> Success
+            | PasswordChanged e, _ -> VerifiedUser { User = { user.User with Hash = e.Hash }; PasswordResetInfo = None } |> Success
 
             // User requested a password reset, store it
-            | RequestedPasswordReset e, _ -> VerifiedUser (user, Some { RequestedAt = e.RequestedAt; ResetToken = e.ResetToken }) |> Success
+            | RequestedPasswordReset e, _ -> VerifiedUser { User = user.User; PasswordResetInfo = Some { RequestedAt = e.RequestedAt; ResetToken = e.ResetToken } } |> Success
 
             // The password reset was successful, get rid of it
-            | VerifiedPasswordReset e, _ -> VerifiedUser ({ user with Hash = e.Hash }, None) |> Success
+            | VerifiedPasswordReset e, _ -> VerifiedUser { User = { user.User with Hash = e.Hash }; PasswordResetInfo = None } |> Success
 
             | UserRegistered _, _
             | UserVerified _, _ -> stateTransitionFail event state
@@ -62,6 +70,9 @@ module internal UserCommandHandler =
     open System
     open System.Security.Claims
     open EventStore.ClientAPI
+    open Commands
+    open Events
+    open User
 
     let [<Literal>] VerificationTokenLength = 40
     let [<Literal>] PasswordResetTokenLength = 40
@@ -103,12 +114,12 @@ module internal UserCommandHandler =
     let loginUser (command: LoginCommand) (_, state) =
         // A user can only login when it exists and the password is correct
         match state with
-        | UnverifiedUser (u, _)
-        | VerifiedUser (u, _) when validatePassword command.Password u.Hash ->
+        | UnverifiedUser { User = user }
+        | VerifiedUser { User = user } when validatePassword command.Password user.Hash ->
             let userLoggedIn = UserLoggedIn { UserLoggedInEvent.LoggedInAt = DateTime.UtcNow }
 
             let streamId = toUserStreamId command.Email
-            let claims = buildClaims u.Roles command.Email
+            let claims = buildClaims user.Roles command.Email
             let response = Response.UserLoggedIn (streamId, claims)
             succeed ((toUserStreamId command.Email), ExpectedVersion.Any, [userLoggedIn], response)
 
@@ -122,13 +133,13 @@ module internal UserCommandHandler =
     let verifyUser (command: VerifyCommand) (_, state) =
         // A user can only be verified if it exists, is not verified yet and supplied the correct token
         match state with
-        | UnverifiedUser (u, token) when command.Token = token ->
-            let verifiedEmail = EmailInfo.verified u.Email DateTime.UtcNow
+        | UnverifiedUser { User = user; VerificationToken = token } when command.Token = token ->
+            let verifiedEmail = EmailInfo.verified user.Email DateTime.UtcNow
 
             let userVerified = UserVerified { UserVerifiedEvent.Email = verifiedEmail }
 
             let streamId = toUserStreamId command.Email
-            let claims = buildClaims u.Roles command.Email
+            let claims = buildClaims user.Roles command.Email
             let response = Response.UserVerified (streamId, claims)
             succeed (streamId, ExpectedVersion.Any, [userVerified], response)
 
@@ -140,7 +151,7 @@ module internal UserCommandHandler =
     let changePassword (command: ChangePasswordCommand) (_, state) =
         // A user can only change password when it exists, is verified and supplied the correct old password
         match state with
-        | VerifiedUser (u, _) when validatePassword command.PreviousPassword u.Hash ->
+        | VerifiedUser { User = user } when validatePassword command.PreviousPassword user.Hash ->
             let passwordChanged = PasswordChanged { PasswordChangedEvent.Hash = createHash command.NewPassword }
 
             let streamId = toUserStreamId command.Email
@@ -180,14 +191,14 @@ module internal UserCommandHandler =
 
         // A user can only reset a password when it exists and matches the token inside the time window
         match state with
-        | VerifiedUser (u, Some resetInfo) when validatePasswordResetInfo command.Token resetInfo ->
+        | VerifiedUser { User = user; PasswordResetInfo = Some resetInfo } when validatePasswordResetInfo command.Token resetInfo ->
             let verifiedPasswordReset = VerifiedPasswordReset {
                 VerifiedPasswordResetEvent.VerifiedAt = DateTime.UtcNow
                 Hash = createHash command.NewPassword
             }
 
             let streamId = toUserStreamId command.Email
-            let claims = buildClaims u.Roles command.Email
+            let claims = buildClaims user.Roles command.Email
             let response = Response.VerifiedPasswordReset (streamId, claims)
             succeed (streamId, ExpectedVersion.Any, [verifiedPasswordReset], response)
 

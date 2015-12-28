@@ -3,6 +3,7 @@
 module Model =
     open Exira.ErrorHandling
     open Exira.Users.Domain
+    open Exira.Users.Domain.Commands
 
     type Dto =
     | Register of RegisterDto
