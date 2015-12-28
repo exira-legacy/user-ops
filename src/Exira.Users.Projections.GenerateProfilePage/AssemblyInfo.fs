@@ -4,10 +4,10 @@ open System.Reflection
 [<assembly: AssemblyTitleAttribute("Exira.Users.Projections.GenerateProfilePage")>]
 [<assembly: AssemblyProductAttribute("Exira.Users")>]
 [<assembly: AssemblyDescriptionAttribute("Exira.Users is an event sourced microservice to manage users.")>]
-[<assembly: AssemblyVersionAttribute("0.4.21")>]
-[<assembly: AssemblyFileVersionAttribute("0.4.21")>]
-[<assembly: AssemblyMetadataAttribute("githash","c5d56b0e86c7ff3e1e5659f4ae70de23732cba1e")>]
+[<assembly: AssemblyVersionAttribute("0.4.22")>]
+[<assembly: AssemblyFileVersionAttribute("0.4.22")>]
+[<assembly: AssemblyMetadataAttribute("githash","f195210757896208105be2f8b0857983d2e14095")>]
 do ()
 
 module internal AssemblyVersionInformation =
-    let [<Literal>] Version = "0.4.21"
+    let [<Literal>] Version = "0.4.22"
