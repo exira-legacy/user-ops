@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
-    <title>UserInfo - user-ops</title>
+    <title>Response - user-ops</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="description" content=""/>
     <meta name="author" content="exira"/>
@@ -35,34 +35,31 @@
 
 
 
-<h1>UserInfo</h1>
+<h1>Response</h1>
 <p>
   <span>Namespace: Exira.Users.Domain</span><br />
-  <span>Parent Module: <a href="exira-users-domain-model.html">Model</a></span>
+  <span>Parent Module: <a href="exira-users-domain-railwayresults.html">RailwayResults</a></span>
 </p>
 <div class="xmldoc">
-<p>A user has a unique email, a password, some roles and belongs to one or more accounts</p>
-
-
 </div>
-  <h3>Record Fields</h3>
+  <h3>Union Cases</h3>
   <table class="table table-bordered member-list">
     <thead>
-      <tr><td>Record Field</td><td>Description</td></tr>
+      <tr><td>Union Case</td><td>Description</td></tr>
     </thead>
     <tbody>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '127', 127)" onmouseover="showTip(event, '127', 127)">
-            Accounts
+          <code onmouseout="hideTip(event, '153', 153)" onmouseover="showTip(event, '153', 153)">
+            Empty
           </code>
-          <div class="tip" id="127">
-            <strong>Signature:</strong> Email list<br />
+          <div class="tip" id="153">
+            <strong>Signature:</strong> <br />
                       </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/exira/user-ops/tree/master/src/Exira.Users.Domain/Model.fs#L19-19" class="github-link">
+            <a href="http://github.com/exira/user-ops/tree/master/src/Exira.Users.Domain/Model.fs#L52-52" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
@@ -72,15 +69,15 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '128', 128)" onmouseover="showTip(event, '128', 128)">
-            Email
+          <code onmouseout="hideTip(event, '154', 154)" onmouseover="showTip(event, '154', 154)">
+            PasswordChanged(StreamId)
           </code>
-          <div class="tip" id="128">
-            <strong>Signature:</strong> EmailInfo<br />
+          <div class="tip" id="154">
+            <strong>Signature:</strong> StreamId<br />
                       </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/exira/user-ops/tree/master/src/Exira.Users.Domain/Model.fs#L16-16" class="github-link">
+            <a href="http://github.com/exira/user-ops/tree/master/src/Exira.Users.Domain/Model.fs#L56-56" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
@@ -90,15 +87,15 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '129', 129)" onmouseover="showTip(event, '129', 129)">
-            Hash
+          <code onmouseout="hideTip(event, '155', 155)" onmouseover="showTip(event, '155', 155)">
+            RequestedPasswordReset(StreamId)
           </code>
-          <div class="tip" id="129">
-            <strong>Signature:</strong> PasswordHash<br />
+          <div class="tip" id="155">
+            <strong>Signature:</strong> StreamId<br />
                       </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/exira/user-ops/tree/master/src/Exira.Users.Domain/Model.fs#L17-17" class="github-link">
+            <a href="http://github.com/exira/user-ops/tree/master/src/Exira.Users.Domain/Model.fs#L57-57" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
@@ -108,15 +105,69 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '130', 130)" onmouseover="showTip(event, '130', 130)">
-            Roles
+          <code onmouseout="hideTip(event, '156', 156)" onmouseover="showTip(event, '156', 156)">
+            UserLoggedIn(StreamId,Claim list)
           </code>
-          <div class="tip" id="130">
-            <strong>Signature:</strong> Role list<br />
+          <div class="tip" id="156">
+            <strong>Signature:</strong> StreamId * Claim list<br />
                       </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/exira/user-ops/tree/master/src/Exira.Users.Domain/Model.fs#L18-18" class="github-link">
+            <a href="http://github.com/exira/user-ops/tree/master/src/Exira.Users.Domain/Model.fs#L54-54" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '157', 157)" onmouseover="showTip(event, '157', 157)">
+            UserRegistered(StreamId,Claim list)
+          </code>
+          <div class="tip" id="157">
+            <strong>Signature:</strong> StreamId * Claim list<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/exira/user-ops/tree/master/src/Exira.Users.Domain/Model.fs#L53-53" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '158', 158)" onmouseover="showTip(event, '158', 158)">
+            UserVerified(StreamId,Claim list)
+          </code>
+          <div class="tip" id="158">
+            <strong>Signature:</strong> StreamId * Claim list<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/exira/user-ops/tree/master/src/Exira.Users.Domain/Model.fs#L55-55" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '159', 159)" onmouseover="showTip(event, '159', 159)">
+            VerifiedPasswordReset(...)
+          </code>
+          <div class="tip" id="159">
+            <strong>Signature:</strong> StreamId * Claim list<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/exira/user-ops/tree/master/src/Exira.Users.Domain/Model.fs#L58-58" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>

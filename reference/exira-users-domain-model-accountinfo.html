@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
-    <title>PasswordHash - user-ops</title>
+    <title>AccountInfo - user-ops</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="description" content=""/>
     <meta name="author" content="exira"/>
@@ -35,31 +35,70 @@
 
 
 
-<h1>PasswordHash</h1>
+<h1>AccountInfo</h1>
 <p>
   <span>Namespace: Exira.Users.Domain</span><br />
-  <span>Parent Module: <a href="exira-users-domain-passwordhash.html">PasswordHash</a></span>
+  <span>Parent Module: <a href="exira-users-domain-model.html">Model</a></span>
 </p>
 <div class="xmldoc">
+<p>An account has a unique email, a name and a one or more users belonging to it</p>
+
+
 </div>
-  <h3>Union Cases</h3>
+  <h3>Record Fields</h3>
   <table class="table table-bordered member-list">
     <thead>
-      <tr><td>Union Case</td><td>Description</td></tr>
+      <tr><td>Record Field</td><td>Description</td></tr>
     </thead>
     <tbody>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '135', 135)" onmouseover="showTip(event, '135', 135)">
-            PasswordHash(string)
+          <code onmouseout="hideTip(event, '113', 113)" onmouseover="showTip(event, '113', 113)">
+            Email
           </code>
-          <div class="tip" id="135">
-            <strong>Signature:</strong> string<br />
+          <div class="tip" id="113">
+            <strong>Signature:</strong> EmailInfo<br />
                       </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/exira/user-ops/tree/master/src/Exira.Users.Domain/PasswordHash.fs#L10-10" class="github-link">
+            <a href="http://github.com/exira/user-ops/tree/master/src/Exira.Users.Domain/Model.fs#L9-9" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '114', 114)" onmouseover="showTip(event, '114', 114)">
+            Name
+          </code>
+          <div class="tip" id="114">
+            <strong>Signature:</strong> AccountName<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/exira/user-ops/tree/master/src/Exira.Users.Domain/Model.fs#L10-10" class="github-link">
+              <img src="../content/img/github.png" class="normal" />
+              <img src="../content/img/github-blue.png" class="hover" />
+            </a>
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="member-name">
+
+          <code onmouseout="hideTip(event, '115', 115)" onmouseover="showTip(event, '115', 115)">
+            Users
+          </code>
+          <div class="tip" id="115">
+            <strong>Signature:</strong> Email list<br />
+                      </div>
+        </td>
+        <td class="xmldoc">
+            <a href="http://github.com/exira/user-ops/tree/master/src/Exira.Users.Domain/Model.fs#L11-11" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
