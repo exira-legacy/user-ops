@@ -1,21 +1,35 @@
 ﻿namespace Exira.Users.Domain
 
 open Exira.ErrorHandling
-open Exira.EventStore.EventStore
 
 module User =
     open Events
+
+    let internal toPersonalAccount email =
+        email
+        |> Email.value
+        |> sprintf "personal-%s"
+        |> AccountName.create
+        |> Option.get // Works for new because we dont check, eventually 'personal' should be whitelisted
 
     let internal applyUserEvent state event =
         match state with
         | Init ->
             match event with
             | UserRegistered e ->
+                let email =
+                    match e.Email with
+                    | UnverifiedEmail email
+                    | VerifiedEmail (email, _) -> email
+
+                let personalAccount = toPersonalAccount email
+
                 UnverifiedUser {
                     User =
                         { Email = e.Email
                           Hash = e.Hash
                           Roles = e.Roles
+                          PersonalAccount = personalAccount
                           Accounts = [] }
                     VerificationToken = e.VerificationToken } |> Success
 
@@ -62,7 +76,6 @@ module User =
             match event with
             | _ -> stateTransitionFail event state
 
-    let internal toUserStreamId id = id |> Email.value |> toStreamId "user"
     let getUserState id = getState (applyEvents applyUserEvent) Init (toUserStreamId id)
 
 [<AutoOpen>]
@@ -78,13 +91,24 @@ module internal UserCommandHandler =
     let [<Literal>] PasswordResetTokenLength = 40
     let [<Literal>] PasswordResetTokenDurationInMinutes = 120.0
 
-    let buildClaims roles email =
+    let buildClaims roles email accounts =
         let roles = roles |> List.map (fun role -> Claim(ClaimTypes.Role, (Role.value role).toString))
-        [
+
+        let personalAccount = toPersonalAccount email
+        let accounts =
+            accounts
+            |> List.map (fun account -> Claim("Account", AccountName.value account))
+            |> List.append [Claim("Account", AccountName.value personalAccount)]
+
+        let basic = [
             Claim(ClaimTypes.AuthenticationInstant, DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"))
             Claim(ClaimTypes.AuthenticationMethod, AuthenticationTypes.Password)
             Claim(ClaimTypes.Name, Email.value email)
-        ] @ roles
+            Claim("MainAccount", AccountName.value personalAccount) ]
+
+        basic
+        |> List.append roles
+        |> List.append accounts
 
     let createUser (command: RegisterCommand) (_, state) =
         // A user can only be created when it does not exist yet
@@ -102,8 +126,10 @@ module internal UserCommandHandler =
                 Roles = [ role ]
             }
 
+            // TODO: Dont forget to also create the personal account afterwards!
+
             let streamId = toUserStreamId command.Email
-            let claims = buildClaims [role] command.Email
+            let claims = buildClaims [role] command.Email []
             let response = Response.UserRegistered (streamId, claims)
             succeed (streamId, ExpectedVersion.NoStream, [userCreated], response)
 
@@ -119,7 +145,7 @@ module internal UserCommandHandler =
             let userLoggedIn = UserLoggedIn { UserLoggedInEvent.LoggedInAt = DateTime.UtcNow }
 
             let streamId = toUserStreamId command.Email
-            let claims = buildClaims user.Roles command.Email
+            let claims = buildClaims user.Roles command.Email user.Accounts
             let response = Response.UserLoggedIn (streamId, claims)
             succeed ((toUserStreamId command.Email), ExpectedVersion.Any, [userLoggedIn], response)
 
@@ -138,8 +164,10 @@ module internal UserCommandHandler =
 
             let userVerified = UserVerified { UserVerifiedEvent.Email = verifiedEmail }
 
+            // TODO: Also verify the personal account
+
             let streamId = toUserStreamId command.Email
-            let claims = buildClaims user.Roles command.Email
+            let claims = buildClaims user.Roles command.Email user.Accounts
             let response = Response.UserVerified (streamId, claims)
             succeed (streamId, ExpectedVersion.Any, [userVerified], response)
 
@@ -198,7 +226,7 @@ module internal UserCommandHandler =
             }
 
             let streamId = toUserStreamId command.Email
-            let claims = buildClaims user.Roles command.Email
+            let claims = buildClaims user.Roles command.Email user.Accounts
             let response = Response.VerifiedPasswordReset (streamId, claims)
             succeed (streamId, ExpectedVersion.Any, [verifiedPasswordReset], response)
 

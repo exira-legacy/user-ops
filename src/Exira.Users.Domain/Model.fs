@@ -4,19 +4,20 @@
 module Model =
     open System
 
-    /// An account has a unique email, a name and a one or more users belonging to it
+    /// An account has a unique name, an email and a one or more users belonging to it
     type AccountInfo = {
-        Email: EmailInfo.EmailInfo
         Name: AccountName.AccountName
-        Users: Email list
+        Email: EmailInfo.EmailInfo
+        Users: Email.Email list
     }
 
-    /// A user has a unique email, a password, some roles and belongs to one or more accounts
+    /// A user has a unique email, a password, some roles a personal account and belongs to zero or more accounts
     and UserInfo = {
         Email: EmailInfo.EmailInfo
         Hash: PasswordHash.PasswordHash
         Roles: Role.Role list
-        Accounts: Email list
+        PersonalAccount: AccountName.AccountName
+        Accounts: AccountName.AccountName list
     }
 
     type VerificationToken = VerificationToken of Token.Token

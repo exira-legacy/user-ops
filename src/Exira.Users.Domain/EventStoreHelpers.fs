@@ -8,6 +8,9 @@ module internal EventStoreHelpers =
     open Exira.EventStore
     open Exira.EventStore.EventStore
 
+    let internal toUserStreamId id = id |> Email.value |> toStreamId "user"
+    let internal toAccountStreamId id = id |> AccountName.value |> toStreamId "account"
+
     let getTypeName o = o.GetType().Name
 
     let stateTransitionFail event state =
