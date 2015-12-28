@@ -4,6 +4,10 @@ module Events =
     open System
 
     type Event =
+    | User of UserEvent
+    | Account of AccountEvent
+
+    and UserEvent =
     | UserRegistered of UserRegisteredEvent
     | UserLoggedIn of UserLoggedInEvent
     | UserVerified of UserVerifiedEvent
@@ -38,4 +42,14 @@ module Events =
     and VerifiedPasswordResetEvent = {
         VerifiedAt: DateTime
         Hash: PasswordHash.PasswordHash
+    }
+
+    and AccountEvent =
+    | AccountCreated of AccountCreatedEvent
+
+    and AccountCreatedEvent = {
+        Type: AccountType
+        Name: AccountName.AccountName
+        Email: EmailInfo.EmailInfo
+        Users: Email.Email list
     }

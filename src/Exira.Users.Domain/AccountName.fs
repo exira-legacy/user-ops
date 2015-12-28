@@ -2,14 +2,19 @@
 
 [<AutoOpen>]
 module AccountName =
+    let [<Literal>] PersonalAccountNamePrefix = "personal"
+
     type AccountName = AccountName of string
 
-    // TODO: Add validation on accountname
+    let private canonicalizeName (name: string) =
+        name.ToLower().Trim()
+
+    // TODO: Add validation on accountname, remember to whitelist personal prefix
 
     let internal createWithCont success failure value =
         match value with
         | null -> failure StringError.Missing
-        | _ -> success (value |> AccountName)
+        | _ -> success (value |> canonicalizeName |> AccountName)
 
     let internal create value =
         let success e = Some e

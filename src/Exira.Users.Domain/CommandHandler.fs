@@ -3,7 +3,7 @@
 module CommandHandler =
     open Commands
 
-    let handleCommand es command =
+    let handleUserCommand es command =
         match command with
         | Register userCommand -> handleRegister userCommand es
         | Login userCommand -> handleLogin userCommand es
@@ -11,3 +11,13 @@ module CommandHandler =
         | ChangePassword userCommand -> handleChangePassword userCommand es
         | RequestPasswordReset userCommand -> handleRequestPasswordReset userCommand es
         | VerifyPasswordReset userCommand -> handleVerifyPasswordReset userCommand es
+
+    let handleAccountCommand es command =
+        match command with
+        | Create accountCommand -> handleCreateAccount accountCommand es
+
+    let handleCommand es command =
+        match command with
+        | User userCommand -> handleUserCommand es userCommand
+        | Account accountCommand -> handleAccountCommand es accountCommand
+

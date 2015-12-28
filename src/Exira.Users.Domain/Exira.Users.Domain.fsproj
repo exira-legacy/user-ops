@@ -65,6 +65,7 @@
     <Compile Include="Events.fs" />
     <Compile Include="Commands.fs" />
     <Compile Include="EventStoreHelpers.fs" />
+    <Compile Include="Account.fs" />
     <Compile Include="User.fs" />
     <Compile Include="CommandHandler.fs" />
   </ItemGroup>

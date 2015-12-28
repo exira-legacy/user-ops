@@ -12,16 +12,16 @@ module internal Errors =
 
 [<AutoOpen>]
 module internal Projection =
-    open Microsoft.FSharp.Reflection
     open EventStore.ClientAPI
     open Exira.ErrorHandling
     open Exira.EventStore.Serialization
     open Exira.Users.Domain
     open Exira.Users.Domain.Events
 
-    let private getUnionCaseName (e: 'a) = (FSharpValue.GetUnionFields(e, typeof<'a>) |> fst).Name
-
-    let private userRegistered = getUnionCaseName (Event.UserRegistered Unchecked.defaultof<UserRegisteredEvent>)
+    let private userRegistered =
+        UserEvent.UserRegistered Unchecked.defaultof<UserRegisteredEvent>
+        |> Event.User
+        |> generateEventType
 
     let private validateEvent (resolvedEvent: ResolvedEvent) =
         try
@@ -61,7 +61,10 @@ module internal Projection =
         async {
             let id =
                 match event with
-                | Event.UserRegistered e -> getEmail e.Email
+                | Event.User e ->
+                    match e with
+                    | UserEvent.UserRegistered e -> getEmail e.Email
+                    | _ -> failwith "Shouldnt happen, it means our validate let something through..."
                 | _ -> failwith "Shouldnt happen, it means our validate let something through..."
 
             let! state = User.getUserState id es

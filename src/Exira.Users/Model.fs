@@ -51,10 +51,10 @@ module Model =
             let passwordOrFail = createPassword d.Password
 
             let createRegister email password =
-                Command.Register {
+                UserCommand.Register {
                     RegisterCommand.Email = email
                     Password = password
-                }
+                } |> Command.User
 
             createRegister
             <!> emailOrFail
@@ -65,10 +65,10 @@ module Model =
             let passwordOrFail p = createPassword p
 
             let createLogin email password =
-                Command.Login {
+                UserCommand.Login {
                     LoginCommand.Email = email
                     Password = password
-                }
+                } |> Command.User
 
             createLogin
             <!> emailOrFail
@@ -79,10 +79,10 @@ module Model =
             let tokenOrFail = createToken d.Token
 
             let createVerify email token =
-                Command.Verify {
+                UserCommand.Verify {
                     VerifyCommand.Email = email
                     Token = VerificationToken token
-                }
+                } |> Command.User
 
             createVerify
             <!> emailOrFail
@@ -93,11 +93,11 @@ module Model =
             let passwordOrFail p = createPassword p
 
             let createChangePassword email oldPassword newPassword =
-                Command.ChangePassword {
+                UserCommand.ChangePassword {
                     ChangePasswordCommand.Email = email
                     PreviousPassword = oldPassword
                     NewPassword = newPassword
-                }
+                } |> Command.User
 
             createChangePassword
             <!> emailOrFail
@@ -108,9 +108,9 @@ module Model =
             let emailOrFail = createEmail d.Email
 
             let createRequestPasswordReset email =
-                Command.RequestPasswordReset {
+                UserCommand.RequestPasswordReset {
                     RequestPasswordResetCommand.Email = email
-                }
+                } |> Command.User
 
             createRequestPasswordReset
             <!> emailOrFail
@@ -121,11 +121,11 @@ module Model =
             let passwordOrFail = createPassword d.NewPassword
 
             let createVerifyPasswordReset email token password =
-                Command.VerifyPasswordReset {
+                UserCommand.VerifyPasswordReset {
                     VerifyPasswordResetCommand.Email = email
                     Token = PasswordResetToken token
                     NewPassword = password
-                }
+                } |> Command.User
 
             createVerifyPasswordReset
             <!> emailOrFail

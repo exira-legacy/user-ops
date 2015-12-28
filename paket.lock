@@ -2,7 +2,7 @@ REDIRECTS: ON
 NUGET
   remote: https://www.nuget.org/api/v2
   specs:
-    EventStore.Client (3.3.1)
+    EventStore.Client (3.4.0)
     Exira.CsrfValidation.Owin (0.2.5)
       ExtCore
       FSharp.Core
@@ -11,7 +11,7 @@ NUGET
       Microsoft.Owin
     Exira.ErrorHandling (0.1.33)
       FSharp.Core
-    Exira.EventStore (0.5.13)
+    Exira.EventStore (0.7.15)
       EventStore.Client
       ExtCore
       FSharp.Core
@@ -27,18 +27,18 @@ NUGET
       FSharp.Core
       Microsoft.Owin
     ExtCore (0.8.45)
-    FAKE (4.10.3)
-    FSharp.Compiler.Service (1.4.0.6)
+    FAKE (4.12.0)
+    FSharp.Compiler.Service (1.4.2.3)
     FSharp.Configuration (0.5.7)
     FSharp.Core (4.0.0.1)
-    FSharp.Formatting (2.12.0)
-      FSharp.Compiler.Service (1.4.0.6)
-      FSharpVSPowerTools.Core (2.1.0)
-    FSharpVSPowerTools.Core (2.1.0)
-      FSharp.Compiler.Service (>= 1.4.0.6)
-    FsPickler (1.6.2)
-    FsPickler.Json (1.6.2)
-      FsPickler (1.6.2)
+    FSharp.Formatting (2.12.1)
+      FSharp.Compiler.Service (>= 1.4.2 < 1.5.0)
+      FSharpVSPowerTools.Core (>= 2.2.0 < 2.3.0)
+    FSharpVSPowerTools.Core (2.2.0)
+      FSharp.Compiler.Service (>= 1.4.2.0)
+    FsPickler (1.7.0)
+    FsPickler.Json (1.7.0)
+      FsPickler (1.7.0)
       Newtonsoft.Json (>= 6.0.5)
     GNaP.WebApi.Versioning (1.0.6)
       Microsoft.AspNet.WebApi.Core (>= 5.2.2)
@@ -74,13 +74,13 @@ NUGET
       Microsoft.Owin.Security (>= 3.0.1)
       Owin (>= 1.0)
     Newtonsoft.Json (7.0.1)
-    Octokit (0.16.0)
+    Octokit (0.17.0)
       Microsoft.Net.Http
-    Owin (1.0)
+    Owin (1.0.0)
     SourceLink.Fake (1.1.0)
     TickSpec (1.0.1.1)
 GITHUB
   remote: fsharp/FAKE
   specs:
-    modules/Octokit/Octokit.fsx (29cd4ee57792f0f35e18bd97d4517eb8c94de569)
+    modules/Octokit/Octokit.fsx (7d1a6f8e48d1e2e1e3246ea24a4de05cccc8ce64)
       Octokit

@@ -3,6 +3,10 @@
 module Commands =
 
     type Command =
+    | User of UserCommand
+    | Account of AccountCommand
+
+    and UserCommand =
     | Register of RegisterCommand
     | Login of LoginCommand
     | Verify of VerifyCommand
@@ -39,4 +43,14 @@ module Commands =
         Email: Email.Email
         Token: PasswordResetToken
         NewPassword: Password.Password
+    }
+
+    and AccountCommand =
+    | Create of CreateAccountCommand
+
+    and CreateAccountCommand = {
+        Type: AccountType
+        Name: AccountName.AccountName
+        Email: Email.Email
+        Users: Email.Email list
     }

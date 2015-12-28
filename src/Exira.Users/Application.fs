@@ -43,6 +43,7 @@ module Application =
             -> Accepted
 
         | UserRegistered _
+        | AccountCreated _
             -> Created
 
         | UserLoggedIn _
@@ -66,6 +67,7 @@ module Application =
         | UserAlreadyExists
         | UserNotVerified
         | UserDoesNotExist
+        | AccountAlreadyExists
         | InvalidState _
             -> BadRequest
 
@@ -103,6 +105,7 @@ module Application =
 
         | PasswordChanged (StreamId streamId)
         | RequestedPasswordReset (StreamId streamId)
+        | AccountCreated (StreamId streamId)
             -> controller.Request.CreateResponse(responseCode, streamId)
 
         | VerifiedPasswordReset (StreamId streamId, claims)

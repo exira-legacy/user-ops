@@ -28,6 +28,7 @@ module Model =
         ResetToken: PasswordResetToken
     }
 
+    type AccountType = Personal | Company
     type PersonalAccount = { Account: AccountInfo }
     type CompanyAccount = { Account: AccountInfo }
     type Account =
@@ -57,6 +58,7 @@ module RailwayResults =
     | PasswordChanged of StreamId
     | RequestedPasswordReset of StreamId
     | VerifiedPasswordReset of StreamId * Claim list
+    | AccountCreated of StreamId
 
     type Error =
     // Validation errors
@@ -72,6 +74,7 @@ module RailwayResults =
 
     // State errors
     | UserAlreadyExists
+    | AccountAlreadyExists
     | UserNotVerified
     | UserDoesNotExist
     | AuthenticationFailed
@@ -140,6 +143,7 @@ module ErrorHelpers =
     let buildError (errorField, errorMessage) =
         { Field = errorField; Message = errorMessage; Inner = None }
 
+    // TODO: Push this weird field notion out of Domain.Model
     let formatErrors errors =
         let rec formatError error =
             match error with
@@ -158,6 +162,8 @@ module ErrorHelpers =
             | UserDoesNotExist -> (None, "User does not exist.")
             | AuthenticationFailed -> (None, "Authentication failed.")
             | VerificationFailed -> (None, "Verification failed.")
+
+            | AccountAlreadyExists -> (None, "Account already exists.")
 
             | InvalidState user
                 -> (None, sprintf "Trying to do an invalid operation for %s" user) // TODO: Log ex

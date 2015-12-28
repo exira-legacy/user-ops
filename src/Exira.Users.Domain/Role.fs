@@ -4,10 +4,9 @@
 module Role =
     let [<Literal>] private RoleUser = "User"
     let [<Literal>] private RoleAdministrator = "Administrator"
-    let private roles = [
-        RoleUser
-        RoleAdministrator
-    ]
+    let private roles =
+        [ RoleUser
+          RoleAdministrator ]
 
     type RoleType =
     | User
