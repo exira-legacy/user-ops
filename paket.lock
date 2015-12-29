@@ -15,11 +15,11 @@ NUGET
       Microsoft.Owin
     Exira.ErrorHandling (0.1.36)
       FSharp.Core
-    Exira.EventStore (0.7.18)
+    Exira.EventStore (0.8.22)
+      Chiron
       EventStore.Client
       ExtCore
       FSharp.Core
-      FsPickler.Json
     Exira.EventStore.Owin (0.3.14)
       EventStore.Client
       Exira.EventStore
@@ -41,10 +41,6 @@ NUGET
       FSharpVSPowerTools.Core (>= 2.2.0 < 2.3.0)
     FSharpVSPowerTools.Core (2.2.0)
       FSharp.Compiler.Service (>= 1.4.2.0)
-    FsPickler (1.7.0)
-    FsPickler.Json (1.7.0)
-      FsPickler (1.7.0)
-      Newtonsoft.Json (>= 6.0.5)
     GNaP.WebApi.Versioning (1.0.6)
       Microsoft.AspNet.WebApi.Core (>= 5.2.2)
     Microsoft.AspNet.Cors (5.2.3)
@@ -78,7 +74,7 @@ NUGET
       Microsoft.Owin (>= 3.0.1)
       Microsoft.Owin.Security (>= 3.0.1)
       Owin (>= 1.0)
-    Newtonsoft.Json (7.0.1)
+    Newtonsoft.Json (8.0.1) - framework: >= net45, portable-wp80+win+net45+wp81+wpa81
     Octokit (0.17.0)
       Microsoft.Net.Http
     Owin (1.0)

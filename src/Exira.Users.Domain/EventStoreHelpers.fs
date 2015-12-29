@@ -37,11 +37,11 @@ module internal EventStoreHelpers =
 
         Seq.fold eventsFolder startEvent events
 
-    let getState applyEvents initState id es =
+    let inline getState applyEvents initState id es =
         readAllFromStream es id 0
         |> Async.map (applyEvents initState)
 
-    let save es (id, version, events, response) =
+    let inline save es (id, version, events, response) =
         async {
             try
                 do! appendToStream es id version events

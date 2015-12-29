@@ -36,7 +36,7 @@ module internal Projection =
     let private deserializeEvent (resolvedEvent: ResolvedEvent) =
         try
             resolvedEvent
-            |> deserialize<Event>
+            |> deserialize
             |> succeed
         with
         | ex -> ex |> DeserializeProblem |> fail
