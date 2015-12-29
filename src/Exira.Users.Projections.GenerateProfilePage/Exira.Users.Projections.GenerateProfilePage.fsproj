@@ -140,10 +140,37 @@
     </When>
   </Choose>
   <Choose>
-    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.6' Or $(TargetFrameworkVersion) == 'v4.6.1')">
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.6'">
       <ItemGroup>
         <Reference Include="Exira.ErrorHandling">
           <HintPath>..\..\packages\Exira.ErrorHandling\lib\net46\Exira.ErrorHandling.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.6.1'">
+      <ItemGroup>
+        <Reference Include="Exira.ErrorHandling">
+          <HintPath>..\..\packages\Exira.ErrorHandling\lib\net461\Exira.ErrorHandling.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1')">
+      <ItemGroup>
+        <Reference Include="Exira.ErrorHandling">
+          <HintPath>..\..\packages\Exira.ErrorHandling\lib\net45\Exira.ErrorHandling.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3')">
+      <ItemGroup>
+        <Reference Include="Exira.ErrorHandling">
+          <HintPath>..\..\packages\Exira.ErrorHandling\lib\net452\Exira.ErrorHandling.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>

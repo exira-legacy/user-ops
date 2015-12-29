@@ -7,20 +7,20 @@ NUGET
       Aether (>= 8.0.2 < 9.0.0)
       FParsec (>= 1.0.0 < 2.0.0)
     EventStore.Client (3.4.0)
-    Exira.CsrfValidation.Owin (0.2.7)
+    Exira.CsrfValidation.Owin (0.3.8)
       ExtCore
       FSharp.Core
       Microsoft.AspNet.WebApi.Client
       Microsoft.Net.Http
       Microsoft.Owin
-    Exira.ErrorHandling (0.1.36)
+    Exira.ErrorHandling (0.2.37)
       FSharp.Core
-    Exira.EventStore (0.8.22)
+    Exira.EventStore (0.8.23)
       Chiron
       EventStore.Client
       ExtCore
       FSharp.Core
-    Exira.EventStore.Owin (0.3.14)
+    Exira.EventStore.Owin (0.4.15)
       EventStore.Client
       Exira.EventStore
       ExtCore
@@ -74,7 +74,7 @@ NUGET
       Microsoft.Owin (>= 3.0.1)
       Microsoft.Owin.Security (>= 3.0.1)
       Owin (>= 1.0)
-    Newtonsoft.Json (8.0.1) - framework: >= net45, portable-wp80+win+net45+wp81+wpa81
+    Newtonsoft.Json (8.0.1)
     Octokit (0.17.0)
       Microsoft.Net.Http
     Owin (1.0)
