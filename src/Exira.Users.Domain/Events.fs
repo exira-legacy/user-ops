@@ -11,19 +11,12 @@ module Events =
     with
         static member ToJson (e: Event) =
             match e with
-            | User user -> Json.write "type" "user" *> Json.writeWith Json.serialize "user" user
-            | Account account -> Json.write "type" "account" *> Json.writeWith Json.serialize "account" account
+            | User user -> Json.writeWith Json.serialize "user" user
+            | Account account -> Json.writeWith Json.serialize "account" account
 
-        static member FromJson (_: Event) =
-            json {
-                let! t = Json.read "type"
-
-                return!
-                    match t with
-                    | "user" -> User << Json.deserialize <!> Json.read "user"
-                    //| "account" -> Account << Json.deserialize <!> Json.read "account"
-                    | _ -> Json.error (sprintf "Expected Event")
-            }
+        static member FromJson (_: Event) = function
+            | Property "user" x as json -> Json.init (User x) json
+            | json -> Json.error (sprintf "couldn't deserialise %A to Event" json) json
 
     and UserEvent =
     | UserRegistered of UserRegisteredEvent
@@ -35,22 +28,16 @@ module Events =
     with
         static member ToJson (e: UserEvent) =
             match e with
-            | UserRegistered e -> Json.write "type" "userRegistered" *> Json.writeWith Json.serialize "userRegistered" e
-            | UserLoggedIn _ -> Json.write "type" "userLoggedIn" *> ToJsonDefaults.ToJson "userLoggedIn"
-            | UserVerified _ -> Json.write "type" "userVerified" *> ToJsonDefaults.ToJson "userVerified"
-            | PasswordChanged _ -> Json.write "type" "passwordChanged" *> ToJsonDefaults.ToJson "passwordChanged"
-            | RequestedPasswordReset _ -> Json.write "type" "requestedPasswordReset" *> ToJsonDefaults.ToJson "requestedPasswordReset"
-            | VerifiedPasswordReset _ -> Json.write "type" "verifiedPasswordReset" *> ToJsonDefaults.ToJson "verifiedPasswordReset"
+            | UserRegistered userRegistered -> Json.writeWith Json.serialize "userRegistered" userRegistered
+            //| UserLoggedIn ev -> writeUnion "userLoggedIn" ev
+            //| UserVerified ev -> writeUnion "userVerified" ev
+            //| PasswordChanged ev -> writeUnion "passwordChanged" ev
+            //| RequestedPasswordReset ev -> writeUnion "requestedPasswordReset" ev
+            //| VerifiedPasswordReset ev -> writeUnion "verifiedPasswordReset" ev
 
-        static member FromJson (_: UserEvent) =
-            json {
-                let! t = Json.read "type"
-
-                return!
-                    match t with
-                    | "userRegistered" -> UserRegistered << Json.deserialize <!> Json.read "userRegistered"
-                    //TODO: | _
-            }
+        static member FromJson (_: UserEvent) = function
+            | Property "userRegistered" x as json -> Json.init (UserRegistered x) json
+            | json -> Json.error (sprintf "couldn't deserialise %A to UserEvent" json) json
 
     and UserRegisteredEvent = {
         Email: EmailInfo.EmailInfo
@@ -59,15 +46,23 @@ module Events =
         Roles: Role.Role list
     } with
         static member ToJson (e: UserRegisteredEvent) =
+            let (VerificationToken token) = e.VerificationToken
+
             Json.writeWith EmailInfo.toJson "emailInfo" e.Email
+            *> Json.writeWith Token.toJson "token" token
+            *> Json.writeWith PasswordHash.toJson "hash" e.Hash
+            *> Json.writeWith Role.toJson "roles" e.Roles
 
         static member FromJson (_: UserRegisteredEvent) =
-            // TODO: Get rid of this temp
-            fun x -> { Email = x
-                       VerificationToken = VerificationToken (Token.Token ("bla"))
-                       Hash = PasswordHash ("test")
-                       Roles = [] }
+            (fun emailInfo token hash roles ->
+                { Email = emailInfo
+                  VerificationToken = VerificationToken token
+                  Hash = hash
+                  Roles = roles })
             <!> Json.readWith EmailInfo.fromJson "emailInfo"
+            <*> Json.readWith Token.fromJson "token"
+            <*> Json.readWith PasswordHash.fromJson "hash"
+            <*> Json.readWith Role.fromJson "roles"
 
     and UserLoggedInEvent = {
         LoggedInAt: DateTime

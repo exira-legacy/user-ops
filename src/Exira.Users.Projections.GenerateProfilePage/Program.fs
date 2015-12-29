@@ -67,7 +67,7 @@ module Program =
             |> Json.parse
             |> Json.deserialize
 
-        { Exira.Users.Domain.Events.UserRegisteredEvent.Email = EmailInfo.VerifiedEmail (Email.Email ("test@test.be"), DateTime.Now)
+        { Exira.Users.Domain.Events.UserRegisteredEvent.Email = EmailInfo.VerifiedEmail (Email = Email.Email ("test@test.be"), VerifiedAt = DateTime.Now)
           Exira.Users.Domain.Events.UserRegisteredEvent.VerificationToken = VerificationToken (Token.Token ("bla"))
           Exira.Users.Domain.Events.UserRegisteredEvent.Hash = PasswordHash ("test")
           Exira.Users.Domain.Events.UserRegisteredEvent.Roles = [] }
@@ -77,15 +77,16 @@ module Program =
 
         """
         {
-          "type": "user",
           "user": {
-            "type": "userRegistered",
             "userRegistered": {
               "emailInfo": {
                 "email": "test@test.be",
                 "verified": true,
                 "verifiedAt": "2015-12-28T23:24:33.7496111+01:00"
-              }
+              },
+              "hash": "test",
+              "token": "bla",
+              "roles": []
             }
           }
         }
@@ -93,24 +94,25 @@ module Program =
         |> deserializedEvent
         |> printEvent
 
-        { Exira.Users.Domain.Events.UserRegisteredEvent.Email = EmailInfo.UnverifiedEmail (Email.Email ("test@test.be"))
+        { Exira.Users.Domain.Events.UserRegisteredEvent.Email = EmailInfo.UnverifiedEmail (Email = Email.Email ("test@test.be"))
           Exira.Users.Domain.Events.UserRegisteredEvent.VerificationToken = VerificationToken (Token.Token ("bla"))
           Exira.Users.Domain.Events.UserRegisteredEvent.Hash = PasswordHash ("test")
-          Exira.Users.Domain.Events.UserRegisteredEvent.Roles = [] }
+          Exira.Users.Domain.Events.UserRegisteredEvent.Roles = [ Role Administrator ] }
         |> Exira.Users.Domain.Events.UserEvent.UserRegistered
         |> Exira.Users.Domain.Events.Event.User
         |> printEvent
 
         """
         {
-          "type": "user",
           "user": {
-            "type": "userRegistered",
             "userRegistered": {
               "emailInfo": {
                 "email": "test@test.be",
                 "verified": false
-              }
+              },
+              "hash": "test",
+              "token": "bla",
+              "roles": ["Administrator", "User"]
             }
           }
         }

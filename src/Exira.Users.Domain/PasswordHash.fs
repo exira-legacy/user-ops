@@ -6,6 +6,7 @@
 module PasswordHash =
     open System
     open System.Security.Cryptography
+    open Chiron
 
     type PasswordHash = PasswordHash of string
     let apply f (PasswordHash e) = f e
@@ -66,3 +67,18 @@ module PasswordHash =
         let salt = Convert.ToBase64String(salt)
         let hash = Convert.ToBase64String(hash)
         sprintf "%i:%s:%s" PBKDF2Iterations salt hash |> PasswordHash
+
+    let toJson (hash: PasswordHash) =
+        hash
+        |> value
+        |> String
+
+    let fromJson json =
+        let error x =
+            Json.formatWith JsonFormattingOptions.SingleLine x
+            |> sprintf "couldn't deserialise to PasswordHash: %s"
+            |> Error
+
+        match json with
+        | String hash -> hash |> PasswordHash |> Value
+        | _ -> error json

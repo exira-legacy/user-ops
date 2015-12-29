@@ -16,8 +16,8 @@ module Account =
                       Users = e.Users }
 
                 match e.Type with
-                | Personal -> PersonalAccount { Account = account } |> Success
-                | Company -> CompanyAccount { Account = account } |> Success
+                | Personal -> PersonalAccount (Account = account) |> Success
+                | Company -> CompanyAccount (Account = account) |> Success
 
         | Account.PersonalAccount account ->
             match event with

@@ -29,20 +29,16 @@ module Model =
     }
 
     type AccountType = Personal | Company
-    type PersonalAccount = { Account: AccountInfo }
-    type CompanyAccount = { Account: AccountInfo }
     type Account =
     | Init
-    | PersonalAccount of PersonalAccount
-    | CompanyAccount of CompanyAccount
+    | PersonalAccount of Account: AccountInfo
+    | CompanyAccount of Account: AccountInfo
     | Deleted
 
-    type UnverifiedUser = { User: UserInfo; VerificationToken: VerificationToken }
-    type VerifiedUser = { User: UserInfo; PasswordResetInfo: PasswordResetInfo option }
     type User =
     | Init
-    | UnverifiedUser of UnverifiedUser
-    | VerifiedUser of VerifiedUser
+    | UnverifiedUser of User: UserInfo * VerificationToken: VerificationToken
+    | VerifiedUser of User: UserInfo * PasswordResetInfo: PasswordResetInfo option
     | Deleted
 
 [<AutoOpen>]

@@ -43,16 +43,16 @@ module internal Projection =
 
     let private getEmail emailInfo =
         match emailInfo with
-        | UnverifiedEmail e -> e
-        | VerifiedEmail (e, _) -> e
+        | UnverifiedEmail (Email = e)
+        | VerifiedEmail (Email = e) -> e
 
     let private handleProjection (_, state: User) =
         match state with
         | Init
         | Deleted -> succeed state
 
-        | UnverifiedUser { User = user }
-        | VerifiedUser { User = user } ->
+        | UnverifiedUser (User = user)
+        | VerifiedUser (User = user) ->
             // TODO: Do something :)
             printfn "Generate profile page for %s" (user.Email |> getEmail |> Email.value)
             succeed state
