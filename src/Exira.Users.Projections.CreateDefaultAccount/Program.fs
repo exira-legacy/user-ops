@@ -2,16 +2,13 @@
 
 module Program =
     open System
-    open FSharp.Configuration
     open EventStore.ClientAPI
     open Exira.ErrorHandling
     open Exira.EventStore
     open Exira.EventStore.EventStore
     open Exira.Users.Domain
 
-    type private ProjectionConfig = YamlConfig<"Projection.yaml">
-
-    let private projectionConfig = ProjectionConfig()
+    let private projectionConfig = Configuration.projectionConfig
 
     let private es = connect projectionConfig.EventStore.ConnectionString |> Async.RunSynchronously
 
@@ -23,6 +20,7 @@ module Program =
         | ValidateProblem e -> e.ToString() |> sprintf "Validate problem: '%s'"
         | DeserializeProblem e -> e.ToString() |> sprintf "Serializer problem: '%s'"
         | StateProblem errors -> formatErrors errors  |> sprintf "State problem: '%A'"
+        | ProjectionProblem errors -> formatErrors errors  |> sprintf "Projection problem: '%A'"
 
     let private handleResult (resolvedEvent: ResolvedEvent) handledEvent =
         match handledEvent with

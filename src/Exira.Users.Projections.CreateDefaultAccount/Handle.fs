@@ -39,4 +39,4 @@ module internal Handle =
 
             match result with
             | Success _ -> succeed state
-            | Failure f -> f |> StateProblem |> fail
+            | Failure f -> f |> ProjectionProblem |> fail

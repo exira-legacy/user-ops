@@ -2,16 +2,13 @@
 
 module Program =
     open System
-    open FSharp.Configuration
     open EventStore.ClientAPI
     open Exira.ErrorHandling
     open Exira.EventStore
     open Exira.EventStore.EventStore
     open Exira.Users.Domain
 
-    type private ProjectionConfig = YamlConfig<"Projection.yaml">
-
-    let private projectionConfig = ProjectionConfig()
+    let private projectionConfig = Configuration.projectionConfig
 
     let private es = connect projectionConfig.EventStore.ConnectionString |> Async.RunSynchronously
 

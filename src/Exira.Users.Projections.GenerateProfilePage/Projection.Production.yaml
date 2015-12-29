@@ -3,3 +3,6 @@
 
 Projection:
     Name: generate-profile-page
+
+Generator:
+    SiteRoot: #{SiteRoot}

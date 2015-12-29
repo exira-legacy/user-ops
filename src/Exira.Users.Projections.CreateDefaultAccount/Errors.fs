@@ -9,3 +9,4 @@ module internal Errors =
     | ValidateProblem of exn
     | DeserializeProblem of exn
     | StateProblem of Error list
+    | ProjectionProblem of Error list
