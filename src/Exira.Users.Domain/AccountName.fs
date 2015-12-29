@@ -2,6 +2,8 @@
 
 [<AutoOpen>]
 module AccountName =
+    open Chiron
+
     let [<Literal>] PersonalAccountNamePrefix = "personal"
 
     type AccountName = AccountName of string
@@ -24,3 +26,18 @@ module AccountName =
     let apply f (AccountName e) = f e
 
     let value e = apply id e
+
+    let toJson (name: AccountName) =
+        name
+        |> value
+        |> String
+
+    let fromJson json =
+        let error x =
+            Json.formatWith JsonFormattingOptions.SingleLine x
+            |> sprintf "couldn't deserialise to AccountName: %s"
+            |> Error
+
+        match json with
+        | String name -> name |> AccountName |> Value
+        | _ -> error json

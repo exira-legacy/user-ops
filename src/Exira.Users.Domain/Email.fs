@@ -3,6 +3,7 @@
 [<AutoOpen>]
 module Email =
     open System.Text.RegularExpressions
+    open Chiron
 
     type Email = Email of string
 
@@ -25,3 +26,23 @@ module Email =
     let apply f (Email e) = f e
 
     let value e = apply id e
+
+    let multipleToJson (emails: Email list) =
+        emails
+        |> List.map (fun email -> email |> value |> String)
+        |> Array
+
+    let multipleFromJson json =
+        let error x =
+            Json.formatWith JsonFormattingOptions.SingleLine x
+            |> sprintf "couldn't deserialise to Email: %s"
+            |> Error
+
+        match json with
+        | Array emails ->
+            emails
+            |> List.choose (function
+                | String email -> email |> Email |> Some
+                | _ -> None)
+            |> Value
+        | _ -> error json

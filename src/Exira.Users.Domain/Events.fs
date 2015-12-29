@@ -16,6 +16,7 @@ module Events =
 
         static member FromJson (_: Event) = function
             | Property "user" x as json -> Json.init (User x) json
+            | Property "account" x as json -> Json.init (Account x) json
             | json -> Json.error (sprintf "couldn't deserialise %A to Event" json) json
 
     and UserEvent =
@@ -29,14 +30,19 @@ module Events =
         static member ToJson (e: UserEvent) =
             match e with
             | UserRegistered userRegistered -> Json.writeWith Json.serialize "userRegistered" userRegistered
-            //| UserLoggedIn ev -> writeUnion "userLoggedIn" ev
-            //| UserVerified ev -> writeUnion "userVerified" ev
-            //| PasswordChanged ev -> writeUnion "passwordChanged" ev
-            //| RequestedPasswordReset ev -> writeUnion "requestedPasswordReset" ev
-            //| VerifiedPasswordReset ev -> writeUnion "verifiedPasswordReset" ev
+            | UserLoggedIn userLoggedIn -> Json.writeWith Json.serialize "userLoggedIn" userLoggedIn
+            | UserVerified userVerified -> Json.writeWith Json.serialize "userVerified" userVerified
+            | PasswordChanged passwordChanged -> Json.writeWith Json.serialize "passwordChanged" passwordChanged
+            | RequestedPasswordReset requestedPasswordReset -> Json.writeWith Json.serialize "requestedPasswordReset" requestedPasswordReset
+            | VerifiedPasswordReset verifiedPasswordReset -> Json.writeWith Json.serialize "verifiedPasswordReset" verifiedPasswordReset
 
         static member FromJson (_: UserEvent) = function
             | Property "userRegistered" x as json -> Json.init (UserRegistered x) json
+            | Property "userLoggedIn" x as json -> Json.init (UserLoggedIn x) json
+            | Property "userVerified" x as json -> Json.init (UserVerified x) json
+            | Property "passwordChanged" x as json -> Json.init (PasswordChanged x) json
+            | Property "requestedPasswordReset" x as json -> Json.init (RequestedPasswordReset x) json
+            | Property "verifiedPasswordReset" x as json -> Json.init (VerifiedPasswordReset x) json
             | json -> Json.error (sprintf "couldn't deserialise %A to UserEvent" json) json
 
     and UserRegisteredEvent = {
@@ -66,36 +72,103 @@ module Events =
 
     and UserLoggedInEvent = {
         LoggedInAt: DateTime
-    }
+    } with
+        static member ToJson (e: UserLoggedInEvent) =
+            Json.write "loggedInAt" e.LoggedInAt // TODO: Check if we need to ToString("o") this
+
+        static member FromJson (_: UserLoggedInEvent) =
+            (fun loggedInAt -> { LoggedInAt = loggedInAt })
+            <!> Json.read "loggedInAt"
 
     and UserVerifiedEvent = {
         Email: EmailInfo.EmailInfo
-    }
+    } with
+        static member ToJson (e: UserVerifiedEvent) =
+            Json.writeWith EmailInfo.toJson "emailInfo" e.Email
+
+        static member FromJson (_: UserVerifiedEvent) =
+            (fun emailInfo -> { Email = emailInfo })
+            <!> Json.readWith EmailInfo.fromJson "emailInfo"
 
     and PasswordChangedEvent = {
         Hash: PasswordHash.PasswordHash
-    }
+    } with
+        static member ToJson (e: PasswordChangedEvent) =
+            Json.writeWith PasswordHash.toJson "hash" e.Hash
+
+        static member FromJson (_: PasswordChangedEvent) =
+            (fun hash -> { Hash = hash })
+            <!> Json.readWith PasswordHash.fromJson "hash"
 
     and RequestedPasswordResetEvent = {
         RequestedAt: DateTime
         ResetToken: PasswordResetToken
-    }
+    } with
+        static member ToJson (e: RequestedPasswordResetEvent) =
+            let (PasswordResetToken token) = e.ResetToken
+
+            Json.write "requestedAt" e.RequestedAt // TODO: Check if we need to ToString("o") this
+            *> Json.writeWith Token.toJson "token" token
+
+        static member FromJson (_: RequestedPasswordResetEvent) =
+            (fun requestedAt token -> { RequestedAt = requestedAt; ResetToken = PasswordResetToken token })
+            <!> Json.read "requestedAt"
+            <*> Json.readWith Token.fromJson "token"
 
     and VerifiedPasswordResetEvent = {
         VerifiedAt: DateTime
         Hash: PasswordHash.PasswordHash
-    }
+    } with
+        static member ToJson (e: VerifiedPasswordResetEvent) =
+            Json.write "verifiedAt" e.VerifiedAt // TODO: Check if we need to ToString("o") this
+            *> Json.writeWith PasswordHash.toJson "hash" e.Hash
+
+        static member FromJson (_: VerifiedPasswordResetEvent) =
+            (fun verifiedAt hash -> { VerifiedAt = verifiedAt; Hash = hash })
+            <!> Json.read "verifiedAt"
+            <*> Json.readWith PasswordHash.fromJson "hash"
 
     and AccountEvent =
     | AccountCreated of AccountCreatedEvent
     with
         static member ToJson (e: AccountEvent) =
             match e with
-            | AccountCreated _ -> ToJsonDefaults.ToJson "accountCreated"
+            | AccountCreated accountCreated -> Json.writeWith Json.serialize "accountCreated" accountCreated
+
+        static member FromJson (_: AccountEvent) = function
+            | Property "accountCreated" x as json -> Json.init (AccountCreated x) json
+            | json -> Json.error (sprintf "couldn't deserialise %A to AccountEvent" json) json
 
     and AccountCreatedEvent = {
         Type: AccountType
         Name: AccountName.AccountName
         Email: EmailInfo.EmailInfo
         Users: Email.Email list
-    }
+    } with
+        static member ToJson (e: AccountCreatedEvent) =
+            let t =
+                match e.Type with
+                | Personal -> "personal"
+                | Company -> "company"
+
+            Json.write "type" t
+            *> Json.writeWith AccountName.toJson "name" e.Name
+            *> Json.writeWith EmailInfo.toJson "email" e.Email
+            *> Json.writeWith Email.multipleToJson "users" e.Users
+
+        static member FromJson (_: AccountCreatedEvent) =
+            (fun t name email users ->
+                let t =
+                    match t with
+                    | "personal" -> Personal
+                    | "company" -> Company
+                    | _ -> failwithf "couldn't deserialise %s to AccountType" t
+
+                { Type = t
+                  Name = name
+                  Email = email
+                  Users = users })
+            <!> Json.read "type"
+            <*> Json.readWith AccountName.fromJson "name"
+            <*> Json.readWith EmailInfo.fromJson "email"
+            <*> Json.readWith Email.multipleFromJson "users"
