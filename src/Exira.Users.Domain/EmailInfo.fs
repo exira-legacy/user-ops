@@ -20,6 +20,10 @@ module EmailInfo =
         | UnverifiedEmail (Email = email) -> VerifiedEmail (Email = email, VerifiedAt = dateVerified)
         | VerifiedEmail _ -> emailInfo
 
+    let getEmail = function
+        | UnverifiedEmail (Email = e)
+        | VerifiedEmail (Email = e) -> e
+
     let toJson (emailInfo: EmailInfo) =
         match emailInfo with
         | UnverifiedEmail (Email = email) ->

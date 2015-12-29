@@ -1,4 +1,4 @@
-﻿namespace Exira.Users.Projections.GenerateProfilePage
+﻿namespace Exira.Users.Projections.CreateDefaultAccount
 
 [<AutoOpen>]
 module internal Projection =

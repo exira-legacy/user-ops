@@ -5,13 +5,13 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>f8966cec-b0d1-48ab-8c6d-dc4134bd3af4</ProjectGuid>
+    <ProjectGuid>{a1c5faa3-d7dd-4943-afca-58cc1e7b9f4c}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Exira.Users.Projections.GenerateProfilePage</RootNamespace>
-    <AssemblyName>Exira.Users.Projections.GenerateProfilePage</AssemblyName>
+    <RootNamespace>Exira.Users.Projections.CreateDefaultAccount</RootNamespace>
+    <AssemblyName>Exira.Users.Projections.CreateDefaultAccount</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Name>Exira.Users.Projections.GenerateProfilePage</Name>
+    <Name>Exira.Users.Projections.CreateDefaultAccount</Name>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,7 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DocumentationFile>bin\Debug\Exira.Users.Projections.GenerateProfilePage.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Exira.Users.Projections.CreateDefaultAccount.XML</DocumentationFile>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -33,7 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DocumentationFile>bin\Release\Exira.Users.Projections.GenerateProfilePage.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Exira.Users.Projections.CreateDefaultAccount.XML</DocumentationFile>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
