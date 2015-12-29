@@ -3,8 +3,12 @@
 [<AutoOpen>]
 module Token =
     open Chiron
+    open Chiron.Operators
 
     type Token = Token of string
+    with
+        static member ToJson ((Token x): Token) = Json.Optic.set Json.String_ x
+        static member FromJson (_: Token) = Token <!> Json.Optic.get Json.String_
 
     let internal createWithCont success failure value =
         match value with
@@ -22,18 +26,3 @@ module Token =
     let apply f (Token e) = f e
 
     let value e = apply id e
-
-    let toJson (token: Token) =
-        token
-        |> value
-        |> String
-
-    let fromJson json =
-        let error x =
-            Json.formatWith JsonFormattingOptions.SingleLine x
-            |> sprintf "couldn't deserialise to Token: %s"
-            |> Error
-
-        match json with
-        | String token -> token |> Token |> Value
-        | _ -> error json

@@ -28,7 +28,6 @@ module Model =
         ResetToken: PasswordResetToken
     }
 
-    type AccountType = Personal | Company
     type Account =
     | Init
     | PersonalAccount of Account: AccountInfo

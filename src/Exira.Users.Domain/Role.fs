@@ -3,6 +3,7 @@
 [<AutoOpen>]
 module Role =
     open Chiron
+    open Chiron.Operators
 
     let [<Literal>] private RoleUser = "User"
     let [<Literal>] private RoleAdministrator = "Administrator"
@@ -13,12 +14,21 @@ module Role =
     type RoleType =
     | User
     | Administrator
-    with member this.toString =
+        member this.toString =
             match this with
             | User -> RoleUser
             | Administrator -> RoleAdministrator
 
     type Role = Role of RoleType
+    with
+        static member ToJson ((Role x): Role) = Json.Optic.set Json.String_ x.toString
+
+        static member FromJson (_: Role) =
+            function
+                | RoleUser -> User |> Role
+                | RoleAdministrator -> Administrator |> Role
+                | x -> failwithf "couldn't deserialise %s to Role" x
+            <!> Json.Optic.get Json.String_
 
     let internal createWithCont success failure value =
         match value with
@@ -36,28 +46,3 @@ module Role =
     let apply f (Role e) = f e
 
     let value e = apply id e
-
-    let toJson (roles: Role list) =
-        roles
-        |> List.map (fun role -> (role |> value).toString |> String)
-        |> Array
-
-    let fromJson json =
-        let error x =
-            Json.formatWith JsonFormattingOptions.SingleLine x
-            |> sprintf "couldn't deserialise to Roles: %s"
-            |> Error
-
-        match json with
-        | Array roles ->
-            roles
-            |> List.choose (function
-                | String role -> Some role
-                | _ -> None)
-            |> List.choose (function
-                | RoleUser -> User |> Role |> Some
-                | RoleAdministrator -> Administrator |> Role |> Some
-                | _ -> None)
-            |> Value
-
-        | _ -> error json

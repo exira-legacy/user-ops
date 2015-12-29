@@ -3,12 +3,32 @@
 [<AutoOpen>]
 module EmailInfo =
     open System
-    open System.Globalization
     open Chiron
+    open Chiron.Operators
 
     type EmailInfo =
     | UnverifiedEmail of Email: Email.Email
     | VerifiedEmail of Email: Email.Email * VerifiedAt: DateTime
+    with
+        static member ToJson (e: EmailInfo) =
+            match e with
+            | UnverifiedEmail (Email = email) ->
+                Json.write "email" email
+
+            | VerifiedEmail (Email = email; VerifiedAt = dateVerified) ->
+                Json.write "email" email
+                *> Json.write "verifiedAt" dateVerified
+
+        static member FromJson (_: EmailInfo) =
+            (fun email verifiedAt ->
+                match verifiedAt, email with
+                | Some dateVerified, mail ->
+                    VerifiedEmail (Email = mail, VerifiedAt = dateVerified)
+
+                | None, mail ->
+                    UnverifiedEmail (Email = mail))
+            <!> Json.read "email"
+            <*> Json.tryRead "verifiedAt"
 
     // unverified on creation
     let create email =
@@ -23,37 +43,3 @@ module EmailInfo =
     let getEmail = function
         | UnverifiedEmail (Email = e)
         | VerifiedEmail (Email = e) -> e
-
-    let toJson (emailInfo: EmailInfo) =
-        match emailInfo with
-        | UnverifiedEmail (Email = email) ->
-            Map.ofList [
-                "email", email |> Email.value |> String ]
-            |> Object
-
-        | VerifiedEmail (Email = email; VerifiedAt = dateVerified) ->
-            Map.ofList [
-                "email", email |> Email.value |> String
-                "verifiedAt", dateVerified.ToString "o" |> String ]
-            |> Object
-
-    let fromJson json =
-        let error x =
-            Json.formatWith JsonFormattingOptions.SingleLine x
-            |> sprintf "couldn't deserialise to EmailInfo: %s"
-            |> Error
-
-        match json with
-        | Object values ->
-            let email = values |> Map.find "email"
-            let verifiedAt = values |> Map.tryFind "verifiedAt"
-
-            match verifiedAt, email  with
-            | Some (String dateVerified), String mail ->
-                VerifiedEmail (Email = Email mail, VerifiedAt = DateTime.Parse(dateVerified, null, DateTimeStyles.RoundtripKind)) |> Value
-
-            | None, String mail ->
-                UnverifiedEmail (Email = Email mail) |> Value
-
-            | _ -> error json
-        | _ -> error json

@@ -55,6 +55,7 @@
     <Compile Include="Common.fs" />
     <Compile Include="String.fs" />
     <Compile Include="Role.fs" />
+    <Compile Include="AccountType.fs" />
     <Compile Include="AccountName.fs" />
     <Compile Include="Email.fs" />
     <Compile Include="Password.fs" />

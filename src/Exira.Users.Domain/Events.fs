@@ -11,8 +11,8 @@ module Events =
     with
         static member ToJson (e: Event) =
             match e with
-            | User user -> Json.writeWith Json.serialize "user" user
-            | Account account -> Json.writeWith Json.serialize "account" account
+            | User user -> Json.write "user" user
+            | Account account -> Json.write "account" account
 
         static member FromJson (_: Event) = function
             | Property "user" x as json -> Json.init (User x) json
@@ -29,12 +29,12 @@ module Events =
     with
         static member ToJson (e: UserEvent) =
             match e with
-            | UserRegistered userRegistered -> Json.writeWith Json.serialize "userRegistered" userRegistered
-            | UserLoggedIn userLoggedIn -> Json.writeWith Json.serialize "userLoggedIn" userLoggedIn
-            | UserVerified userVerified -> Json.writeWith Json.serialize "userVerified" userVerified
-            | PasswordChanged passwordChanged -> Json.writeWith Json.serialize "passwordChanged" passwordChanged
-            | RequestedPasswordReset requestedPasswordReset -> Json.writeWith Json.serialize "requestedPasswordReset" requestedPasswordReset
-            | VerifiedPasswordReset verifiedPasswordReset -> Json.writeWith Json.serialize "verifiedPasswordReset" verifiedPasswordReset
+            | UserRegistered userRegistered -> Json.write "userRegistered" userRegistered
+            | UserLoggedIn userLoggedIn -> Json.write "userLoggedIn" userLoggedIn
+            | UserVerified userVerified -> Json.write "userVerified" userVerified
+            | PasswordChanged passwordChanged -> Json.write "passwordChanged" passwordChanged
+            | RequestedPasswordReset requestedPasswordReset -> Json.write "requestedPasswordReset" requestedPasswordReset
+            | VerifiedPasswordReset verifiedPasswordReset -> Json.write "verifiedPasswordReset" verifiedPasswordReset
 
         static member FromJson (_: UserEvent) = function
             | Property "userRegistered" x as json -> Json.init (UserRegistered x) json
@@ -54,10 +54,10 @@ module Events =
         static member ToJson (e: UserRegisteredEvent) =
             let (VerificationToken token) = e.VerificationToken
 
-            Json.writeWith EmailInfo.toJson "emailInfo" e.Email
-            *> Json.writeWith Token.toJson "token" token
-            *> Json.writeWith PasswordHash.toJson "hash" e.Hash
-            *> Json.writeWith Role.toJson "roles" e.Roles
+            Json.write "emailInfo" e.Email
+            *> Json.write "token" token
+            *> Json.write "hash" e.Hash
+            *> Json.write "roles" e.Roles
 
         static member FromJson (_: UserRegisteredEvent) =
             (fun emailInfo token hash roles ->
@@ -65,16 +65,16 @@ module Events =
                   VerificationToken = VerificationToken token
                   Hash = hash
                   Roles = roles })
-            <!> Json.readWith EmailInfo.fromJson "emailInfo"
-            <*> Json.readWith Token.fromJson "token"
-            <*> Json.readWith PasswordHash.fromJson "hash"
-            <*> Json.readWith Role.fromJson "roles"
+            <!> Json.read "emailInfo"
+            <*> Json.read "token"
+            <*> Json.read "hash"
+            <*> Json.read "roles"
 
     and UserLoggedInEvent = {
         LoggedInAt: DateTime
     } with
         static member ToJson (e: UserLoggedInEvent) =
-            Json.write "loggedInAt" e.LoggedInAt // TODO: Check if we need to ToString("o") this
+            Json.write "loggedInAt" e.LoggedInAt
 
         static member FromJson (_: UserLoggedInEvent) =
             (fun loggedInAt -> { LoggedInAt = loggedInAt })
@@ -84,21 +84,21 @@ module Events =
         Email: EmailInfo.EmailInfo
     } with
         static member ToJson (e: UserVerifiedEvent) =
-            Json.writeWith EmailInfo.toJson "emailInfo" e.Email
+            Json.write "emailInfo" e.Email
 
         static member FromJson (_: UserVerifiedEvent) =
             (fun emailInfo -> { Email = emailInfo })
-            <!> Json.readWith EmailInfo.fromJson "emailInfo"
+            <!> Json.read "emailInfo"
 
     and PasswordChangedEvent = {
         Hash: PasswordHash.PasswordHash
     } with
         static member ToJson (e: PasswordChangedEvent) =
-            Json.writeWith PasswordHash.toJson "hash" e.Hash
+            Json.write "hash" e.Hash
 
         static member FromJson (_: PasswordChangedEvent) =
             (fun hash -> { Hash = hash })
-            <!> Json.readWith PasswordHash.fromJson "hash"
+            <!> Json.read "hash"
 
     and RequestedPasswordResetEvent = {
         RequestedAt: DateTime
@@ -107,33 +107,33 @@ module Events =
         static member ToJson (e: RequestedPasswordResetEvent) =
             let (PasswordResetToken token) = e.ResetToken
 
-            Json.write "requestedAt" e.RequestedAt // TODO: Check if we need to ToString("o") this
-            *> Json.writeWith Token.toJson "token" token
+            Json.write "requestedAt" e.RequestedAt
+            *> Json.write "token" token
 
         static member FromJson (_: RequestedPasswordResetEvent) =
             (fun requestedAt token -> { RequestedAt = requestedAt; ResetToken = PasswordResetToken token })
             <!> Json.read "requestedAt"
-            <*> Json.readWith Token.fromJson "token"
+            <*> Json.read "token"
 
     and VerifiedPasswordResetEvent = {
         VerifiedAt: DateTime
         Hash: PasswordHash.PasswordHash
     } with
         static member ToJson (e: VerifiedPasswordResetEvent) =
-            Json.write "verifiedAt" e.VerifiedAt // TODO: Check if we need to ToString("o") this
-            *> Json.writeWith PasswordHash.toJson "hash" e.Hash
+            Json.write "verifiedAt" e.VerifiedAt
+            *> Json.write "hash" e.Hash
 
         static member FromJson (_: VerifiedPasswordResetEvent) =
             (fun verifiedAt hash -> { VerifiedAt = verifiedAt; Hash = hash })
             <!> Json.read "verifiedAt"
-            <*> Json.readWith PasswordHash.fromJson "hash"
+            <*> Json.read "hash"
 
     and AccountEvent =
     | AccountCreated of AccountCreatedEvent
     with
         static member ToJson (e: AccountEvent) =
             match e with
-            | AccountCreated accountCreated -> Json.writeWith Json.serialize "accountCreated" accountCreated
+            | AccountCreated accountCreated -> Json.write "accountCreated" accountCreated
 
         static member FromJson (_: AccountEvent) = function
             | Property "accountCreated" x as json -> Json.init (AccountCreated x) json
@@ -146,29 +146,18 @@ module Events =
         Users: Email.Email list
     } with
         static member ToJson (e: AccountCreatedEvent) =
-            let t =
-                match e.Type with
-                | Personal -> "personal"
-                | Company -> "company"
-
-            Json.write "type" t
-            *> Json.writeWith AccountName.toJson "name" e.Name
-            *> Json.writeWith EmailInfo.toJson "email" e.Email
-            *> Json.writeWith Email.multipleToJson "users" e.Users
+            Json.write "type" e.Type
+            *> Json.write "name" e.Name
+            *> Json.write "email" e.Email
+            *> Json.write "users" e.Users
 
         static member FromJson (_: AccountCreatedEvent) =
             (fun t name email users ->
-                let t =
-                    match t with
-                    | "personal" -> Personal
-                    | "company" -> Company
-                    | _ -> failwithf "couldn't deserialise %s to AccountType" t
-
                 { Type = t
                   Name = name
                   Email = email
                   Users = users })
             <!> Json.read "type"
-            <*> Json.readWith AccountName.fromJson "name"
-            <*> Json.readWith EmailInfo.fromJson "email"
-            <*> Json.readWith Email.multipleFromJson "users"
+            <*> Json.read "name"
+            <*> Json.read "email"
+            <*> Json.read "users"

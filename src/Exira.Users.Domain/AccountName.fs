@@ -3,10 +3,14 @@
 [<AutoOpen>]
 module AccountName =
     open Chiron
+    open Chiron.Operators
 
     let [<Literal>] PersonalAccountNamePrefix = "personal"
 
     type AccountName = AccountName of string
+    with
+        static member ToJson ((AccountName x): AccountName) = Json.Optic.set Json.String_ x
+        static member FromJson (_: AccountName) = AccountName <!> Json.Optic.get Json.String_
 
     let private canonicalizeName (name: string) =
         name.ToLower().Trim()
