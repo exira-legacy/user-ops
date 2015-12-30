@@ -44,8 +44,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="paket.references" />
-    <None Include="Projection.Production.yaml" />
-    <None Include="Projection.yaml" />
+    <None Include="Projection.Production.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Projection.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="App.config" />
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Configuration.fs" />

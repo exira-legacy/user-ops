@@ -1,4 +1,13 @@
-﻿EventStore:
+﻿Service:
+    ServiceName: user-ops-create-default-account
+    Description: Projection - Create Default Accounts
+    RestartIntervalInMinutes: 1
+    HasDependencies: true
+    DependsOn:
+        - ges-runner
+        - ges-logger
+
+EventStore:
     ConnectionString: ConnectTo=tcp://admin:changeit@127.0.0.1:8003
 
 Projection:

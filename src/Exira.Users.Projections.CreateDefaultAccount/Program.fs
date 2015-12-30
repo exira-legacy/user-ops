@@ -1,18 +1,19 @@
 ﻿namespace Exira.Users.Projections.CreateDefaultAccount
 
 module Program =
-    open System
     open EventStore.ClientAPI
     open Exira.ErrorHandling
     open Exira.EventStore
     open Exira.EventStore.EventStore
     open Exira.Users.Domain
+    open Topshelf
+    open Time
 
     let private projectionConfig = Configuration.projectionConfig
+    let private checkpointStreamName = sprintf "%s-checkpoint" projectionConfig.Projection.Name
+    let private checkpointStream = checkpointStreamName |> StreamId
 
-    let private es = connect projectionConfig.EventStore.ConnectionString |> Async.RunSynchronously
-
-    let private checkpointStream = sprintf "%s-checkpoint" projectionConfig.Projection.Name |> StreamId
+    let mutable (es: IEventStoreConnection option) = None
 
     let private map error =
         match error with
@@ -22,11 +23,21 @@ module Program =
         | StateProblem errors -> formatErrors errors  |> sprintf "State problem: '%A'"
         | ProjectionProblem errors -> formatErrors errors  |> sprintf "Projection problem: '%A'"
 
-    let private handleResult (resolvedEvent: ResolvedEvent) handledEvent =
+    let private handleResult (resolvedEvent: ResolvedEvent) esConnection handledEvent =
         match handledEvent with
         | Success _ ->
             printfn "%04i@%s" resolvedEvent.Event.EventNumber resolvedEvent.Event.EventStreamId
-            storeCheckpoint es checkpointStream resolvedEvent.OriginalPosition.Value |> Async.RunSynchronously
+
+            let result = storeCheckpoint esConnection checkpointStream resolvedEvent.OriginalPosition.Value |> Async.Catch |> Async.RunSynchronously
+            match result with
+            | Choice1Of2 _ -> ()
+            | Choice2Of2 ex ->
+                match ex with
+                | :? System.AggregateException as aex ->
+                    match aex.InnerException with
+                    | :? System.ObjectDisposedException -> () // The connection has already been closed, but there are still events incoming
+                    | _ -> raise aex.InnerException
+                | _ -> raise ex
 
         | Failure error ->
             match  error with
@@ -35,30 +46,55 @@ module Program =
                 // TODO: On failure, should either retry, or stop processing
                 printfn "%s - %04i@%s" (map error) resolvedEvent.Event.EventNumber resolvedEvent.Event.EventStreamId
 
-    let private eventAppeared = fun _ resolvedEvent ->
+    let private eventAppeared esConnection = fun _ resolvedEvent ->
         resolvedEvent
-        |> handleEvent es
+        |> handleEvent esConnection
         |> Async.RunSynchronously
-        |> handleResult resolvedEvent
+        |> handleResult resolvedEvent esConnection
 
-    let private subscribe = fun reconnect ->
-        let lastPosition = getCheckpoint es checkpointStream |> Async.RunSynchronously
+    let private subscribe esConnection = fun reconnect ->
+        let lastPosition = getCheckpoint esConnection checkpointStream |> Async.RunSynchronously
+        subscribeToAllFrom esConnection lastPosition true (eventAppeared esConnection) ignore reconnect
 
-        subscribeToAllFrom es lastPosition true eventAppeared ignore reconnect
-
-    let rec private subscriptionDropped = fun _ reason ex  ->
+    let rec private subscriptionDropped esConnection = fun _ reason ex  ->
         printfn "Subscription Dropped: %O - %O" reason ex
-        subscribe subscriptionDropped |> ignore
+        if reason = SubscriptionDropReason.ConnectionClosed then ()
+        else subscribe esConnection (subscriptionDropped esConnection) |> ignore
+
+    let stop _ =
+        match es with
+            | None -> true
+            | Some esConnection ->
+                esConnection.Close()
+                es <- None
+                true
+
+    let start _ =
+        let esConnection = connect projectionConfig.EventStore.ConnectionString |> Async.RunSynchronously
+        initalizeCheckpoint esConnection checkpointStream |> Async.RunSynchronously
+        subscribe esConnection (subscriptionDropped esConnection) |> ignore
+        es <- Some esConnection
+        true
 
     [<EntryPoint>]
     let main _ =
-        initalizeCheckpoint es checkpointStream |> Async.RunSynchronously
-        storeCheckpoint es checkpointStream Position.Start |> Async.RunSynchronously
+        let service =
+            Service.Default
+            |> run_as_local_system
+            |> start_auto
+            |> enable_shutdown
+            |> with_recovery (ServiceRecovery.Default |> restart (min projectionConfig.Service.RestartIntervalInMinutes))
+            |> with_start start
+            |> with_stop stop
+            |> description projectionConfig.Service.Description
+            |> display_name projectionConfig.Service.ServiceName
+            |> service_name projectionConfig.Service.ServiceName
 
-        subscribe subscriptionDropped |> ignore
+        let service =
+            if projectionConfig.Service.HasDependencies then
+                projectionConfig.Service.DependsOn
+                |> Seq.fold (fun s dependency -> s |> depends_on dependency) service
+            else service
 
-        Console.ReadLine() |> ignore
-
-        es.Close()
-
-        0
+        service
+        |> run

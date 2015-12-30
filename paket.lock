@@ -80,6 +80,9 @@ NUGET
     Owin (1.0)
     SourceLink.Fake (1.1.0)
     TickSpec (1.0.1.1)
+    Topshelf (3.3.1)
+    Topshelf.FSharp (2.1.0)
+      Topshelf (>= 3.2.0)
 GITHUB
   remote: fsharp/FAKE
   specs:

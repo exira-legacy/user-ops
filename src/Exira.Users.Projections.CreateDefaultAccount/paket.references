@@ -3,3 +3,4 @@ FSharp.Configuration
 Exira.EventStore
 Exira.ErrorHandling
 Chiron
+Topshelf.FSharp

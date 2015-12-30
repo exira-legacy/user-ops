@@ -11,6 +11,7 @@ nuget tickspec
 nuget ExtCore
 nuget Chiron
 nuget Newtonsoft.Json
+nuget Topshelf.FSharp
 
 nuget Microsoft.Owin.Host.SystemWeb
 nuget Microsoft.Owin.Security.Cookies
