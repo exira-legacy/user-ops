@@ -22,8 +22,8 @@ summary
 description
     Exira.Users is an event sourced microservice to manage users.
 files
-    bin/Release/*.exe ==> tools
-    bin/Release/*.dll ==> tools
-    bin/Release/*.config ==> tools
-    bin/Release/*.ps1 ==> tools
-    bin/Release/*.yaml ==> tools
+    bin/Release/*.exe ==>
+    bin/Release/*.dll ==>
+    bin/Release/*.config ==>
+    bin/Release/*.ps1 ==>
+    bin/Release/*.yaml ==>
