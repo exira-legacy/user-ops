@@ -1,11 +1,11 @@
 ﻿Service:
-    ServiceName: user-ops-create-default-account
+    ServiceName: #{Projections-CreateDefaultAccount-ServiceName}
     Description: Projection - Create Default Accounts
     RestartIntervalInMinutes: 1
     HasDependencies: true
     DependsOn:
-        - ges-runner
-        - ges-logger
+        - #{GesServiceName}
+        - #{LoggerServiceName}
 
 EventStore:
     ConnectionString: #{GesConnectionString}
