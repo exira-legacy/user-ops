@@ -24,6 +24,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DocumentationFile>bin\Debug\Exira.Users.Projections.CreateDefaultAccount.XML</DocumentationFile>
     <Prefer32Bit>true</Prefer32Bit>
+    <OtherFlags>--win32res:icon.res</OtherFlags>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -36,36 +37,6 @@
     <DocumentationFile>bin\Release\Exira.Users.Projections.CreateDefaultAccount.XML</DocumentationFile>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="mscorlib" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="paket.references" />
-    <None Include="paket.template" />
-    <None Include="Projection.Production.yaml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Projection.yaml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="App.config" />
-    <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="Configuration.fs" />
-    <Compile Include="Errors.fs" />
-    <Compile Include="Handle.fs" />
-    <Compile Include="Projection.fs" />
-    <Compile Include="Program.fs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Exira.Users.Domain\Exira.Users.Domain.fsproj">
-      <Name>Exira.Users.Domain</Name>
-      <Project>{ea93246f-05d5-43ce-81a4-6c33dcb715de}</Project>
-      <Private>True</Private>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
   </PropertyGroup>
@@ -379,4 +350,35 @@
       </ItemGroup>
     </When>
   </Choose>
+  <ItemGroup>
+    <Content Include="exira.ico" />
+    <None Include="icon.rc" />
+    <None Include="icon.res" />
+    <None Include="paket.references" />
+    <None Include="paket.template" />
+    <None Include="Projection.Production.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Projection.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="App.config" />
+    <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="Configuration.fs" />
+    <Compile Include="Errors.fs" />
+    <Compile Include="Handle.fs" />
+    <Compile Include="Projection.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <ProjectReference Include="..\Exira.Users.Domain\Exira.Users.Domain.fsproj">
+      <Name>Exira.Users.Domain</Name>
+      <Project>{ea93246f-05d5-43ce-81a4-6c33dcb715de}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
