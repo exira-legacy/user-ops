@@ -37,9 +37,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Exira.EventStore">
-      <HintPath>..\..\..\ges\src\Exira.EventStore\bin\Release\net46\Exira.EventStore.dll</HintPath>
-    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -171,6 +168,44 @@
       <ItemGroup>
         <Reference Include="Exira.ErrorHandling">
           <HintPath>..\..\packages\Exira.ErrorHandling\lib\net452\Exira.ErrorHandling.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Choose>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.6'">
+      <ItemGroup>
+        <Reference Include="Exira.EventStore">
+          <HintPath>..\..\packages\Exira.EventStore\lib\net46\Exira.EventStore.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And $(TargetFrameworkVersion) == 'v4.6.1'">
+      <ItemGroup>
+        <Reference Include="Exira.EventStore">
+          <HintPath>..\..\packages\Exira.EventStore\lib\net461\Exira.EventStore.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1')">
+      <ItemGroup>
+        <Reference Include="Exira.EventStore">
+          <HintPath>..\..\packages\Exira.EventStore\lib\net45\Exira.EventStore.dll</HintPath>
+          <Private>True</Private>
+          <Paket>True</Paket>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3')">
+      <ItemGroup>
+        <Reference Include="Exira.EventStore">
+          <HintPath>..\..\packages\Exira.EventStore\lib\net452\Exira.EventStore.dll</HintPath>
           <Private>True</Private>
           <Paket>True</Paket>
         </Reference>
