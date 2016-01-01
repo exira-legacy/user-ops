@@ -12,3 +12,25 @@ EventStore:
 
 Projection:
     Name: create-default-account
+
+Logging:
+    Properties:
+        - key: service
+          value: user-ops
+        - key: projection
+          value: create-default-account
+        - key: environment
+          value: #{Environment}
+
+    Sinks:
+        Console:
+            Enabled: false
+
+        RollingFile:
+            Enabled: true
+            PathFormat: create-default-account-{Date}.txt
+
+        Seq:
+            Enabled: true
+            Url: #{SeqEndpoint}
+            ApiKey: #{SeqApiKey}

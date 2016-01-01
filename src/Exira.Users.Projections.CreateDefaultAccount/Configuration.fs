@@ -1,6 +1,6 @@
 ﻿namespace Exira.Users.Projections.CreateDefaultAccount
 
-module Configuration =
+module internal Configuration =
     open System.IO
     open System.Reflection
     open FSharp.Configuration

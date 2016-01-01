@@ -4,3 +4,4 @@ Exira.EventStore
 Exira.ErrorHandling
 Chiron
 Topshelf.FSharp
+Serilog.Sinks.Seq

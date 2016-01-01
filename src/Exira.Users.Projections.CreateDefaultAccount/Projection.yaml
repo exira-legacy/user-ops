@@ -12,3 +12,25 @@ EventStore:
 
 Projection:
     Name: create-default-account
+
+Logging:
+    Properties:
+        - key: service
+          value: user-ops
+        - key: projection
+          value: create-default-account
+        - key: environment
+          value: test
+
+    Sinks:
+        Console:
+            Enabled: true
+
+        RollingFile:
+            Enabled: true
+            PathFormat: events-{Date}.txt
+
+        Seq:
+            Enabled: false
+            Url: https://example.org
+            ApiKey: YOUR API KEY
