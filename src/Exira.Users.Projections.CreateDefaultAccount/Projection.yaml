@@ -28,7 +28,7 @@ Logging:
 
         RollingFile:
             Enabled: true
-            PathFormat: events-{Date}.txt
+            PathFormat: create-default-account-{Date}.txt
 
         Seq:
             Enabled: false

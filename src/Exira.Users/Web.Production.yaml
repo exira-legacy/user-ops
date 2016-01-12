@@ -33,3 +33,23 @@ Web:
     CORS:
         AllowedOrigins:
             - #{JwtAllowedOrigin1}
+
+Logging:
+    Properties:
+        - key: service
+          value: user-ops
+        - key: environment
+          value: #{Environment}
+
+    Sinks:
+        Console:
+            Enabled: false
+
+        RollingFile:
+            Enabled: true
+            PathFormat: user-ops-{Date}.txt
+
+        Seq:
+            Enabled: true
+            Url: #{SeqEndpoint}
+            ApiKey: #{SeqApiKey}

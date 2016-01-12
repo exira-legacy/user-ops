@@ -16,7 +16,8 @@ module Application =
     open Model
     open CommandHandler
 
-    let webConfig = Configuration.webConfig
+    let private webConfig = Configuration.webConfig
+    let private logger = Serilogger.logger
 
     type private ResponseMessage =
     | OK
@@ -140,7 +141,9 @@ module Application =
     let private handleException controller result =
         match result with
         | Choice1Of2 x -> x
-        | Choice2Of2 ex -> [Error.InternalException ex] |> Failure |> (matchToResult controller)
+        | Choice2Of2 ex ->
+            logger.Information("Internal exception occurred {exception}", ex.ToString())
+            [Error.InternalException ex] |> Failure |> (matchToResult controller)
 
     let private getConnection (controller: ApiController) =
         let owinEnvironment = controller.Request.GetOwinEnvironment()

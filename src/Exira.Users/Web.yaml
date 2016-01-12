@@ -34,3 +34,23 @@ Web:
         AllowedOrigins:
             - http://localhost:9090
             - http://localhost:8080
+
+Logging:
+    Properties:
+        - key: service
+          value: user-ops
+        - key: environment
+          value: test
+
+    Sinks:
+        Console:
+            Enabled: true
+
+        RollingFile:
+            Enabled: true
+            PathFormat: C:\user-ops\user-ops-{Date}.txt
+
+        Seq:
+            Enabled: false
+            Url: https://example.org
+            ApiKey: YOUR API KEY

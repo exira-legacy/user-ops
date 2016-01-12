@@ -24,6 +24,7 @@ open Converters
 [<Sealed>]
 type Startup() =
     let webConfig = Configuration.webConfig
+    let logger = Serilogger.logger
 
     let registerVersionHeader (app: IAppBuilder) =
         let config =
@@ -134,8 +135,10 @@ type Startup() =
         servePage app webConfig.Web.Pages.LoginPage
 
     member __.Configuration(app: IAppBuilder) =
+        logger.Information "Starting user-ops"
         registerVersionHeader app
         registerEventStore app
         registerWebApi app "/api"
         registerPages app
+        logger.Information "Started user-ops"
 

@@ -9,3 +9,4 @@ Exira.EventStore.Owin
 Exira.ErrorHandling
 Exira.VersionHeader.Owin
 Exira.CsrfValidation.Owin
+Serilog.Sinks.Seq
