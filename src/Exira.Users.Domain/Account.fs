@@ -5,7 +5,7 @@ open Exira.ErrorHandling
 module Account =
     open Events
 
-    let internal applyAccountEvent state event =
+    let private applyAccountEvent state event =
         match state with
         | Account.Init ->
             match event with
@@ -31,21 +31,20 @@ module Account =
             match event with
             | AccountCreated _ -> stateTransitionFail event state
 
-    let internal applyEvent state event =
+    let private applyEvent state event =
         match event with
         | Event.Account e -> applyAccountEvent state e
         | _ -> stateTransitionFail event state
 
     let getAccountState id = getState (applyEvents applyEvent) Account.Init (toAccountStreamId id)
 
-[<AutoOpen>]
 module internal AccountCommandHandler =
     open EventStore.ClientAPI
     open Commands
     open Events
     open Account
 
-    let createAccount (command: CreateAccountCommand) (_, state) =
+    let private createAccount (command: CreateAccountCommand) (_, state) =
         // An account can only be created when it does not exist yet
         match state with
         | Account.Init ->

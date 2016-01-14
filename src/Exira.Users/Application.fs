@@ -142,7 +142,7 @@ module Application =
         match result with
         | Choice1Of2 x -> x
         | Choice2Of2 ex ->
-            logger.Information("Internal exception occurred {exception}", ex.ToString())
+            logger.Fatal("Internal exception occurred {exception}", ex.ToString())
             [Error.InternalException ex] |> Failure |> (matchToResult controller)
 
     let private getConnection (controller: ApiController) =

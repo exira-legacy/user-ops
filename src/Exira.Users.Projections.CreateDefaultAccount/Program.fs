@@ -10,6 +10,7 @@ module Program =
     open Time
 
     let private projectionConfig = Configuration.projectionConfig
+    let private logger = Serilogger.logger
     let private checkpointStreamName = sprintf "%s-checkpoint" projectionConfig.Projection.Name
     let private checkpointStream = checkpointStreamName |> StreamId
 
@@ -47,33 +48,46 @@ module Program =
                 printfn "%s - %04i@%s" (map error) resolvedEvent.Event.EventNumber resolvedEvent.Event.EventStreamId
 
     let private eventAppeared esConnection = fun _ resolvedEvent ->
+        logger.Debug("Event appeared for {projection}: {@event}", projectionConfig.Projection.Name, resolvedEvent)
         resolvedEvent
         |> handleEvent esConnection
         |> Async.RunSynchronously
         |> handleResult resolvedEvent esConnection
 
     let private subscribe esConnection = fun reconnect ->
+        logger.Debug("Subscribing {projection}", projectionConfig.Projection.Name)
         let lastPosition = getCheckpoint esConnection checkpointStream |> Async.RunSynchronously
-        subscribeToAllFrom esConnection lastPosition true (eventAppeared esConnection) ignore reconnect
+        logger.Debug("Subscribing {projection} at {@position}", projectionConfig.Projection.Name, lastPosition)
+        subscribeToAllFrom esConnection lastPosition true (eventAppeared esConnection) ignore reconnect |> ignore
+        logger.Debug("Subscribed {projection} at {@position}", projectionConfig.Projection.Name, lastPosition)
 
     let rec private subscriptionDropped esConnection = fun _ reason ex  ->
         printfn "Subscription Dropped: %O - %O" reason ex
+        logger.Error("Subscription Dropped {reason} - {exception}", reason, ex.ToString())
         if reason = SubscriptionDropReason.ConnectionClosed then ()
         else subscribe esConnection (subscriptionDropped esConnection) |> ignore
 
-    let stop _ =
+    let private stop _ =
+        logger.Information("Stopping {projection}", projectionConfig.Projection.Name)
+
         match es with
-            | None -> true
+            | None -> ()
             | Some esConnection ->
                 esConnection.Close()
                 es <- None
-                true
 
-    let start _ =
+        logger.Information("Stopped {projection}", projectionConfig.Projection.Name)
+        true
+
+    let private start _ =
+        logger.Information("Starting {projection}", projectionConfig.Projection.Name)
+
         let esConnection = connect projectionConfig.EventStore.ConnectionString |> Async.RunSynchronously
         initalizeCheckpoint esConnection checkpointStream |> Async.RunSynchronously
         subscribe esConnection (subscriptionDropped esConnection) |> ignore
         es <- Some esConnection
+
+        logger.Information("Started {projection}", projectionConfig.Projection.Name)
         true
 
     [<EntryPoint>]

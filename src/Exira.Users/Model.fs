@@ -5,6 +5,7 @@ module Model =
     open Exira.Users.Domain
     open Exira.Users.Domain.Commands
 
+    // TODO: Add CorrelationId to drag along
     type Dto =
     | Register of RegisterDto
     | Login of LoginDto

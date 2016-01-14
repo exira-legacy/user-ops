@@ -8,6 +8,7 @@ module EventStoreHelpers =
     open Exira.EventStore
     open Exira.EventStore.EventStore
 
+    // TODO: Plug in schema here
     let toUserStreamId id = id |> Email.value |> toStreamId "user"
     let toAccountStreamId id = id |> AccountName.value |> toStreamId "account"
 

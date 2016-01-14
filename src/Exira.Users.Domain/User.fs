@@ -12,7 +12,7 @@ module User =
         |> AccountName.create
         |> Option.get
 
-    let internal applyUserEvent state event =
+    let private applyUserEvent state event =
         match state with
         | User.Init ->
             match event with
@@ -73,14 +73,13 @@ module User =
             match event with
             | _ -> stateTransitionFail event state
 
-    let internal applyEvent state event =
+    let private applyEvent state event =
         match event with
         | Event.User e -> applyUserEvent state e
         | _ -> stateTransitionFail event state
 
     let getUserState id = getState (applyEvents applyEvent) User.Init (toUserStreamId id)
 
-[<AutoOpen>]
 module internal UserCommandHandler =
     open System
     open System.Security.Claims
@@ -89,11 +88,11 @@ module internal UserCommandHandler =
     open Events
     open User
 
-    let [<Literal>] VerificationTokenLength = 40
-    let [<Literal>] PasswordResetTokenLength = 40
-    let [<Literal>] PasswordResetTokenDurationInMinutes = 120.0
+    let [<Literal>] private VerificationTokenLength = 40
+    let [<Literal>] private PasswordResetTokenLength = 40
+    let [<Literal>] private PasswordResetTokenDurationInMinutes = 120.0
 
-    let buildClaims roles email accounts =
+    let private buildClaims roles email accounts =
         let roles = roles |> List.map (fun role -> Claim(ClaimTypes.Role, (Role.value role).toString))
 
         let personalAccount = toPersonalAccount email
@@ -112,7 +111,7 @@ module internal UserCommandHandler =
         |> List.append roles
         |> List.append accounts
 
-    let createUser (command: RegisterCommand) (_, state) =
+    let private createUser (command: RegisterCommand) (_, state) =
         // A user can only be created when it does not exist yet
         match state with
         | User.Init ->
@@ -120,8 +119,6 @@ module internal UserCommandHandler =
             let randomToken = String.random VerificationTokenLength
             let token = Token.create randomToken |> Option.get |> VerificationToken
             let role = RoleType.User |> Role
-
-            // TODO: Dont forget to also create the personal account afterwards!
 
             let userCreated =
                 { UserRegisteredEvent.Email = unverifiedEmail
@@ -138,7 +135,7 @@ module internal UserCommandHandler =
         | User.VerifiedUser _
         | User.Deleted _ -> fail [UserAlreadyExists]
 
-    let loginUser (command: LoginCommand) (_, state) =
+    let private loginUser (command: LoginCommand) (_, state) =
         // A user can only login when it exists and the password is correct
         match state with
         | User.UnverifiedUser (User = user)
@@ -158,7 +155,7 @@ module internal UserCommandHandler =
             // TODO: Sleep a bit here to prevent timing attacks
             fail [AuthenticationFailed]
 
-    let verifyUser (command: VerifyCommand) (_, state) =
+    let private verifyUser (command: VerifyCommand) (_, state) =
         // A user can only be verified if it exists, is not verified yet and supplied the correct token
         match state with
         | User.UnverifiedUser (User = user; VerificationToken = token) when command.Token = token ->
@@ -179,7 +176,7 @@ module internal UserCommandHandler =
         | User.VerifiedUser _
         | User.Deleted _ -> fail [VerificationFailed]
 
-    let changePassword (command: ChangePasswordCommand) (_, state) =
+    let private changePassword (command: ChangePasswordCommand) (_, state) =
         // A user can only change password when it exists, is verified and supplied the correct old password
         match state with
         | User.VerifiedUser (User = user) when validatePassword command.PreviousPassword user.Hash ->
@@ -195,7 +192,7 @@ module internal UserCommandHandler =
         | User.UnverifiedUser _ -> fail [UserNotVerified]
         | User.VerifiedUser _ -> fail [AuthenticationFailed]
 
-    let requestPasswordReset (command: RequestPasswordResetCommand) (_, state) =
+    let private requestPasswordReset (command: RequestPasswordResetCommand) (_, state) =
         // A user can only request a password reset when it exists and is verified
         match state with
         | User.VerifiedUser _  ->
@@ -214,7 +211,7 @@ module internal UserCommandHandler =
         | User.Deleted _ -> fail [UserDoesNotExist]
         | User.UnverifiedUser _ -> fail [UserNotVerified]
 
-    let verifyPasswordReset (command: VerifyPasswordResetCommand) (_, state) =
+    let private verifyPasswordReset (command: VerifyPasswordResetCommand) (_, state) =
         let validatePasswordResetInfo token (resetInfo: PasswordResetInfo) =
             // Check if the token has not expired yet, and is identical
             let resetActiveUntil = resetInfo.RequestedAt.AddMinutes PasswordResetTokenDurationInMinutes

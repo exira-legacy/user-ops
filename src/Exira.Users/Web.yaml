@@ -1,5 +1,6 @@
 ﻿EventStore:
     ConnectionString: ConnectTo=tcp://admin:changeit@127.0.0.1:8003
+    Schema: useropstest
 
 Debug:
     Authentication:
@@ -9,6 +10,9 @@ Debug:
         Enabled: true
         ReleaseVersionHeaderName: Release
         ReleaseVersionHeaderFormat: "%s, %O"
+
+Service:
+    Name: user-ops
 
 Web:
     Pages:

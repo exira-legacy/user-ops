@@ -1,5 +1,6 @@
 ﻿EventStore:
     ConnectionString: #{GesConnectionString}
+    Schema: userops
 
 Debug:
     Authentication:
@@ -9,6 +10,9 @@ Debug:
         Enabled: true
         ReleaseVersionHeaderName: Release
         ReleaseVersionHeaderFormat: "%s, %O"
+
+Service:
+    Name: user-ops
 
 Web:
     Pages:

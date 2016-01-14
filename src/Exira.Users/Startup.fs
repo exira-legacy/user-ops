@@ -135,10 +135,9 @@ type Startup() =
         servePage app webConfig.Web.Pages.LoginPage
 
     member __.Configuration(app: IAppBuilder) =
-        logger.Information "Starting user-ops"
+        logger.Information("Starting {service}", webConfig.Service.Name)
         registerVersionHeader app
         registerEventStore app
         registerWebApi app "/api"
         registerPages app
-        logger.Information "Started user-ops"
-
+        logger.Information("Started {service}", webConfig.Service.Name)

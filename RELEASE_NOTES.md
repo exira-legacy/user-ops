@@ -1,3 +1,6 @@
+#### 0.5 - January 14 2016
+* Add logging
+
 #### 0.4 - December 8 2015
 * Fix loading of config file
 
