@@ -5,9 +5,13 @@ module internal Serilogger =
     open Serilog
 
     let private loggerConfig = Configuration.webConfig.Logging
+    let [<Literal>] private OutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{CorrelationId}] [{Level}] {Message}{NewLine}{Exception}"
 
     let logger =
-        let logger = LoggerConfiguration()
+        let logger =
+            LoggerConfiguration()
+                .Destructure.FSharpTypes()
+                .Enrich.FromLogContext()
 
         let logger =
             loggerConfig.Properties
@@ -15,12 +19,12 @@ module internal Serilogger =
 
         let logger =
             if loggerConfig.Sinks.Console.Enabled then
-                logger.WriteTo.ColoredConsole()
+                logger.WriteTo.ColoredConsole(outputTemplate = OutputTemplate)
             else logger
 
         let logger =
             if loggerConfig.Sinks.RollingFile.Enabled then
-                logger.WriteTo.RollingFile(loggerConfig.Sinks.RollingFile.PathFormat)
+                logger.WriteTo.RollingFile(loggerConfig.Sinks.RollingFile.PathFormat, outputTemplate = OutputTemplate)
             else logger
 
         let logger =

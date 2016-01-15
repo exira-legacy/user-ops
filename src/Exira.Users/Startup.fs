@@ -17,6 +17,7 @@ open Newtonsoft.Json
 open Newtonsoft.Json.Serialization
 open Exira.EventStore.Owin
 open Exira.VersionHeader.Owin
+open Exira.Serilog.Owin
 
 open Exira.CsrfValidation.Owin
 open Converters
@@ -25,6 +26,9 @@ open Converters
 type Startup() =
     let webConfig = Configuration.webConfig
     let logger = Serilogger.logger
+
+    let registerLogging (app: IAppBuilder) =
+        app.UseSerilogRequestContext() |> ignore
 
     let registerVersionHeader (app: IAppBuilder) =
         let config =
@@ -136,6 +140,7 @@ type Startup() =
 
     member __.Configuration(app: IAppBuilder) =
         logger.Information("Starting {service}", webConfig.Service.Name)
+        registerLogging app
         registerVersionHeader app
         registerEventStore app
         registerWebApi app "/api"

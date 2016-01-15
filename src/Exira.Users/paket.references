@@ -10,3 +10,4 @@ Exira.ErrorHandling
 Exira.VersionHeader.Owin
 Exira.CsrfValidation.Owin
 Serilog.Sinks.Seq
+Destructurama.FSharp

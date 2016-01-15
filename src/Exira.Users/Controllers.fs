@@ -8,7 +8,7 @@ module Controllers =
     open Model
     open Application
 
-    let logger = Serilogger.logger
+    let private logger = Serilogger.logger
 
     let private await f =
         f |> Async.StartAsTask

@@ -2,12 +2,47 @@
 
 module Commands =
 
-    // TODO: Add correlation id to drag along
-    type Command =
-    | User of UserCommand
-    | Account of AccountCommand
+    // User
+    type RegisterCommand = {
+        Email: Email.Email
+        Password: Password.Password
+    }
 
-    and UserCommand =
+    type LoginCommand = {
+        Email: Email.Email
+        Password: Password.Password
+    }
+
+    type VerifyCommand = {
+        Email: Email.Email
+        Token: VerificationToken
+    }
+
+    type ChangePasswordCommand = {
+        Email: Email.Email
+        PreviousPassword: Password.Password
+        NewPassword: Password.Password
+    }
+
+    type RequestPasswordResetCommand = {
+        Email: Email.Email
+    }
+
+    type VerifyPasswordResetCommand = {
+        Email: Email.Email
+        Token: PasswordResetToken
+        NewPassword: Password.Password
+    }
+
+    // Acount
+    type CreateAccountCommand = {
+        Type: AccountType
+        Name: AccountName.AccountName
+        Email: Email.Email
+        Users: Email.Email list
+    }
+
+    type UserCommand =
     | Register of RegisterCommand
     | Login of LoginCommand
     | Verify of VerifyCommand
@@ -15,43 +50,9 @@ module Commands =
     | RequestPasswordReset of RequestPasswordResetCommand
     | VerifyPasswordReset of VerifyPasswordResetCommand
 
-    and RegisterCommand = {
-        Email: Email.Email
-        Password: Password.Password
-    }
-
-    and LoginCommand = {
-        Email: Email.Email
-        Password: Password.Password
-    }
-
-    and VerifyCommand = {
-        Email: Email.Email
-        Token: VerificationToken
-    }
-
-    and ChangePasswordCommand = {
-        Email: Email.Email
-        PreviousPassword: Password.Password
-        NewPassword: Password.Password
-    }
-
-    and RequestPasswordResetCommand = {
-        Email: Email.Email
-    }
-
-    and VerifyPasswordResetCommand = {
-        Email: Email.Email
-        Token: PasswordResetToken
-        NewPassword: Password.Password
-    }
-
-    and AccountCommand =
+    type AccountCommand =
     | Create of CreateAccountCommand
 
-    and CreateAccountCommand = {
-        Type: AccountType
-        Name: AccountName.AccountName
-        Email: Email.Email
-        Users: Email.Email list
-    }
+    type Command =
+    | User of Command: UserCommand
+    | Account of Command: AccountCommand

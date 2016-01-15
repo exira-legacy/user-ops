@@ -5,7 +5,6 @@ module Model =
     open Exira.Users.Domain
     open Exira.Users.Domain.Commands
 
-    // TODO: Add CorrelationId to drag along
     type Dto =
     | Register of RegisterDto
     | Login of LoginDto
@@ -45,6 +44,9 @@ module Model =
         NewPassword: string
     }
 
+    let private toUserCommand cmd =
+        cmd |> Command.User
+
     let toCommand dto =
         match dto with
         | Dto.Register d ->
@@ -55,7 +57,7 @@ module Model =
                 UserCommand.Register {
                     RegisterCommand.Email = email
                     Password = password
-                } |> Command.User
+                } |> toUserCommand
 
             createRegister
             <!> emailOrFail
@@ -69,7 +71,7 @@ module Model =
                 UserCommand.Login {
                     LoginCommand.Email = email
                     Password = password
-                } |> Command.User
+                } |> toUserCommand
 
             createLogin
             <!> emailOrFail
@@ -83,7 +85,7 @@ module Model =
                 UserCommand.Verify {
                     VerifyCommand.Email = email
                     Token = VerificationToken token
-                } |> Command.User
+                } |> toUserCommand
 
             createVerify
             <!> emailOrFail
@@ -98,7 +100,7 @@ module Model =
                     ChangePasswordCommand.Email = email
                     PreviousPassword = oldPassword
                     NewPassword = newPassword
-                } |> Command.User
+                } |> toUserCommand
 
             createChangePassword
             <!> emailOrFail
@@ -111,7 +113,7 @@ module Model =
             let createRequestPasswordReset email =
                 UserCommand.RequestPasswordReset {
                     RequestPasswordResetCommand.Email = email
-                } |> Command.User
+                } |> toUserCommand
 
             createRequestPasswordReset
             <!> emailOrFail
@@ -126,7 +128,7 @@ module Model =
                     VerifyPasswordResetCommand.Email = email
                     Token = PasswordResetToken token
                     NewPassword = password
-                } |> Command.User
+                } |> toUserCommand
 
             createVerifyPasswordReset
             <!> emailOrFail
