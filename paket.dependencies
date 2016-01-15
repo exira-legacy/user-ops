@@ -7,7 +7,6 @@ nuget FAKE
 nuget SourceLink.Fake
 
 nuget FSharp.Configuration
-nuget tickspec
 nuget ExtCore
 nuget Chiron
 nuget Newtonsoft.Json
@@ -25,5 +24,8 @@ nuget Exira.EventStore.Owin
 nuget Exira.ErrorHandling
 nuget Exira.VersionHeader.Owin
 nuget Exira.CsrfValidation.Owin
+
+nuget FsCheck.Xunit
+nuget Unquote
 
 github fsharp/FAKE modules/Octokit/Octokit.fsx
