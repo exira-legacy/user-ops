@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
-    <title>VerifyDto - user-ops</title>
+    <title>Logging - user-ops</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="description" content=""/>
     <meta name="author" content="exira"/>
@@ -35,31 +35,50 @@
 
 
 
-<h1>VerifyDto</h1>
+<h1>Logging</h1>
 <p>
-  <span>Namespace: Exira.Users</span><br />
-  <span>Parent Module: <a href="exira-users-model.html">Model</a></span>
+  <span>Namespace: Exira.Users.Domain</span><br />
 </p>
 <div class="xmldoc">
 </div>
-  <h3>Record Fields</h3>
+
+<!-- Render nested types and modules, if there are any -->
+  <h2>Nested types and modules</h2>
+  <div>
+      <table class="table table-bordered type-list">
+    <thead>
+      <tr><td>Type</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td class="type-name">
+            <a href="exira-users-domain-logging-ilogger.html">ILogger</a>
+          </td>
+          <td class="xmldoc"></td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div>
+
+  <h3>Functions and values</h3>
   <table class="table table-bordered member-list">
     <thead>
-      <tr><td>Record Field</td><td>Description</td></tr>
+      <tr><td>Function or value</td><td>Description</td></tr>
     </thead>
     <tbody>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '66', 66)" onmouseover="showTip(event, '66', 66)">
-            Email
+          <code onmouseout="hideTip(event, '19', 19)" onmouseover="showTip(event, '19', 19)">
+            internalLogger 
           </code>
-          <div class="tip" id="66">
-            <strong>Signature:</strong> string<br />
+          <div class="tip" id="19">
+            <strong>Signature:</strong> ILogger option<br />
                       </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/exira/user-ops/tree/master/src/Exira.Users/Model.fs#L19-19" class="github-link">
+            <a href="http://github.com/exira/user-ops/tree/master/src/Exira.Users.Domain/Logging.fs#L13-13" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
@@ -69,15 +88,15 @@
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '67', 67)" onmouseover="showTip(event, '67', 67)">
-            Token
+          <code onmouseout="hideTip(event, '20', 20)" onmouseover="showTip(event, '20', 20)">
+            setLogger logger
           </code>
-          <div class="tip" id="67">
-            <strong>Signature:</strong> string<br />
-                      </div>
+          <div class="tip" id="20">
+            <strong>Signature:</strong> logger:^?7616 -&gt; unit<br />
+                          <strong>Type parameters:</strong> ^?7616          </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/exira/user-ops/tree/master/src/Exira.Users/Model.fs#L20-20" class="github-link">
+            <a href="http://github.com/exira/user-ops/tree/master/src/Exira.Users.Domain/Logging.fs#L30-30" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
