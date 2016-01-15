@@ -150,6 +150,8 @@ module Application =
         owinEnvironment.["ges.connection"] :?> IEventStoreConnection
 
     let application controller dto =
+        Logging.setLogger logger
+
         dto
         |> toCommand
         |> bindAsync (controller |> getConnection |> handleCommand)
