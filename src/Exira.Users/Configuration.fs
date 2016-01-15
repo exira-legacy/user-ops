@@ -1,10 +1,10 @@
 ﻿namespace Exira.Users
 
-module Configuration =
+module internal Configuration =
     open FSharp.Configuration
     open System.Web.Hosting
 
-    let configPath = HostingEnvironment.MapPath "~/Web.yaml"
+    let private configPath = HostingEnvironment.MapPath "~/Web.yaml"
 
     type WebConfig = YamlConfig<"Web.yaml">
     let webConfig = WebConfig()

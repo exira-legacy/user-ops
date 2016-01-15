@@ -1,6 +1,6 @@
 ﻿namespace Exira.Users
 
-module ActionFilters =
+module internal ActionFilters =
     open System.Net
     open System.Net.Http
     open System.Web.Http.Filters

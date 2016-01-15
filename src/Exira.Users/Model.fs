@@ -5,6 +5,37 @@ module Model =
     open Exira.Users.Domain
     open Exira.Users.Domain.Commands
 
+    type [<CLIMutable>] RegisterDto = {
+        Email: string
+        Password: string
+    }
+
+    type [<CLIMutable>] LoginDto = {
+        Email: string
+        Password: string
+    }
+
+    type [<CLIMutable>] VerifyDto = {
+        Email: string
+        Token: string
+    }
+
+    type [<CLIMutable>] ChangePasswordDto = {
+        Email: string
+        PreviousPassword: string
+        NewPassword: string
+    }
+
+    type [<CLIMutable>] RequestPasswordResetDto = {
+        Email: string
+    }
+
+    type [<CLIMutable>] VerifyPasswordResetDto = {
+        Email: string
+        Token: string
+        NewPassword: string
+    }
+
     type Dto =
     | Register of RegisterDto
     | Login of LoginDto
@@ -12,37 +43,6 @@ module Model =
     | ChangePassword of ChangePasswordDto
     | RequestPasswordReset of RequestPasswordResetDto
     | VerifyPasswordReset of VerifyPasswordResetDto
-
-    and [<CLIMutable>] RegisterDto = {
-        Email: string
-        Password: string
-    }
-
-    and [<CLIMutable>] LoginDto = {
-        Email: string
-        Password: string
-    }
-
-    and [<CLIMutable>] VerifyDto = {
-        Email: string
-        Token: string
-    }
-
-    and [<CLIMutable>] ChangePasswordDto = {
-        Email: string
-        PreviousPassword: string
-        NewPassword: string
-    }
-
-    and [<CLIMutable>] RequestPasswordResetDto = {
-        Email: string
-    }
-
-    and [<CLIMutable>] VerifyPasswordResetDto = {
-        Email: string
-        Token: string
-        NewPassword: string
-    }
 
     let private toUserCommand cmd =
         cmd |> Command.User

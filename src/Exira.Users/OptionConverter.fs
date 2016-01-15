@@ -1,6 +1,6 @@
 ﻿namespace Exira.Users
 
-module Converters =
+module internal Converters =
     open System
     open Microsoft.FSharp.Reflection
     open Newtonsoft.Json
