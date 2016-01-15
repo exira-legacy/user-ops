@@ -10,7 +10,13 @@ module Logging =
         abstract member Debug: messageTemplate: string * [<ParamArray>] propertyValues: obj [] -> unit
         abstract member Warning: messageTemplate: string * [<ParamArray>] propertyValues: obj [] -> unit
 
-    let mutable internalLogger: ILogger option = None
+    let mutable logger: ILogger = {
+        new ILogger with
+            member __.Information(_, _) = ()
+            member __.Verbose(_, _) = ()
+            member __.Fatal(_, _) = ()
+            member __.Debug(_, _) = ()
+            member __.Warning(_, _) = () }
 
     let inline private information o messageTemplate propertyValues =
         (^a :(member Information : messageTemplate: string * [<ParamArray>] propertyValues: obj [] -> unit) (o, messageTemplate, propertyValues))
@@ -27,11 +33,11 @@ module Logging =
     let inline private warning o messageTemplate propertyValues =
         (^a :(member Warning: messageTemplate: string * [<ParamArray>] propertyValues: obj [] -> unit) (o, messageTemplate, propertyValues))
 
-    let inline setLogger logger =
-        internalLogger <- Some {
+    let inline setLogger l =
+        logger <- {
             new ILogger with
-                member __.Information(messageTemplate, propertyValues) = information logger messageTemplate propertyValues
-                member __.Verbose(messageTemplate, propertyValues) = verbose logger messageTemplate propertyValues
-                member __.Fatal(messageTemplate, propertyValues) = fatal logger messageTemplate propertyValues
-                member __.Debug(messageTemplate, propertyValues) = debug logger messageTemplate propertyValues
-                member __.Warning(messageTemplate, propertyValues) = warning logger messageTemplate propertyValues }
+                member __.Information(messageTemplate, propertyValues) = information l messageTemplate propertyValues
+                member __.Verbose(messageTemplate, propertyValues) = verbose l messageTemplate propertyValues
+                member __.Fatal(messageTemplate, propertyValues) = fatal l messageTemplate propertyValues
+                member __.Debug(messageTemplate, propertyValues) = debug l messageTemplate propertyValues
+                member __.Warning(messageTemplate, propertyValues) = warning l messageTemplate propertyValues }

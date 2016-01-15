@@ -15,10 +15,10 @@ type internal RequestIdEnricher(context: OwinContext) =
 
     interface ILogEventEnricher with
         member this.Enrich(logEvent, _) =
-            let correlationId = context.Get<Guid>(OwinRequestId)
+            let correlationId = context.Get<string>(OwinRequestId)
 
             let correlationId =
-                if correlationId = Guid.Empty then Guid.NewGuid()
+                if correlationId = String.Empty then Guid.NewGuid().ToString("D")
                 else correlationId
 
             let property = LogEventProperty("RequestId", ScalarValue correlationId)

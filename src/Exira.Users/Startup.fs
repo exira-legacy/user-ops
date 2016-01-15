@@ -139,6 +139,10 @@ type Startup() =
         servePage app webConfig.Web.Pages.LoginPage
 
     member __.Configuration(app: IAppBuilder) =
+        AppDomain.CurrentDomain.UnhandledException.Add(fun exc ->
+            let ex = exc.ExceptionObject :?> Exception
+            logger.Fatal("Unhandled exception: {exception}", ex.ToString()))
+
         logger.Information("Starting {service}", webConfig.Service.Name)
         registerLogging app
         registerVersionHeader app

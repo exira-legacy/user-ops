@@ -88,6 +88,8 @@ module internal UserCommandHandler =
     open Events
     open User
 
+    let private logger = Logging.logger
+
     let [<Literal>] private VerificationTokenLength = 40
     let [<Literal>] private PasswordResetTokenLength = 40
     let [<Literal>] private PasswordResetTokenDurationInMinutes = 120.0
@@ -133,7 +135,8 @@ module internal UserCommandHandler =
 
         | User.UnverifiedUser _
         | User.VerifiedUser _
-        | User.Deleted _ -> fail [UserAlreadyExists]
+        | User.Deleted _ ->
+            fail [UserAlreadyExists]
 
     let private loginUser (command: LoginCommand) (_, state) =
         // A user can only login when it exists and the password is correct
