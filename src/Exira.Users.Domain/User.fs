@@ -182,6 +182,12 @@ module internal UserCommandHandler =
             authenticationFailed()
 
     let private verifyUser (command: VerifyCommand) (_, state) =
+        logger.Information("Verifying user {name}", command.Email)
+        logger.Debug("UserCommandHandler.verifyUser: {@command}, current state: {@state}", command, state)
+
+        let verificationFailed () =
+            fail [VerificationFailed]
+
         // A user can only be verified if it exists, is not verified yet and supplied the correct token
         match state with
         | User.UnverifiedUser (User = user; VerificationToken = token) when command.Token = token ->
@@ -195,14 +201,31 @@ module internal UserCommandHandler =
             let streamId = toUserStreamId command.Email
             let claims = buildClaims user.Roles command.Email user.Accounts
             let response = Response.UserVerified (streamId, claims)
+
+            logger.Information("Verified user {name}", command.Email)
+            logger.Debug("Generated UserVerifiedEvent {@event}", userVerified)
             succeed (streamId, ExpectedVersion.Any, [userVerified], response)
 
-        | User.Init
-        | User.UnverifiedUser _
-        | User.VerifiedUser _
-        | User.Deleted _ -> fail [VerificationFailed]
+        | User.Init ->
+            logger.Information("Cannot verify user {name}, it does not exist", command.Email)
+            verificationFailed()
+
+        | User.UnverifiedUser _ ->
+            logger.Information("Verification information for {name} was incorrect", command.Email)
+            verificationFailed()
+
+        | User.VerifiedUser _ ->
+            logger.Information("Cannot verify user {name}, it is already verified", command.Email)
+            verificationFailed()
+
+        | User.Deleted _ ->
+            logger.Information("Cannot verify user {name}, it is deleted", command.Email)
+            verificationFailed()
 
     let private changePassword (command: ChangePasswordCommand) (_, state) =
+        logger.Information("Changing password for user {name}", command.Email)
+        logger.Debug("UserCommandHandler.changePassword: {@command}, current state: {@state}", command, state)
+
         // A user can only change password when it exists, is verified and supplied the correct old password
         match state with
         | User.VerifiedUser (User = user) when validatePassword command.PreviousPassword user.Hash ->
@@ -211,14 +234,31 @@ module internal UserCommandHandler =
 
             let streamId = toUserStreamId command.Email
             let response = Response.PasswordChanged streamId
+
+            logger.Information("Password changed for {name}", command.Email)
+            logger.Debug("Generated PasswordChangedEvent {@event}", passwordChanged)
             succeed (streamId, ExpectedVersion.Any, [passwordChanged], response)
 
-        | User.Init
-        | User.Deleted _ -> fail [UserDoesNotExist]
-        | User.UnverifiedUser _ -> fail [UserNotVerified]
-        | User.VerifiedUser _ -> fail [AuthenticationFailed]
+        | User.Init ->
+            logger.Information("Cannot change password for user {name}, it does not exist", command.Email)
+            fail [UserDoesNotExist]
+
+        | User.Deleted _ ->
+            logger.Information("Cannot change password for user {name}, it is deleted", command.Email)
+            fail [UserDoesNotExist]
+
+        | User.UnverifiedUser _ ->
+            logger.Information("Cannot request password reset for {name}, it is not yet verified", command.Email)
+            fail [UserNotVerified]
+
+        | User.VerifiedUser _ ->
+            logger.Information("Cannot request password reset for {name}, verification information not correct", command.Email)
+            fail [AuthenticationFailed]
 
     let private requestPasswordReset (command: RequestPasswordResetCommand) (_, state) =
+        logger.Information("Requesting password reset for user {name}", command.Email)
+        logger.Debug("UserCommandHandler.requestPasswordReset: {@command}, current state: {@state}", command, state)
+
         // A user can only request a password reset when it exists and is verified
         match state with
         | User.VerifiedUser _  ->
@@ -231,11 +271,22 @@ module internal UserCommandHandler =
 
             let streamId = toUserStreamId command.Email
             let response = Response.RequestedPasswordReset streamId
+
+            logger.Information("Requested password reset for {name}", command.Email)
+            logger.Debug("Generated RequestedPasswordResetEvent {@event}", requestedPasswordReset)
             succeed (streamId, ExpectedVersion.Any, [requestedPasswordReset], response)
 
-        | User.Init
-        | User.Deleted _ -> fail [UserDoesNotExist]
-        | User.UnverifiedUser _ -> fail [UserNotVerified]
+        | User.Init ->
+            logger.Information("Cannot request password reset for user {name}, it does not exist", command.Email)
+            fail [UserDoesNotExist]
+
+        | User.Deleted _ ->
+            logger.Information("Cannot request password reset for {name}, it is deleted", command.Email)
+            fail [UserDoesNotExist]
+
+        | User.UnverifiedUser _ ->
+            logger.Information("Cannot request password reset for {name}, it is not yet verified", command.Email)
+            fail [UserNotVerified]
 
     let private verifyPasswordReset (command: VerifyPasswordResetCommand) (_, state) =
         let validatePasswordResetInfo token (resetInfo: PasswordResetInfo) =
@@ -255,10 +306,21 @@ module internal UserCommandHandler =
             let response = Response.VerifiedPasswordReset (streamId, claims)
             succeed (streamId, ExpectedVersion.Any, [verifiedPasswordReset], response)
 
-        | User.Init
-        | User.Deleted _ -> fail [UserDoesNotExist]
-        | User.UnverifiedUser _ -> fail [UserNotVerified]
-        | User.VerifiedUser _ -> fail [VerificationFailed]
+        | User.Init ->
+            logger.Information("Cannot verify password reset for user {name}, it does not exist", command.Email)
+            fail [UserDoesNotExist]
+
+        | User.Deleted _ ->
+            logger.Information("Cannot verify password reset for user {name}, it is deleted", command.Email)
+            fail [UserDoesNotExist]
+
+        | User.UnverifiedUser _ ->
+            logger.Information("Cannot verify password reset for user {name}, it is not yet verified", command.Email)
+            fail [UserNotVerified]
+
+        | User.VerifiedUser _ ->
+            logger.Information("Cannot verify password reset for user {name}, verification info not correct", command.Email)
+            fail [VerificationFailed]
 
     let handleRegister (command: RegisterCommand) es =
         async {

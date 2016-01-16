@@ -2,7 +2,8 @@
 
 [<AutoOpen>]
 module Password =
-    type Password = Password of string
+    // TODO: see if Serilog respects this
+    type Password = Password of string override __.ToString() = ""
 
     let [<Literal>] private MinimumPasswordLength = 10
 
