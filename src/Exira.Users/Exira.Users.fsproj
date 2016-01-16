@@ -110,6 +110,7 @@
     <Content Include="Web.config" />
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="SerilogRequestContextMiddleware.fs" />
+    <Compile Include="LogRequestResponseMiddleware.fs" />
     <Compile Include="Configuration.fs" />
     <Compile Include="Serilogger.fs" />
     <Compile Include="OptionConverter.fs" />

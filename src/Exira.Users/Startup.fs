@@ -28,7 +28,11 @@ type Startup() =
     let logger = Serilogger.logger
 
     let registerLogging (app: IAppBuilder) =
+        let loggerOptions =
+            LogRequestResponseOptions(Logger = Some logger)
+
         app.UseSerilogRequestContext() |> ignore
+        app.UseLogRequestResponse loggerOptions |> ignore
 
     let registerVersionHeader (app: IAppBuilder) =
         let config =
@@ -143,10 +147,10 @@ type Startup() =
             let ex = exc.ExceptionObject :?> Exception
             logger.Fatal("Unhandled exception: {exception}", ex.ToString()))
 
-        logger.Verbose("Starting {service}", webConfig.Service.Name)
+        logger.Debug("Starting {service}", webConfig.Service.Name)
         registerLogging app
         registerVersionHeader app
         registerEventStore app
         registerWebApi app "/api"
         registerPages app
-        logger.Verbose("Started {service}", webConfig.Service.Name)
+        logger.Debug("Started {service}", webConfig.Service.Name)
