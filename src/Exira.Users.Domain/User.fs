@@ -114,6 +114,9 @@ module internal UserCommandHandler =
         |> List.append accounts
 
     let private createUser (command: RegisterCommand) (_, state) =
+        logger.Information("Creating user {name}", command.Email)
+        logger.Debug("UserCommandHandler.createUser: {@command}, current state: {@state}", command, state)
+
         // A user can only be created when it does not exist yet
         match state with
         | User.Init ->
@@ -131,14 +134,25 @@ module internal UserCommandHandler =
             let streamId = toUserStreamId command.Email
             let claims = buildClaims [role] command.Email []
             let response = Response.UserRegistered (streamId, claims)
+
+            logger.Information("Created user {name}", command.Email)
+            logger.Debug("Generated UserRegisteredEvent {@event}", userCreated)
             succeed (streamId, ExpectedVersion.NoStream, [userCreated], response)
 
         | User.UnverifiedUser _
         | User.VerifiedUser _
         | User.Deleted _ ->
+            logger.Information("Cannot create user {name}, it already exists", command.Email)
             fail [UserAlreadyExists]
 
     let private loginUser (command: LoginCommand) (_, state) =
+        logger.Information("Logging in user {name}", command.Email)
+        logger.Debug("UserCommandHandler.loginUser: {@command}, current state: {@state}", command, state)
+
+        let authenticationFailed () =
+            // TODO: Sleep a bit here to prevent timing attacks
+            fail [AuthenticationFailed]
+
         // A user can only login when it exists and the password is correct
         match state with
         | User.UnverifiedUser (User = user)
@@ -149,14 +163,23 @@ module internal UserCommandHandler =
             let streamId = toUserStreamId command.Email
             let claims = buildClaims user.Roles command.Email user.Accounts
             let response = Response.UserLoggedIn (streamId, claims)
+
+            logger.Information("Logged in user {name}", command.Email)
+            logger.Debug("Generated UserLoggedInEvent {@event}", userLoggedIn)
             succeed ((toUserStreamId command.Email), ExpectedVersion.Any, [userLoggedIn], response)
 
-        | User.Init
+        | User.Init ->
+            logger.Information("Cannot login user {name}, it does not exist", command.Email)
+            authenticationFailed()
+
         | User.UnverifiedUser _
-        | User.VerifiedUser _
+        | User.VerifiedUser _ ->
+            logger.Information("Login information for {name} was incorrect", command.Email)
+            authenticationFailed()
+
         | User.Deleted _ ->
-            // TODO: Sleep a bit here to prevent timing attacks
-            fail [AuthenticationFailed]
+            logger.Information("Cannot login user {name}, it is deleted", command.Email)
+            authenticationFailed()
 
     let private verifyUser (command: VerifyCommand) (_, state) =
         // A user can only be verified if it exists, is not verified yet and supplied the correct token

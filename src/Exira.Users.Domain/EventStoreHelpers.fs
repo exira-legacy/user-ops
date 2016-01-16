@@ -7,8 +7,10 @@ module EventStoreHelpers =
     open Exira.ErrorHandling
     open Exira.EventStore
     open Exira.EventStore.EventStore
+    open Events
 
     // TODO: Plug in schema here
+    let private logger = Logging.logger
     let toUserStreamId id = id |> Email.value |> toStreamId "user"
     let toAccountStreamId id = id |> AccountName.value |> toStreamId "account"
 
@@ -42,9 +44,10 @@ module EventStoreHelpers =
         readAllFromStream es id 0
         |> Async.map (applyEvents initState)
 
-    let inline internal save es (id, version, events, response) =
+    let inline internal save es (id, version, events: seq<Event>, response) =
         async {
             try
+                logger.Debug("Saving {@events}", events)
                 do! appendToStream es id version events
                 return succeed (id, response)
             with
