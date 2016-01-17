@@ -9,7 +9,7 @@ module AccountName =
 
     type AccountName = AccountName of string
         with
-        override x.ToString () = (function | AccountName x -> x) x
+        override x.ToString () = (function AccountName x -> x) x
         static member ToJson ((AccountName x): AccountName) = Json.Optic.set Json.String_ x
         static member FromJson (_: AccountName) = AccountName <!> Json.Optic.get Json.String_
 
