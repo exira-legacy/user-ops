@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
-    <title>Password - user-ops</title>
+    <title>SerilogRequestContextMiddleware - user-ops</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="description" content=""/>
     <meta name="author" content="exira"/>
@@ -35,68 +35,57 @@
 
 
 
-<h1>Password</h1>
+<h1>SerilogRequestContextMiddleware</h1>
 <p>
-  <span>Namespace: Exira.Users.Domain</span><br />
+  <span>Namespace: Exira.Serilog.Owin</span><br />
+  <span>Parent Module: <a href="exira-serilog-owin-serilogrequestcontext.html">SerilogRequestContext</a></span>
 </p>
 <div class="xmldoc">
 </div>
-
-<!-- Render nested types and modules, if there are any -->
-  <h2>Nested types and modules</h2>
-  <div>
-      <table class="table table-bordered type-list">
-    <thead>
-      <tr><td>Type</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td class="type-name">
-            <a href="exira-users-domain-password-password.html">Password</a>
-          </td>
-          <td class="xmldoc"></td>
-        </tr>
-    </tbody>
-  </table>
-
-  </div>
-
-  <h3>Functions and values</h3>
+  <h3>Constructors</h3>
   <table class="table table-bordered member-list">
     <thead>
-      <tr><td>Function or value</td><td>Description</td></tr>
+      <tr><td>Constructor</td><td>Description</td></tr>
     </thead>
     <tbody>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '21', 21)" onmouseover="showTip(event, '21', 21)">
-            apply f arg2
+          <code onmouseout="hideTip(event, '47', 47)" onmouseover="showTip(event, '47', 47)">
+            new(next)
           </code>
-          <div class="tip" id="21">
-            <strong>Signature:</strong> f:(string -&gt; &#39;?7528) -&gt; Password -&gt; &#39;?7528<br />
-                          <strong>Type parameters:</strong> '?7528          </div>
+          <div class="tip" id="47">
+            <strong>Signature:</strong> next:Func&lt;IDictionary&lt;string,obj&gt;,Task&gt; -&gt; SerilogRequestContextMiddleware<br />
+                      </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/exira/user-ops/tree/master/src/Exira.Users.Domain/Password.fs#L20-20" class="github-link">
+            <a href="http://github.com/exira/user-ops/tree/master/src/Exira.Users/SerilogRequestContextMiddleware.fs#L41-41" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
           
         </td>
       </tr>
+    </tbody>
+  </table>
+  <h3>Instance members</h3>
+  <table class="table table-bordered member-list">
+    <thead>
+      <tr><td>Instance member</td><td>Description</td></tr>
+    </thead>
+    <tbody>
       <tr>
         <td class="member-name">
 
-          <code onmouseout="hideTip(event, '22', 22)" onmouseover="showTip(event, '22', 22)">
-            value e
+          <code onmouseout="hideTip(event, '48', 48)" onmouseover="showTip(event, '48', 48)">
+            Invoke(environment)
           </code>
-          <div class="tip" id="22">
-            <strong>Signature:</strong> e:Password -&gt; string<br />
+          <div class="tip" id="48">
+            <strong>Signature:</strong> environment:IDictionary&lt;string,obj&gt; -&gt; Task<br />
                       </div>
         </td>
         <td class="xmldoc">
-            <a href="http://github.com/exira/user-ops/tree/master/src/Exira.Users.Domain/Password.fs#L22-22" class="github-link">
+            <a href="http://github.com/exira/user-ops/tree/master/src/Exira.Users/SerilogRequestContextMiddleware.fs#L44-44" class="github-link">
               <img src="../content/img/github.png" class="normal" />
               <img src="../content/img/github-blue.png" class="hover" />
             </a>
