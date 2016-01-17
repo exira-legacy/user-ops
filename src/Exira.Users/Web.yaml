@@ -41,9 +41,9 @@ Web:
 
 Logging:
     Properties:
-        - key: service
+        - key: Service
           value: user-ops
-        - key: environment
+        - key: Environment
           value: test
 
     Sinks:

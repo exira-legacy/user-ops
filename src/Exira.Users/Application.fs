@@ -142,15 +142,16 @@ module Application =
         match result with
         | Choice1Of2 x -> x
         | Choice2Of2 ex ->
-            logger.Fatal("Internal exception occurred {exception}", ex.ToString())
+            logger.Fatal("Internal exception occurred {Exception}", ex.ToString())
             [Error.InternalException ex] |> Failure |> (matchToResult controller)
 
     let private getConnection (controller: ApiController) =
         let owinEnvironment = controller.Request.GetOwinEnvironment()
         owinEnvironment.["ges.connection"] :?> IEventStoreConnection
 
-    let application controller dto =
+    let application controller (dto: Dto) =
         Logging.setLogger logger
+        logger.Debug("Received DTO {@DTO}", dto)
 
         dto
         |> toCommand

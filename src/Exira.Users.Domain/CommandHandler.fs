@@ -19,7 +19,6 @@ module CommandHandler =
         | VerifyPasswordReset userCommand -> handleVerifyPasswordReset userCommand es
 
     let handleCommand es command =
-        //Logging.logger.Information "Test"
         match command with
         | User userCommand -> handleUserCommand es userCommand
         | Account accountCommand -> handleAccountCommand es accountCommand

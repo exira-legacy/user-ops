@@ -8,7 +8,8 @@ module AccountName =
     let [<Literal>] PersonalAccountNamePrefix = "personal"
 
     type AccountName = AccountName of string
-    with
+        with
+        override x.ToString () = (function | AccountName x -> x) x
         static member ToJson ((AccountName x): AccountName) = Json.Optic.set Json.String_ x
         static member FromJson (_: AccountName) = AccountName <!> Json.Optic.get Json.String_
 

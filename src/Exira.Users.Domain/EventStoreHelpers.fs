@@ -47,7 +47,7 @@ module EventStoreHelpers =
     let inline internal save es (id, version, events: seq<Event>, response) =
         async {
             try
-                logger.Debug("Saving {@events}", events)
+                logger.Debug("Saving {@Events}", events)
                 do! appendToStream es id version events
                 return succeed (id, response)
             with

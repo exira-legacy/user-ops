@@ -147,10 +147,10 @@ type Startup() =
             let ex = exc.ExceptionObject :?> Exception
             logger.Fatal("Unhandled exception: {exception}", ex.ToString()))
 
-        logger.Debug("Starting {service}", webConfig.Service.Name)
+        logger.Debug("Starting {ServiceName:l}", webConfig.Service.Name)
         registerLogging app
         registerVersionHeader app
         registerEventStore app
         registerWebApi app "/api"
         registerPages app
-        logger.Debug("Started {service}", webConfig.Service.Name)
+        logger.Debug("Started {ServiceName:l}", webConfig.Service.Name)

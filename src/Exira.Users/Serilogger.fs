@@ -33,6 +33,7 @@ module internal Serilogger =
     let logger =
         let logger =
             LoggerConfiguration()
+                .MinimumLevel.Debug()
                 .Destructure.FSharpTypes()
                 .Enrich.FromLogContext()
             |> properties

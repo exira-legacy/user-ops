@@ -29,40 +29,83 @@ module LogRequestResponse =
                 else ()
 
             let readStream (stream: Stream) =
-                resetStream stream
-                use reader =
-                    new StreamReader(
-                        stream,
-                        encoding = Encoding.UTF8,
-                        detectEncodingFromByteOrderMarks = true,
-                        bufferSize = 1024,
-                        leaveOpen = true)
-                let b = reader.ReadToEndAsync() // TODO: ReadToEndAsync?
-                resetStream stream
-                b
+                async {
+                    resetStream stream
+                    use reader =
+                        new StreamReader(
+                            stream,
+                            encoding = Encoding.UTF8,
+                            detectEncodingFromByteOrderMarks = true,
+                            bufferSize = 1024,
+                            leaveOpen = true)
+                    let! b = reader.ReadToEndAsync() |> Async.AwaitTask
+                    resetStream stream
+                    return b
+                }
 
             let copyBuffer (buffer: Stream) stream =
-                resetStream buffer
-                buffer.CopyTo stream // TODO: CopyToAsync?
+                async {
+                    resetStream buffer
+                    return! buffer.CopyToAsync stream |> Async.AwaitTask
+                }
 
-            let log prefix (message: string) =
-                match options.Logger with
-                | Some logger -> logger.Debug(sprintf "%s: {request}" prefix, message)
-                | None -> printfn "%s: %s" prefix message
+            let logRequest (request: IOwinRequest) =
+                async {
+                    match options.Logger with
+                    | Some logger ->
+                        let! requestBody = readStream request.Body
+
+                        let l =
+                            logger
+                                .ForContext("Accept", request.Accept)
+                                .ForContext("Body", requestBody)
+                                .ForContext("CacheControl", request.CacheControl)
+                                .ForContext("ContentType", request.ContentType)
+                                .ForContext("Cookies", request.Cookies, true)
+                                .ForContext("Headers", request.Headers, true)
+                                .ForContext("Host", request.Host)
+                                .ForContext("MediaType", request.MediaType)
+                                .ForContext("Path", request.Path)
+                                .ForContext("Protocol", request.Protocol)
+                                .ForContext("QueryString", request.QueryString)
+                                .ForContext("Scheme", request.Scheme)
+                                .ForContext("User", request.User)
+
+                        l.Debug("Incoming request: {Method:l} {Uri:l}", request.Method, (request.Uri.ToString()))
+                    | None -> printfn "Incoming request: %s %s" request.Method (request.Uri.ToString())
+                }
+
+            let logResponse (response: IOwinResponse) =
+                async {
+                    match options.Logger with
+                    | Some logger ->
+                        let! responseBody = readStream response.Body
+
+                        let l =
+                            logger
+                                .ForContext("Body", responseBody)
+                                .ForContext("ContentLength", response.ContentLength)
+                                .ForContext("ContentType", response.ContentType)
+                                .ForContext("Cookies", response.Cookies, true)
+                                .ForContext("ETag", response.ETag)
+                                .ForContext("Expires", response.Expires)
+                                .ForContext("Headers", response.Headers, true)
+                                .ForContext("Protocol", response.Protocol)
+
+                        l.Debug("Outgoing response: {StatusCode} {ReasonPhrase:l}", response.StatusCode, response.ReasonPhrase)
+                    | None -> printfn "Outgoing response: %i %s" response.StatusCode response.ReasonPhrase
+                }
 
             async {
                 let responseStream = response.Body
                 use responseBuffer = new MemoryStream()
                 response.Body <- responseBuffer
 
-                let requestBody = readStream request.Body
-                log "Incoming request" requestBody
-
+                do! logRequest request
                 do! next.Invoke environment |> awaitTask
+                do! logResponse response
 
-                let response = readStream responseBuffer
-                copyBuffer responseBuffer responseStream
-                log "Outgoing response" response
+                do! copyBuffer responseBuffer responseStream
             } |> Async.StartAsTask :> Task
 
     [<ExtensionAttribute>]
