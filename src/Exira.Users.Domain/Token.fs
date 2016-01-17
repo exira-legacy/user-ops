@@ -7,7 +7,7 @@ module Token =
 
     type Token = Token of string
     with
-        static member ToJson ((Token x): Token) = Json.Optic.set Json.String_ x
+        static member ToJson (Token x) = Json.Optic.set Json.String_ x
         static member FromJson (_: Token) = Token <!> Json.Optic.get Json.String_
 
     let internal createWithCont success failure value =

@@ -21,8 +21,7 @@ module Role =
 
     type Role = Role of RoleType
     with
-        static member ToJson ((Role x): Role) = Json.Optic.set Json.String_ x.toString
-
+        static member ToJson (Role x) = Json.Optic.set Json.String_ x.toString
         static member FromJson (_: Role) =
             function
                 | RoleUser -> User |> Role

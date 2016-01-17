@@ -9,7 +9,7 @@ module Email =
     type Email = Email of string
     with
         override x.ToString () = (function Email x -> x) x
-        static member ToJson ((Email x): Email) = Json.Optic.set Json.String_ x
+        static member ToJson (Email x) = Json.Optic.set Json.String_ x
         static member FromJson (_: Email) = Email <!> Json.Optic.get Json.String_
 
     let [<Literal>] private SimpleEmailRegex = "^\S+@\S+\.\S+$"

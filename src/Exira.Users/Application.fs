@@ -130,10 +130,11 @@ module Application =
     let private matchToResult controller result =
         match result with
         | Success (_, response) ->
-            // TODO: Log (StreamId streamId)?
+            logger.Debug("Command processed succesfully: {@Result}", result)
             formatResponse controller response
 
         | Failure errors ->
+            logger.Debug("Command failed to process: {@Result}", result)
             let errorCode = errors |> determineErrorCode
             let error = errors |> formatErrors
             controller.Request.CreateResponse(errorCode, error)

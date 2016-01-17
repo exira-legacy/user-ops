@@ -11,7 +11,7 @@ module PasswordHash =
 
     type PasswordHash = PasswordHash of string
     with
-        static member ToJson ((PasswordHash x): PasswordHash) = Json.Optic.set Json.String_ x
+        static member ToJson (PasswordHash x) = Json.Optic.set Json.String_ x
         static member FromJson (_: PasswordHash) = PasswordHash <!> Json.Optic.get Json.String_
 
     let apply f (PasswordHash e) = f e
