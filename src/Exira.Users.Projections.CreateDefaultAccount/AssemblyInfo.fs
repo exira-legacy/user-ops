@@ -4,10 +4,10 @@ open System.Reflection
 [<assembly: AssemblyTitleAttribute("Exira.Users.Projections.CreateDefaultAccount")>]
 [<assembly: AssemblyProductAttribute("Exira.Users")>]
 [<assembly: AssemblyDescriptionAttribute("Exira.Users is an event sourced microservice to manage users.")>]
-[<assembly: AssemblyVersionAttribute("0.5.50")>]
-[<assembly: AssemblyFileVersionAttribute("0.5.50")>]
-[<assembly: AssemblyMetadataAttribute("githash","14d6fb53d510bd97db58f7f269816d77961fa11a")>]
+[<assembly: AssemblyVersionAttribute("0.5.51")>]
+[<assembly: AssemblyFileVersionAttribute("0.5.51")>]
+[<assembly: AssemblyMetadataAttribute("githash","5656225cd9de0ca799710ce722b395f5ba935dee")>]
 do ()
 
 module internal AssemblyVersionInformation =
-    let [<Literal>] Version = "0.5.50"
+    let [<Literal>] Version = "0.5.51"
