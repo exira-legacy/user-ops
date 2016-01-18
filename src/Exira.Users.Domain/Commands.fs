@@ -1,27 +1,28 @@
 ﻿namespace Exira.Users.Domain
 
 module Commands =
+    open Destructurama.Attributed
 
     // User
     type RegisterCommand = {
         Email: Email.Email
-        Password: Password.Password
+        [<NotLogged>] Password: Password.Password
     }
 
     type LoginCommand = {
         Email: Email.Email
-        Password: Password.Password
+        [<NotLogged>] Password: Password.Password
     }
 
     type VerifyCommand = {
         Email: Email.Email
-        Token: VerificationToken
+        [<NotLogged>] Token: VerificationToken
     }
 
     type ChangePasswordCommand = {
         Email: Email.Email
-        PreviousPassword: Password.Password
-        NewPassword: Password.Password
+        [<NotLogged>] PreviousPassword: Password.Password
+        [<NotLogged>] NewPassword: Password.Password
     }
 
     type RequestPasswordResetCommand = {
@@ -30,8 +31,8 @@ module Commands =
 
     type VerifyPasswordResetCommand = {
         Email: Email.Email
-        Token: PasswordResetToken
-        NewPassword: Password.Password
+        [<NotLogged>] Token: PasswordResetToken
+        [<NotLogged>] NewPassword: Password.Password
     }
 
     // Acount

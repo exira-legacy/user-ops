@@ -2,6 +2,7 @@
 
 module internal Serilogger =
     open Serilog
+    open Destructurama
 
     let private loggerConfig = Configuration.webConfig.Logging
     let [<Literal>] private OutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{RequestId}] [{Level}] {Message}{NewLine}{Exception}"
@@ -35,6 +36,7 @@ module internal Serilogger =
             LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .Destructure.FSharpTypes()
+                .Destructure.UsingAttributes()
                 .Enrich.FromLogContext()
             |> properties
             |> console

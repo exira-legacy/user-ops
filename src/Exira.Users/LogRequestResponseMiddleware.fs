@@ -71,7 +71,7 @@ module LogRequestResponse =
                                 .ForContext("Scheme", request.Scheme)
                                 .ForContext("User", request.User)
 
-                        l.Debug("Incoming request: {Method:l} {Uri:l}", request.Method, (request.Uri.ToString()))
+                        l.Debug("Incoming request: {Method:l} {Uri}", request.Method, request.Uri)
                     | None -> printfn "Incoming request: %s %s" request.Method (request.Uri.ToString())
                 }
 

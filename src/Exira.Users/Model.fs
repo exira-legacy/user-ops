@@ -4,26 +4,27 @@ module Model =
     open Exira.ErrorHandling
     open Exira.Users.Domain
     open Exira.Users.Domain.Commands
+    open Destructurama.Attributed
 
     type [<CLIMutable>] RegisterDto = {
         Email: string
-        Password: string
+        [<NotLogged>] Password: string
     }
 
     type [<CLIMutable>] LoginDto = {
         Email: string
-        Password: string
+        [<NotLogged>] Password: string
     }
 
     type [<CLIMutable>] VerifyDto = {
         Email: string
-        Token: string
+        [<NotLogged>] Token: string
     }
 
     type [<CLIMutable>] ChangePasswordDto = {
         Email: string
-        PreviousPassword: string
-        NewPassword: string
+        [<NotLogged>] PreviousPassword: string
+        [<NotLogged>] NewPassword: string
     }
 
     type [<CLIMutable>] RequestPasswordResetDto = {
@@ -32,8 +33,8 @@ module Model =
 
     type [<CLIMutable>] VerifyPasswordResetDto = {
         Email: string
-        Token: string
-        NewPassword: string
+        [<NotLogged>] Token: string
+        [<NotLogged>] NewPassword: string
     }
 
     type Dto =
