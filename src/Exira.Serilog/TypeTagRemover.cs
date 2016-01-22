@@ -4,7 +4,7 @@ using Serilog.Events;
 
 namespace Exira.Serilog
 {
-    class TypeTagRemover : ILogEventEnricher
+    public class TypeTagRemover : ILogEventEnricher
     {
         public void Enrich(LogEvent logEvent, ILogEventPropertyFactory factory)
         {
@@ -12,11 +12,11 @@ namespace Exira.Serilog
             foreach (var prop in logEvent.Properties.ToArray())
             {
                 var val = prop.Value as StructureValue;
-                if (val?.TypeTag != null)
-                {
-                    var replacement = new LogEventProperty(prop.Key, new StructureValue(val.Properties));
-                    logEvent.AddOrUpdateProperty(replacement);
-                }
+                if (val?.TypeTag == null)
+                    continue;
+
+                var replacement = new LogEventProperty(prop.Key, new StructureValue(val.Properties));
+                logEvent.AddOrUpdateProperty(replacement);
             }
         }
     }

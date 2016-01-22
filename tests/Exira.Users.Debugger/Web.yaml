@@ -1,0 +1,60 @@
+﻿EventStore:
+    ConnectionString: ConnectTo=tcp://admin:changeit@127.0.0.1:8003
+    Schema: useropstest
+
+Debug:
+    Authentication:
+        UseCookieDomain: false
+
+    Web:
+        Enabled: true
+        ReleaseVersionHeaderName: Release
+        ReleaseVersionHeaderFormat: "%s, %O"
+
+Service:
+    Name: user-ops
+
+Web:
+    Pages:
+        LoginPage: ~/html/login.html
+        ChangePasswordPage: ~/html/changepassword.html
+        VerifyPage: ~/html/verify.html
+        VerifyPasswordResetPage: ~/html/verifypasswordreset.html
+
+    Authentication:
+        AuthenticationName: exira
+        CookieName: auth
+        CookiePath: /
+        CookieDomain: localhost
+
+    JWT:
+        Issuer: urn:example
+        TokenSigningKey: U0lHTklOR19LRVlfR09FU19IRVJF
+        TokenLifetimeInMinutes: 120
+        Audiences:
+            - urn:example
+
+    CORS:
+        AllowedOrigins:
+            - http://localhost:9090
+            - http://localhost:8080
+
+Logging:
+    Properties:
+        - key: Service
+          value: user-ops
+        - key: Environment
+          value: test
+
+    Sinks:
+        Console:
+            Enabled: true
+
+        RollingFile:
+            Enabled: true
+            PathFormat: C:\user-ops\user-ops-{Date}.txt
+
+        Seq:
+            Enabled: false
+            Url: https://example.org
+            ApiKey: YOUR API KEY
