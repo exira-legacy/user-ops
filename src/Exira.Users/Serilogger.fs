@@ -8,7 +8,7 @@ module internal Serilogger =
     open Destructurama
 
     type internal TypeTagRemover() =
-        let pairs (d: IDictionary<'a, 'b>) =
+        let pairs (d: IReadOnlyDictionary<'a, 'b>) =
             seq { for kv in d do yield (kv.Key, kv.Value) }
 
         interface ILogEventEnricher with
