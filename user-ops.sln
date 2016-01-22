@@ -32,8 +32,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{CC18FA7B
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Exira.Users.Domain.Tests", "tests\Exira.Users.Domain.Tests\Exira.Users.Domain.Tests.fsproj", "{1A98D0FF-8DCF-49FF-BFAB-32EE1323F1CD}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Exira.Users.Debugger", "tests\Exira.Users.Debugger\Exira.Users.Debugger.fsproj", "{747AC35F-D85A-460A-A5B1-2963F7D16DEA}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,16 +91,6 @@ Global
 		{1A98D0FF-8DCF-49FF-BFAB-32EE1323F1CD}.Release452|Any CPU.Build.0 = Release|Any CPU
 		{1A98D0FF-8DCF-49FF-BFAB-32EE1323F1CD}.Release46|Any CPU.ActiveCfg = Release|Any CPU
 		{1A98D0FF-8DCF-49FF-BFAB-32EE1323F1CD}.Release46|Any CPU.Build.0 = Release|Any CPU
-		{747AC35F-D85A-460A-A5B1-2963F7D16DEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{747AC35F-D85A-460A-A5B1-2963F7D16DEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{747AC35F-D85A-460A-A5B1-2963F7D16DEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{747AC35F-D85A-460A-A5B1-2963F7D16DEA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{747AC35F-D85A-460A-A5B1-2963F7D16DEA}.Release45|Any CPU.ActiveCfg = Release|Any CPU
-		{747AC35F-D85A-460A-A5B1-2963F7D16DEA}.Release45|Any CPU.Build.0 = Release|Any CPU
-		{747AC35F-D85A-460A-A5B1-2963F7D16DEA}.Release452|Any CPU.ActiveCfg = Release|Any CPU
-		{747AC35F-D85A-460A-A5B1-2963F7D16DEA}.Release452|Any CPU.Build.0 = Release|Any CPU
-		{747AC35F-D85A-460A-A5B1-2963F7D16DEA}.Release46|Any CPU.ActiveCfg = Release|Any CPU
-		{747AC35F-D85A-460A-A5B1-2963F7D16DEA}.Release46|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,7 +2,7 @@ REDIRECTS: ON
 NUGET
   remote: https://www.nuget.org/api/v2
   specs:
-    Aether (8.0.2)
+    Aether (8.1.1)
     Chiron (6.0.1)
       Aether (>= 8.0.2 < 9.0.0)
       FParsec (>= 1.0.0 < 2.0.0)
@@ -17,9 +17,9 @@ NUGET
       Microsoft.AspNet.WebApi.Client
       Microsoft.Net.Http
       Microsoft.Owin
-    Exira.ErrorHandling (0.2.37)
+    Exira.ErrorHandling (0.2.39)
       FSharp.Core
-    Exira.EventStore (0.8.23)
+    Exira.EventStore (0.8.25)
       Chiron
       EventStore.Client
       ExtCore
@@ -30,12 +30,12 @@ NUGET
       ExtCore
       FSharp.Core
       Microsoft.Owin
-    Exira.VersionHeader.Owin (0.1.9)
+    Exira.VersionHeader.Owin (0.3.15)
       ExtCore
       FSharp.Core
       Microsoft.Owin
     ExtCore (0.8.45)
-    FAKE (4.12.0)
+    FAKE (4.16.1)
     FParsec (1.0.2)
     FsCheck (2.2.4)
       FSharp.Core (>= 3.1.2.5)
@@ -43,9 +43,9 @@ NUGET
       FsCheck (>= 2.2.4)
       xunit.extensibility.execution (>= 2.1.0 < 2.2.0)
     FSharp.Compiler.Service (1.4.2.3)
-    FSharp.Configuration (0.5.7)
+    FSharp.Configuration (0.5.10)
     FSharp.Core (4.0.0.1)
-    FSharp.Formatting (2.12.1)
+    FSharp.Formatting (2.13.4)
       FSharp.Compiler.Service (>= 1.4.2 < 1.5.0)
       FSharpVSPowerTools.Core (>= 2.2.0 < 2.3.0)
     FSharpVSPowerTools.Core (2.2.0)
@@ -83,7 +83,7 @@ NUGET
       Microsoft.Owin (>= 3.0.1)
       Microsoft.Owin.Security (>= 3.0.1)
       Owin (>= 1.0)
-    Newtonsoft.Json (8.0.1)
+    Newtonsoft.Json (8.0.2)
     Octokit (0.17.0)
       Microsoft.Net.Http
     Owin (1.0)
@@ -206,9 +206,9 @@ NUGET
     Topshelf (3.3.1)
     Topshelf.FSharp (2.1.0)
       Topshelf (>= 3.2.0)
-    Unquote (3.1.0)
-    xunit.abstractions (2.0.0) - framework: >= net45, dnx451, dnxcore50, monoandroid, monotouch, xamarinios, winv4.5, wpv8.0
-    xunit.extensibility.core (2.1.0) - framework: >= net45, dnx451, dnxcore50, monoandroid, monotouch, xamarinios, winv4.5, wpv8.0
+    Unquote (3.1.1)
+    xunit.abstractions (2.0.0) - framework: >= net45, dnx451, dnxcore50, monoandroid, monotouch, xamarinios, winv4.5, wpv8.1, wpv8.0
+    xunit.extensibility.core (2.1.0) - framework: >= net45, dnx451, dnxcore50, monoandroid, monotouch, xamarinios, winv4.5, wpv8.1, wpv8.0
       xunit.abstractions (2.0.0)
     xunit.extensibility.execution (2.1.0)
       System.Collections (>= 4.0.0) - framework: dnxcore50
@@ -225,9 +225,9 @@ NUGET
       System.Threading (>= 4.0.0) - framework: dnxcore50
       System.Threading.Tasks (>= 4.0.0) - framework: dnxcore50
       xunit.abstractions (>= 2.0.0) - framework: dnxcore50
-      xunit.extensibility.core (2.1.0) - framework: >= net45, dnx451, dnxcore50, monoandroid, monotouch, xamarinios, winv4.5, wpv8.0
+      xunit.extensibility.core (2.1.0) - framework: >= net45, dnx451, dnxcore50, monoandroid, monotouch, xamarinios, winv4.5, wpv8.1, wpv8.0
 GITHUB
   remote: fsharp/FAKE
   specs:
-    modules/Octokit/Octokit.fsx (67aaafa762b6805282968fa87a8b6bf4f39cde52)
+    modules/Octokit/Octokit.fsx (ba6c6d165a5d39cf03dc97e2b3bcb76dfcd6e649)
       Octokit
