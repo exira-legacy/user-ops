@@ -6,7 +6,7 @@ open System.Reflection
 [<assembly: AssemblyDescriptionAttribute("Exira.Users is an event sourced microservice to manage users.")>]
 [<assembly: AssemblyVersionAttribute("0.5.0")>]
 [<assembly: AssemblyFileVersionAttribute("0.5.0")>]
-[<assembly: AssemblyMetadataAttribute("githash","81aed07a1cbaa3cc63bc8611cede658d98e471ea")>]
+[<assembly: AssemblyMetadataAttribute("githash","bfe0baae34fd2828f3d8746efdf73cde6edc001e")>]
 do ()
 
 module internal AssemblyVersionInformation =

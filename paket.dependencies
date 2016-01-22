@@ -3,7 +3,7 @@ source https://nuget.org/api/v2
 
 nuget FSharp.Core
 nuget FSharp.Formatting
-nuget FAKE
+nuget FAKE 4.17.0-alpha005
 nuget SourceLink.Fake
 
 nuget FSharp.Configuration
