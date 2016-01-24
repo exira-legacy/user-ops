@@ -1,24 +1,24 @@
 ﻿namespace Exira.Users
 
 module internal Serilogger =
-    open System.Collections.Generic
     open Serilog
-    open Serilog.Core
-    open Serilog.Events
     open Destructurama
 
-    type internal TypeTagRemover() =
-        let pairs (d: IReadOnlyDictionary<'a, 'b>) =
-            seq { for kv in d do yield (kv.Key, kv.Value) }
-
-        interface ILogEventEnricher with
-            member this.Enrich(logEvent, _) =
-                logEvent.Properties
-                |> pairs
-                |> Seq.choose (fun (k, v) -> if (v.GetType() = typedefof<StructureValue>) then Some(k, v :?> StructureValue) else None)
-                |> Seq.filter (fun (k, v) -> not (isNull v.TypeTag))
-                |> Seq.map (fun (k, v) -> LogEventProperty(k, StructureValue v.Properties))
-                |> Seq.iter logEvent.AddOrUpdateProperty
+//    open System.Collections.Generic
+//    open Serilog.Core
+//    open Serilog.Events
+//    type internal TypeTagRemover() =
+//        let pairs (d: IReadOnlyDictionary<'a, 'b>) =
+//            seq { for kv in d do yield (kv.Key, kv.Value) }
+//
+//        interface ILogEventEnricher with
+//            member this.Enrich(logEvent, _) =
+//                logEvent.Properties
+//                |> pairs
+//                |> Seq.choose (fun (k, v) -> if (v.GetType() = typedefof<StructureValue>) then Some(k, v :?> StructureValue) else None)
+//                |> Seq.filter (fun (k, v) -> not (isNull v.TypeTag))
+//                |> Seq.map (fun (k, v) -> LogEventProperty(k, StructureValue v.Properties))
+//                |> Seq.iter logEvent.AddOrUpdateProperty
 
     let private loggerConfig = Configuration.webConfig.Logging
     let [<Literal>] private OutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{RequestId}] [{Level}] {Message}{NewLine}{Exception}"
@@ -54,7 +54,7 @@ module internal Serilogger =
                 .Destructure.FSharpTypes()
                 .Destructure.UsingAttributes()
                 .Enrich.FromLogContext()
-                .Enrich.With<TypeTagRemover>()
+                //.Enrich.With<TypeTagRemover>()
             |> properties
             |> console
             |> rollingFile
